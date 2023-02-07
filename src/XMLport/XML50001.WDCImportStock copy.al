@@ -1,4 +1,4 @@
-xmlport 50001 "WDC Import Stock"
+xmlport 50003 "WDC Import Stock copy"
 {
     Direction = Import;
     Format = VariableText;
@@ -68,12 +68,12 @@ xmlport 50001 "WDC Import Stock"
                         ERROR('Le cout article %1 est nul', CodeArticle);
 
                     lItem.GET(CodeArticle);
-                    // IF lItem."Costing Method" = lItem."Costing Method"::Standard THEN BEGIN
-                    //     IF lItem."Standard Cost" <> Cout THEN BEGIN
-                    //         lItem."Standard Cost" := Cout;
-                    //         lItem.MODIFY;
-                    //     END;
-                    // END;
+                    IF lItem."Costing Method" = lItem."Costing Method"::Standard THEN BEGIN
+                        IF lItem."Standard Cost" <> Cout THEN BEGIN
+                            lItem."Standard Cost" := Cout;
+                            lItem.MODIFY;
+                        END;
+                    END;
 
                     ItemJournalLine.INIT;
                     ItemJournalLine.VALIDATE("Journal Template Name", ModeleFeuille);

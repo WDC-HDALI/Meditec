@@ -46,6 +46,16 @@ page 50000 "WDC Page"
                 PromotedCategory = New;
                 PromotedIsBig = true;
             }
+            action(ImportCoutStand)
+            {
+                RunObject = xmlport "WDC Import Cout Standard";
+                Image = Import;
+                ApplicationArea = all;
+                CaptionML = FRA = 'Import Cout Standard';
+                Promoted = true;
+                PromotedCategory = New;
+                PromotedIsBig = true;
+            }
         }
 
     }
