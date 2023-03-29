@@ -26,7 +26,7 @@
                   </TablixColumns>
                   <TablixRows>
                     <TablixRow>
-                      <Height>11.09493cm</Height>
+                      <Height>11.66643cm</Height>
                       <TablixCells>
                         <TablixCell>
                           <CellContents>
@@ -96,7 +96,8 @@ Cstr(Fields!DocumentExt.Value) + Chr(177)  +
  Cstr(Fields!BillToContactEmail.Value) + Chr(177) +
  Cstr(Fields!SellToContactEmail.Value) + Chr(177) +
  Cstr(Fields!SellToContactPhoneNo.Value) + Chr(177) +
- Cstr(Fields!TVA_Intra.Value) ,1)</Hidden>
+ Cstr(Fields!TVA_Intra.Value)+ Chr(177) +
+ Cstr(Fields!SelltoCustomerName.Value) ,1)</Hidden>
                                                 </Visibility>
                                                 <Style>
                                                   <Border>
@@ -1872,7 +1873,7 @@ Cstr(Fields!DocumentExt.Value) + Chr(177)  +
                                   </TablixRowHierarchy>
                                   <Top>2.946cm</Top>
                                   <Left>0.04632cm</Left>
-                                  <Height>1.04789cm</Height>
+                                  <Height>1.04788cm</Height>
                                   <Width>18.66418cm</Width>
                                   <ZIndex>3</ZIndex>
                                   <Style>
@@ -2165,7 +2166,7 @@ The exporter of the products covered by this document declares that unless clear
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value>Incoterm EXW</Value>
+                                          <Value>="Incoterm"&amp; Fields!ShipmentMethodCode.Value</Value>
                                           <Style />
                                         </TextRun>
                                       </TextRuns>
@@ -2255,7 +2256,7 @@ The exporter of the products covered by this document declares that unless clear
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value>N° code frontière : 16/47</Value>
+                                          <Value>="N° code frontière : " &amp; Fields!BorderCodeNo.Value</Value>
                                           <Style />
                                         </TextRun>
                                       </TextRuns>
@@ -2372,6 +2373,36 @@ The exporter of the products covered by this document declares that unless clear
                                     <PaddingBottom>2pt</PaddingBottom>
                                   </Style>
                                 </Textbox>
+                                <Textbox Name="Textbox6">
+                                  <CanGrow>true</CanGrow>
+                                  <KeepTogether>true</KeepTogether>
+                                  <Paragraphs>
+                                    <Paragraph>
+                                      <TextRuns>
+                                        <TextRun>
+                                          <Value>=Fields!Signature.Value</Value>
+                                          <Style />
+                                        </TextRun>
+                                      </TextRuns>
+                                      <Style />
+                                    </Paragraph>
+                                  </Paragraphs>
+                                  <rd:DefaultName>Textbox6</rd:DefaultName>
+                                  <Top>10.85476cm</Top>
+                                  <Left>0.04632cm</Left>
+                                  <Height>0.6cm</Height>
+                                  <Width>7.70814cm</Width>
+                                  <ZIndex>14</ZIndex>
+                                  <Style>
+                                    <Border>
+                                      <Style>None</Style>
+                                    </Border>
+                                    <PaddingLeft>2pt</PaddingLeft>
+                                    <PaddingRight>2pt</PaddingRight>
+                                    <PaddingTop>2pt</PaddingTop>
+                                    <PaddingBottom>2pt</PaddingBottom>
+                                  </Style>
+                                </Textbox>
                               </ReportItems>
                               <KeepTogether>true</KeepTogether>
                               <Style>
@@ -2421,7 +2452,7 @@ The exporter of the products covered by this document declares that unless clear
                   </Filter>
                 </Filters>
                 <Left>0.22437cm</Left>
-                <Height>11.09493cm</Height>
+                <Height>11.66643cm</Height>
                 <Width>18.84632cm</Width>
                 <Style>
                   <Border>
@@ -2432,7 +2463,7 @@ The exporter of the products covered by this document declares that unless clear
             </ReportItems>
             <KeepTogether>true</KeepTogether>
             <Top>0.12111cm</Top>
-            <Height>11.09493cm</Height>
+            <Height>11.66643cm</Height>
             <Width>19.07069cm</Width>
             <Style>
               <Border>
@@ -2441,7 +2472,7 @@ The exporter of the products covered by this document declares that unless clear
             </Style>
           </Rectangle>
         </ReportItems>
-        <Height>11.39243cm</Height>
+        <Height>11.96393cm</Height>
         <Style />
       </Body>
       <Width>19.07069cm</Width>
@@ -3388,14 +3419,14 @@ The exporter of the products covered by this document declares that unless clear
                 </Border>
               </Style>
             </Rectangle>
-            <Textbox Name="Textbox27">
+            <Textbox Name="Textbox28">
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=Code.GetData(30,1)</Value>
+                      <Value>=Code.GetData(37,1)</Value>
                       <Style>
                         <FontWeight>Bold</FontWeight>
                       </Style>
@@ -3407,10 +3438,10 @@ The exporter of the products covered by this document declares that unless clear
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox26</rd:DefaultName>
-              <Top>2.4cm</Top>
+              <Top>2.38952cm</Top>
               <Left>8.33731cm</Left>
               <Height>0.88334cm</Height>
-              <Width>10.61494cm</Width>
+              <Width>10.61cm</Width>
               <ZIndex>4</ZIndex>
               <Style>
                 <Border>
@@ -3934,6 +3965,12 @@ End Function
         <Field Name="ShipmentMethodDescription_Lbl">
           <DataField>ShipmentMethodDescription_Lbl</DataField>
         </Field>
+        <Field Name="ShipmentMethodCode">
+          <DataField>ShipmentMethodCode</DataField>
+        </Field>
+        <Field Name="Signature">
+          <DataField>Signature</DataField>
+        </Field>
         <Field Name="ShipmentDate">
           <DataField>ShipmentDate</DataField>
         </Field>
@@ -4029,6 +4066,9 @@ End Function
         </Field>
         <Field Name="SellToNo">
           <DataField>SellToNo</DataField>
+        </Field>
+        <Field Name="BorderCodeNo">
+          <DataField>BorderCodeNo</DataField>
         </Field>
         <Field Name="SellToContactPhoneNo">
           <DataField>SellToContactPhoneNo</DataField>
