@@ -250,7 +250,14 @@ report 50000 "WDC Posted Sales Invoice"
             column(ShipmentMethodDescription; ShipmentMethod.Description)
             {
             }
+
             column(ShipmentMethodDescription_Lbl; ShptMethodDescLbl)
+            {
+            }
+            column(ShipmentMethodCode; "Shipment Method Code")
+            {
+            }
+            column(Signature; SalesSetup.GetSignature)
             {
             }
             column(ShipmentDate; Format("Shipment Date", 0, 4))
@@ -364,6 +371,10 @@ report 50000 "WDC Posted Sales Invoice"
             column(SellToNo; SellToContact."No.")
             {
             }
+            column(BorderCodeNo; "Border Code No")
+            {
+            }
+
             column(SellToContactPhoneNo; SellToContact."Phone No.")
             {
             }

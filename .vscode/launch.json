@@ -6,7 +6,7 @@
             "type": "al",
             "request": "launch",
             "environmentType": "Sandbox",
-            "environmentName": "Sandbox__091122",
+            "environmentName": "Sandbox",
             // "startupObjectId": 22,
             "breakOnError": true,
             "breakOnRecordWrite": false,
