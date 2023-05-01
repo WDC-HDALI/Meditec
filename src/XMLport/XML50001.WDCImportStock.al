@@ -22,6 +22,10 @@ xmlport 50001 "WDC Import Stock"
                 {
 
                 }
+                fieldelement(VarianteCode; "Item Journal Line"."Variant Code")
+                {
+
+                }
                 fieldelement(LocationCode; "Item Journal Line"."Location Code")
                 {
 
@@ -48,6 +52,7 @@ xmlport 50001 "WDC Import Stock"
                         currXMLport.SKIP;
 
                     CodeArticle := "Item Journal Line"."Item No.";
+                    VariantCode := "Item Journal Line"."Variant Code";
                     CodeMagasin := "Item Journal Line"."Location Code";
                     //CodeEmplacement := BinCode;
                     //IF NOT EVALUATE(Quantites, Qty) THEN
@@ -58,14 +63,14 @@ xmlport 50001 "WDC Import Stock"
                     Cout := "Item Journal Line"."Unit Amount";
 
 
-                    DateCompatabilisation := 20221231D;
+                    DateCompatabilisation := WorkDate;
 
                     IF Quantites <= 0 THEN
                         //CurrDataport.SKIP;
-                        ERROR('Quantite article %1 est negative', CodeArticle);
+                        ERROR('Quantite article %1 est négative', CodeArticle);
 
                     IF Cout = 0 THEN
-                        ERROR('Le cout article %1 est nul', CodeArticle);
+                        ERROR('Le coût d''article %1 est nul', CodeArticle);
 
                     lItem.GET(CodeArticle);
                     // IF lItem."Costing Method" = lItem."Costing Method"::Standard THEN BEGIN
@@ -80,9 +85,11 @@ xmlport 50001 "WDC Import Stock"
                     ItemJournalLine.VALIDATE("Journal Batch Name", NomFeuille);
                     ItemJournalLine."Line No." := Index;
                     ItemJournalLine.VALIDATE("Item No.", CodeArticle);
+                    ItemJournalLine."Variant Code" := VariantCode;
                     ItemJournalLine."Posting Date" := DateCompatabilisation;
                     ItemJournalLine."Entry Type" := ItemJournalLine."Entry Type"::"Positive Adjmt.";
-                    ItemJournalLine."Document No." := 'INV-2022';
+
+                    ItemJournalLine."Document No." := 'IMP' + DelChr(Format(WorkDate), '=', '/');
                     ItemJournalLine.VALIDATE("Location Code", CodeMagasin);
                     //ItemJournalLine.VALIDATE("Bin Code",CodeEmplacement);
                     ItemJournalLine.VALIDATE(Quantity, Quantites);
@@ -130,6 +137,7 @@ xmlport 50001 "WDC Import Stock"
                             lReservationEntry."Entry No." := IndexReserv;
                             lReservationEntry.Positive := TRUE;
                             lReservationEntry."Item No." := CodeArticle;
+                            lReservationEntry."Variant Code" := VariantCode;
                             lReservationEntry."Location Code" := CodeMagasin;
                             lReservationEntry."Quantity (Base)" := 1;
                             lReservationEntry."Reservation Status" := lReservationEntry."Reservation Status"::Prospect;
@@ -176,6 +184,7 @@ xmlport 50001 "WDC Import Stock"
         NumSerie: code[50];
         CodeMagasin: code[20];
         CodeArticle: code[20];
+        VariantCode: code[20];
         Index: Integer;
         IndexReserv: Integer;
 
