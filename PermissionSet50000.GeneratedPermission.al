@@ -25,5 +25,21 @@ permissionset 50000 "GeneratedPermission"
         page "WDC SubCategory" = X,
         tabledata "WDC Item Mussel" = RIMD,
         table "WDC Item Mussel" = X,
-        page "WDC Item Mussel" = X;
+        page "WDC Item Mussel" = X,
+        tabledata "Border Code" = RIMD,
+        tabledata "Exit Voucher Header" = RIMD,
+        tabledata "Exit Voucher Lines" = RIMD,
+        table "Border Code" = X,
+        table "Exit Voucher Header" = X,
+        table "Exit Voucher Lines" = X,
+        xmlport "WDC Import Cout Standard" = X,
+        page "Exit Voucher Lines" = X,
+        page "Exit Voucher List PDR" = X,
+        page "Exit Voucher PDR" = X,
+        table "Posted Exit Voucher Header" = X,
+        table "Posted Exit Voucher Lines" = X,
+        page "Posted Exit Voucher Lines" = X,
+        page "Posted Exit Voucher List PDR" = X,
+        page "Posted Exit Voucher PDR" = X,
+        page "WDC Border Code List" = X;
 }
