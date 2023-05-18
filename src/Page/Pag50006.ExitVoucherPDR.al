@@ -1,6 +1,6 @@
 page 50006 "Exit Voucher PDR"
 {
-    Caption = 'Bon sortie PDR';
+    Caption = 'Bon sortie ';
     PageType = Card;
     SourceTable = "Exit Voucher Header";
 
@@ -51,11 +51,7 @@ page 50006 "Exit Voucher PDR"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the SystemModifiedAt field.';
                 }
-                field(SystemModifiedBy; Rec.SystemModifiedBy)
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the SystemModifiedBy field.';
-                }
+
             }
             part(ExitVoucherLines; "Exit Voucher Lines")
             {
@@ -71,7 +67,6 @@ page 50006 "Exit Voucher PDR"
 
     actions
     {
-
         area(Processing)
         {
             action("Post")
@@ -86,6 +81,7 @@ page 50006 "Exit Voucher PDR"
                 var
                     ltext001: Label 'Voulez-vous vraiment valider ce document?';
                 begin
+                    Rec.TestField("Name Concerned Person");
                     If Confirm(ltext001) then
                         PostExitVoucher(Rec."No.", Rec."Posting Date");
                 end;
@@ -96,8 +92,8 @@ page 50006 "Exit Voucher PDR"
     Var
         lExitVoucherHeader: Record "Exit Voucher Header";
         lPostedExitVoucherHeader: Record "Posted Exit Voucher Header";
-        lPostedExitVoucherLines: record "Posted Exit Voucher Lines";
-        ItemJournalLine: Record 83;
+        lPosExtVchrLines: record "Posted Exit Voucher Lines";
+        lItemJnlLine: Record 83;
         ModeleFeuille: text;
         NomFeuille: Text;
         lExitVoucherLines: Record "Exit Voucher Lines";
@@ -107,19 +103,19 @@ page 50006 "Exit Voucher PDR"
         lPostDocNo: Code[20];
         WhseSetup: Record "Warehouse Setup";
         NoSeriesManagement: Codeunit 396;
+        lReservationEntry: Record 337;
     begin
         WhseSetup.get;
         ModeleFeuille := 'ARTICLE';
         NomFeuille := 'PDR';
         Init_ItemJNLLine;
-
+        InitIndex;
         lExitVoucherHeader.Get(pDocumentNo);
         lPostedExitVoucherHeader.TransferFields(lExitVoucherHeader);
         lPostDocNo := NoSeriesManagement.GetNextNo(WhseSetup."Posted Exit Voucher PDR Nos.", 0D, TRUE);
         lPostedExitVoucherHeader."No." := lPostDocNo;
         lPostedExitVoucherHeader."Pre-Assigned No." := pDocumentNo;
         lPostedExitVoucherHeader.Insert;
-
         lExitVoucherLines.Reset();
         lExitVoucherLines.SetRange("Document No.", pDocumentNo);
         if lExitVoucherLines.FindFirst() then
@@ -127,24 +123,59 @@ page 50006 "Exit Voucher PDR"
                 lItem.Get(lExitVoucherLines."No.");
                 lExitVoucherLines.TestField(Quantity);
                 lExitVoucherLines.TestField("Location Code");
-                ItemJournalLine.INIT;
-                ItemJournalLine.VALIDATE("Journal Template Name", ModeleFeuille);
-                ItemJournalLine.VALIDATE("Journal Batch Name", NomFeuille);
-                ItemJournalLine."Line No." := lExitVoucherLines."Line No.";
-                ItemJournalLine."Posting Date" := pPostingDate;
-                ItemJournalLine."Entry Type" := ItemJournalLine."Entry Type"::"Negative Adjmt.";
-                ItemJournalLine."Document No." := lPostDocNo;
-                ItemJournalLine.VALIDATE("Item No.", lExitVoucherLines."No.");
-                ItemJournalLine.VALIDATE(Quantity, lExitVoucherLines.Quantity);
-                ItemJournalLine.VALIDATE("Unit of Measure Code", lItem."Base Unit of Measure");
-                ItemJournalLine.VALIDATE("Location Code", lExitVoucherLines."Location Code");
-                IF ItemJournalLine.INSERT(true) then begin
-                    lPostedExitVoucherLines.Init();
-                    lPostedExitVoucherLines.TransferFields(lExitVoucherLines);
-                    lPostedExitVoucherLines."Document No." := lPostDocNo;
-                    lPostedExitVoucherLines.Insert;
-                    ItemJnlPostBatch.Run(ItemJournalLine);
-                end;
+                lExitVoucherLines.TestField(Quantity);
+                lExitVoucherLines.TestField("Location Code");
+                lItemJnlLine.INIT;
+                lItemJnlLine.VALIDATE("Journal Template Name", ModeleFeuille);
+                lItemJnlLine.VALIDATE("Journal Batch Name", NomFeuille);
+                lItemJnlLine."Line No." := lExitVoucherLines."Line No.";
+                lItemJnlLine."Posting Date" := pPostingDate;
+                lItemJnlLine."Entry Type" := lItemJnlLine."Entry Type"::"Negative Adjmt.";
+                lItemJnlLine."Document No." := lPostDocNo;
+                lItemJnlLine.VALIDATE("Item No.", lExitVoucherLines."No.");
+                lItemJnlLine.VALIDATE(Quantity, lExitVoucherLines.Quantity);
+                lItemJnlLine.VALIDATE("Unit of Measure Code", lItem."Base Unit of Measure");
+                lItemJnlLine.VALIDATE("Location Code", lExitVoucherLines."Location Code");
+                lItemJnlLine.Insert(true);
+                IF (lExitVoucherLines."Lot No." = '') AND (lItem."Item Tracking Code" <> '') THEN
+                    ERROR('article %1 sans lot', lItem."No.")
+                ELSE Begin
+                    IF (lExitVoucherLines."Lot No." <> '') AND (lItem."Item Tracking Code" <> '') then begin
+                        if (lItem."Item Tracking Code" <> 'PF') THEN BEGIN
+                            Clear(lReservationEntry);
+                            lReservationEntry."Entry No." := lReservationEntry.GetLastEntryNo + 1;
+                            lReservationEntry.Positive := false;
+                            lReservationEntry."Item Tracking" := lReservationEntry."Item Tracking"::"Lot No.";
+                            lReservationEntry."Item No." := lItemJnlLine."Item No.";
+                            lReservationEntry."Location Code" := lItemJnlLine."Location Code";
+                            lReservationEntry.Validate("Quantity (Base)", lItemJnlLine."Quantity (Base)" * (-1));
+                            lReservationEntry.Validate("Qty. per Unit of Measure", lItemJnlLine."Qty. per Unit of Measure");
+                            lReservationEntry.Validate(Quantity, lExitVoucherLines.Quantity * (-1));
+                            lReservationEntry.validate("Qty. to Handle (Base)", lItemJnlLine."Quantity (Base)" * (-1));
+                            lReservationEntry."Qty. to Invoice (Base)" := lItemJnlLine."Quantity (Base)" * (-1);
+                            lReservationEntry."Reservation Status" := lReservationEntry."Reservation Status"::Prospect;
+                            lReservationEntry."Creation Date" := lItemJnlLine."Posting Date";
+                            lReservationEntry."Source Type" := 83;
+                            lReservationEntry."Source Subtype" := 3;
+                            lReservationEntry."Source ID" := ModeleFeuille;
+                            lReservationEntry."Source Batch Name" := NomFeuille;
+                            lReservationEntry."Source Ref. No." := lItemJnlLine."Line No.";
+                            lReservationEntry."Creation Date" := lItemJnlLine."Posting Date";
+                            lReservationEntry."Created By" := USERID;
+                            lReservationEntry."Planning Flexibility" := lReservationEntry."Planning Flexibility"::Unlimited;
+                            lReservationEntry."Lot No." := lExitVoucherLines."Lot No.";
+                            lReservationEntry.INSERT(true);
+                            IndexReserv := IndexReserv + 1; /////////
+                        end;
+                    end;
+                End;
+                lPosExtVchrLines.Init();
+                lPosExtVchrLines.TransferFields(lExitVoucherLines);
+                lPosExtVchrLines."Document No." := lPostDocNo;
+                lPosExtVchrLines.Insert;
+                ItemJnlPostBatch.Run(lItemJnlLine);
+                Index := Index + 1000;
+
             until lExitVoucherLines.Next() = 0;
         lExitVoucherLines.DeleteAll();
         lExitVoucherHeader.Delete();
@@ -160,14 +191,36 @@ page 50006 "Exit Voucher PDR"
 
     End;
 
+    procedure InitIndex()
+    var
+        ModeleFeuille: text;
+        NomFeuille: Text;
+        lItemJournalLine: Record 83;
+        lResvEntries: Record 337;
+    begin
+        ModeleFeuille := 'ARTICLE';
+        NomFeuille := 'PDR';
+        lItemJournalLine.Reset();
+        lItemJournalLine.SetRange("Journal Template Name", ModeleFeuille);
+        lItemJournalLine.SetRange("Journal Batch Name", NomFeuille);
+        if lItemJournalLine.FindLast() then
+            Index := lItemJournalLine."Line No." + 10000
+        else
+            Index := 10000;
+
+        lResvEntries.Reset();
+        IF lResvEntries.FINDLAST THEN
+            IndexReserv := lResvEntries."Entry No." + 1
+        ELSE
+            IndexReserv := 1;
+    end;
 
 
-
-
-    local procedure Init_ItemJNLLine()
+    procedure Init_ItemJNLLine()
     var
 
         lItemJnlLine: Record 83;
+        lResvEntries: Record 337;
     begin
         lItemJnlLine.Reset();
         lItemJnlLine.SetFilter("Journal Batch Name", 'PDR');
@@ -175,18 +228,13 @@ page 50006 "Exit Voucher PDR"
         lItemJnlLine.DeleteAll();
     end;
 
-
     var
 
         ItemJnlTemplate: Record "Item Journal Template";
         ItemJnlLine: Record "Item Journal Line";
         JournalErrorsMgt: Codeunit "Journal Errors Mgt.";
         TempJnlBatchName: Code[10];
-
-        Text000: Label 'cannot be filtered when posting recurring journals';
-        Text001: Label 'Do you want to post the journal lines?';
-        Text003: Label 'The journal lines were successfully posted.';
-        Text004: Label 'The journal lines were successfully posted. ';
-        Text005: Label 'You are now in the %1 journal.';
         ItemJnlPostBatch: Codeunit "Item Jnl.-Post Batch";
+        IndexReserv: Integer;
+        Index: Integer;
 }

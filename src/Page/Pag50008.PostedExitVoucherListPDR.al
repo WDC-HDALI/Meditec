@@ -1,7 +1,7 @@
 page 50008 "Posted Exit Voucher List PDR"
 {
     ApplicationArea = All;
-    Caption = 'Liste bon sortie PDR enreg.';
+    Caption = 'Liste bon sortie enreg.';
     PageType = List;
     SourceTable = "Posted Exit Voucher Header";
     UsageCategory = Lists;
