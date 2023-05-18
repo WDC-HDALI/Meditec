@@ -1,8 +1,8 @@
 report 50011 "WDC Exit Voucher PDR"
 {
-    Caption = 'Bon Sortie PDR';
+    Caption = 'Bon sortie magasin';
     RDLCLayout = './src/Report/RDLC/ExitVoucherPDR.rdl';
-    Description = 'Bon Sortie PDR';
+    Description = 'Bon sortie magasin ';
 
     DefaultLayout = RDLC;
     EnableHyperlinks = true;
@@ -35,10 +35,7 @@ report 50011 "WDC Exit Voucher PDR"
             {
             }
 
-            // column(UserID_UserSetup; UserSetup."User ID")
-            // {
 
-            // }
             dataitem(PostedExitVoucherLines; "Posted Exit Voucher Lines")
             {
 
@@ -60,11 +57,27 @@ report 50011 "WDC Exit Voucher PDR"
                 column(Machine_reference; "Machine reference")
                 {
                 }
+                column(Machine_Name; "Machine Name")
+                {
+
+                }
+                column(Work_Center_No_; "Work Center No.")
+                {
+
+                }
+                column(Work_Center_Name; "Work Center Name")
+                {
+
+                }
+                column(Lot_No_; "Lot No.")
+                {
+
+                }
+
 
                 trigger OnAfterGetRecord()
                 var
                 begin
-
 
                 end;
             }

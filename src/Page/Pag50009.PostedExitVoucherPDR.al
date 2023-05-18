@@ -1,6 +1,6 @@
 page 50009 "Posted Exit Voucher PDR"
 {
-    Caption = 'Bon sortie PDR enreg.';
+    Caption = 'Bon sortie enreg.';
     PageType = Card;
     SourceTable = "Posted Exit Voucher Header";
     Editable = false;

@@ -68,5 +68,6 @@ codeunit 50001 "Subscriber Wedata"
         rec.validate("Account Type", GenJnlBatch."Account Type");
         rec.Validate("Account No.", GenJnlBatch."Account No.");
     end;
+
 }
 

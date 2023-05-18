@@ -19,15 +19,13 @@ table 50007 "Posted Exit Voucher Lines"
         {
 
             Caption = 'No.';
-            TableRelation = Item where("Gen. Prod. Posting Group" = filter('PDR'));
+            TableRelation = Item where("Gen. Prod. Posting Group" = filter('PDR|CONS'));
             trigger OnValidate()
             var
                 lItem: Record Item;
             begin
                 if lItem.Get("No.") then begin
                     Description := lItem.Description;
-                    Quantity := 1;
-
                 end;
             end;
         }
@@ -45,9 +43,45 @@ table 50007 "Posted Exit Voucher Lines"
             Caption = 'Code magasin';
             TableRelation = Location WHERE("Use As In-Transit" = CONST(false));
         }
-        field(8; "Machine reference"; Text[100])
+        field(8; "Machine reference"; Code[20])
         {
             Caption = 'Référnce machine';
+            TableRelation = Resource where(Type = filter('Machine'));
+            trigger OnValidate()
+            var
+                lMachine: Record Resource;
+            begin
+                if lMachine.Get(rec."Machine reference") then
+                    Rec."Machine Name" := lMachine.Name;
+            end;
+        }
+        field(9; "Machine Name"; Text[100])
+        {
+            Caption = 'Nom machine';
+            Editable = false;
+        }
+
+        field(10; "Work Center No."; Code[20])
+        {
+            Caption = 'N° Atelier';
+            TableRelation = "Work Center";
+            trigger OnValidate()
+            var
+                lWorkCenter: Record "Work Center";
+            begin
+                if lWorkCenter.Get("Work Center No.") then
+                    Rec."Work Center Name" := lWorkCenter.Name;
+            end;
+        }
+        field(11; "Work Center Name"; Text[100])
+        {
+            Caption = 'Nom Atelier';
+            Editable = false;
+        }
+        field(12; "Lot No."; Code[20])
+        {
+            Caption = 'No. Lot';
+            TableRelation = "Lot No. Information"."Lot No." where("Item No." = field("No."));
         }
     }
     keys
