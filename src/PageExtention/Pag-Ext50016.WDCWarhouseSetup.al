@@ -12,6 +12,10 @@ pageextension 50016 "WDC Warhouse Setup" extends "Warehouse Setup"
             {
                 ApplicationArea = all;
             }
+            field("Carton Nos."; Rec."Carton Nos.")
+            {
+                ApplicationArea = all;
+            }
         }
 
     }

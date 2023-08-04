@@ -121,10 +121,9 @@ page 50006 "Exit Voucher PDR"
         if lExitVoucherLines.FindFirst() then
             repeat
                 lItem.Get(lExitVoucherLines."No.");
-                lExitVoucherLines.TestField(Quantity);
                 lExitVoucherLines.TestField("Location Code");
                 lExitVoucherLines.TestField(Quantity);
-                lExitVoucherLines.TestField("Location Code");
+                lExitVoucherLines.TestField("Work Center No.");
                 lItemJnlLine.INIT;
                 lItemJnlLine.VALIDATE("Journal Template Name", ModeleFeuille);
                 lItemJnlLine.VALIDATE("Journal Batch Name", NomFeuille);

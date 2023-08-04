@@ -25,16 +25,25 @@ page 50007 "Exit Voucher Lines"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Quantity field.';
                 }
-                field("Lot No."; Rec."Lot No.")
-                {
-                    ApplicationArea = All;
-
-                }
                 field("Location Code"; Rec."Location Code")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Location Code field.';
+                    trigger OnValidate()
+                    begin
+                        Rec.CalcFields(Inventory);
+                    end;
                 }
+                field("Lot No."; Rec."Lot No.")
+                {
+                    ApplicationArea = All;
+                    trigger OnValidate()
+                    begin
+                        Rec.CalcFields(Inventory);
+                    end;
+
+                }
+
                 field(Inventory; Rec.Inventory)
                 {
                     ApplicationArea = All;

@@ -69,5 +69,14 @@ codeunit 50001 "Subscriber Wedata"
         rec.Validate("Account No.", GenJnlBatch."Account No.");
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Sales Shipment Line", 'OnBeforeInsertInvLineFromShptLineBeforeInsertTextLine', '', false, false)]
+    local procedure OnBeforeInsertInvLineFromShptLineBeforeInsertTextLine(var SalesShptLine: Record "Sales Shipment Line"; var SalesLine: Record "Sales Line"; var NextLineNo: Integer; var Handled: Boolean)
+    var
+        lSalesShipmentHeader: Record "Sales Shipment Header";
+        text001: Label ' /doc. ext: %1';
+    begin
+        lSalesShipmentHeader.GET(SalesShptLine."Document No.");
+        SalesLine.Description := CopyStr(SalesLine.Description + StrSubstNo(text001, lSalesShipmentHeader."External Document No."), 1, 100);
+    end;
 }
 

@@ -53,6 +53,7 @@ table 50005 "Exit Voucher Lines"
             var
                 lMachine: Record Resource;
             begin
+                Rec."Machine Name" := '';
                 if lMachine.Get(rec."Machine reference") then
                     Rec."Machine Name" := lMachine.Name;
             end;
@@ -71,6 +72,7 @@ table 50005 "Exit Voucher Lines"
             var
                 lWorkCenter: Record "Work Center";
             begin
+                Rec."Work Center Name" := '';
                 if lWorkCenter.Get("Work Center No.") then
                     Rec."Work Center Name" := lWorkCenter.Name;
             end;
@@ -84,7 +86,8 @@ table 50005 "Exit Voucher Lines"
         field(12; "Lot No."; Code[20])
         {
             Caption = 'No. Lot';
-            TableRelation = "Lot No. Information"."Lot No." where("Item No." = field("No."));
+            TableRelation = "Lot No. Information"."Lot No." where("Item No." = field("No."),
+                                                                 "Location Filter" = field("Location Code"));
         }
         field(13; Inventory; Decimal)
         {
