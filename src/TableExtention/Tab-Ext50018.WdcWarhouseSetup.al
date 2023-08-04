@@ -14,5 +14,11 @@ tableextension 50018 "Wdc Warhouse Setup" extends "Warehouse Setup"
             DataClassification = ToBeClassified;
             TableRelation = "No. Series";
         }
+        field(50002; "Carton Nos."; Code[20])
+        {
+            Caption = 'N° carton';
+            DataClassification = ToBeClassified;
+            TableRelation = "No. Series";
+        }
     }
 }

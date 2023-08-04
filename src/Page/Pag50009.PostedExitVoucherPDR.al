@@ -93,7 +93,6 @@ page 50009 "Posted Exit Voucher PDR"
                     lRepPostedExitvoucher: Report "WDC Exit Voucher PDR";
                 begin
                     lPostedExitvoucher.Reset();
-                    ;
                     lPostedExitvoucher.SetRange("No.", Rec."No.");
                     if lPostedExitvoucher.FindFirst() then begin
                         lRepPostedExitvoucher.SetTableView(lPostedExitvoucher);

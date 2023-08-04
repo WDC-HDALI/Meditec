@@ -41,5 +41,20 @@ permissionset 50000 "GeneratedPermission"
         page "Posted Exit Voucher Lines" = X,
         page "Posted Exit Voucher List PDR" = X,
         page "Posted Exit Voucher PDR" = X,
-        page "WDC Border Code List" = X;
+        page "WDC Border Code List" = X,
+        tabledata Carton = RIMD,
+        tabledata "Carton Tracking Lines" = RIMD,
+        tabledata "Posted Exit Voucher Header" = RIMD,
+        tabledata "Posted Exit Voucher Lines" = RIMD,
+        table Carton = X,
+        table "Carton Tracking Lines" = X,
+        report "Detailed Calculation2" = X,
+        report "WDC Exit Voucher PDR" = X,
+        page "Carton Card" = X,
+        page "Carton List" = X,
+        page "Carton Tracking Lines" = X,
+        page "Closed Carton Card" = X,
+        page "Closed Carton List" = X,
+        page "Closed Carton Track. Lines" = X;
+
 }
