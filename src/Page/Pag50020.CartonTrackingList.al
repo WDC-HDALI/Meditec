@@ -25,6 +25,10 @@ page 50020 "Carton Tracking List"
                 {
                     ApplicationArea = All;
                 }
+                field("Variant Code"; Rec."Variant Code")
+                {
+                    ApplicationArea = All;
+                }
 
                 field(Quantity; Rec.Quantity)
                 {
