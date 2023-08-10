@@ -39,8 +39,10 @@ table 50010 "Carton Tracking Lines"
             var
                 lItemLedgEnt: Record "Item Ledger Entry";
             begin
-                ///Need Control to Item and customer
+
+                Rec."Item No." := '';
                 Rec."Lot No." := '';
+                Rec."Variant Code" := '';
                 Quantity := 0;
                 lItemLedgEnt.Reset;
                 lItemLedgEnt.SetCurrentKey("Item No.", "Entry Type", "Variant Code", "Drop Shipment", "Location Code", "Posting Date");
@@ -49,9 +51,9 @@ table 50010 "Carton Tracking Lines"
                     Quantity := 1;
                     Rec."Lot No." := lItemLedgEnt."Lot No.";
                     Rec."Item No." := lItemLedgEnt."Item No.";
-
+                    Rec."Variant Code" := lItemLedgEnt."Variant Code";
                 end;
-
+                ControlItemRefCustomer;
             end;
 
         }
@@ -106,7 +108,14 @@ table 50010 "Carton Tracking Lines"
             DataClassification = ToBeClassified;
             Editable = false;
         }
+
+        field(12; "Variant Code"; Code[10])
+        {
+            Caption = 'Variant Code';
+            TableRelation = "Item Variant".Code WHERE("Item No." = FIELD("Item No."));
+        }
     }
+
     keys
     {
         key(PK; "Carton No.", "Item No.", "Ref Line No.", "Serial No.", "Customer No.")
@@ -114,5 +123,18 @@ table 50010 "Carton Tracking Lines"
             Clustered = true;
         }
     }
-
+    procedure ControlItemRefCustomer()
+    var
+        lItemRef: record "Item Reference";
+        ltext001: Label 'Cet article n''est pas à ce client.\ Veuillez vérifier!!';
+    begin
+        lItemRef.Reset();
+        lItemRef.SetRange("Item No.", Rec."Item No.");
+        if lItemRef.FindFirst() then BEGIN // Pour éviter les erreurs des articles qui n'ont pas des réference 
+            lItemRef.SetRange("Reference Type", lItemRef."Reference Type"::Customer);
+            lItemRef.SetRange("Reference Type No.", Rec."Customer No.");
+            If Not lItemRef.FindFirst() then
+                Error(ltext001);
+        END
+    end;
 }

@@ -25,6 +25,10 @@ page 50014 "Carton Tracking Lines"
                     ApplicationArea = All;
                 }
 
+                field("Variant Code"; Rec."Variant Code")
+                {
+                    ApplicationArea = All;
+                }
                 field(Quantity; Rec.Quantity)
                 {
                     ApplicationArea = All;
@@ -40,7 +44,29 @@ page 50014 "Carton Tracking Lines"
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     begin
 
-        ControlSNnumber;
+        //ControlSNnumber;
+        //ControlItemRefCustomer
+    end;
+
+    trigger OnModifyRecord(): Boolean
+    begin
+
+        //ControlSNnumber;
+        // ControlItemRefCustomer
+    end;
+
+    procedure ControlItemRefCustomer()
+    var
+        lItemRef: record "Item Reference";
+        ltext001: Label 'Cet article n''est pas à ce client.\ Veuillez vérifier!!';
+    begin
+        lItemRef.Reset();
+        lItemRef.SetRange("Item No.", Rec."Item No.");
+        lItemRef.SetRange("Reference Type", lItemRef."Reference Type"::Customer);
+        lItemRef.SetRange("Reference No.", Rec."Customer No.");
+        if not lItemRef.FindFirst() then
+            Error(ltext001);
+
     end;
 
     Procedure ControlSNnumber()

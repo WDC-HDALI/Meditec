@@ -24,6 +24,10 @@ page 50019 "Closed Carton Track. Lines"
                 {
                     ApplicationArea = All;
                 }
+                field("Variant Code"; Rec."Variant Code")
+                {
+                    ApplicationArea = All;
+                }
 
                 field(Quantity; Rec.Quantity)
                 {
