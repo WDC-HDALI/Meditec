@@ -15,7 +15,6 @@ pageextension 50024 "WDC Released Production Order" extends "Released Production
 
                 trigger OnAction()
                 var
-                    FicheProd: Report "WDC Prod. Order - Mat. Requis.";
                     ProductionOrder: Record "Production Order";
                 begin
                     ProductionOrder.SetRange(Status, Rec.Status);

@@ -80,15 +80,6 @@ table 50008 Carton
                     Rec."Serial No." := CopyStr("Customer Name" + '-' + Rec."No.", 1, 50);
                 end;
 
-                // END ELSE begin
-                //     Rec."Customer Name" := '';
-                //     if lCustomer.Get(rec."Customer No.") then begin
-                //         Rec."Customer Name" := lCustomer.Name;
-                //         Rec."Serial No." := CopyStr("Customer Name" + '-' + Rec."No.", 1, 50);
-                //     end;
-
-                // end;
-
             end;
         }
         field(9; "Customer Name"; Text[100])
@@ -125,6 +116,14 @@ table 50008 Carton
             DataClassification = ToBeClassified;
 
         }
+        field(14; "Not Tot. shipped"; Boolean)
+        {
+            Caption = 'Reste à expédier';
+            FieldClass = FlowField;
+            Editable = false;
+            CalcFormula = exist("Carton Tracking Lines" WHERE("Carton No." = field("No."),
+            "Order No." = filter('')));
+        }
 
     }
     keys
@@ -132,6 +131,10 @@ table 50008 Carton
         key(PK; "No.")
         {
             Clustered = true;
+        }
+        key(PK1; "Selected", "Customer No.", "No.")
+        {
+
         }
     }
     trigger OnInsert()

@@ -11,97 +11,6 @@
       <rd:DataSourceID>19469799-b2b4-487d-a9f7-b13072566965</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="TodayFormatted">
-          <DataField>TodayFormatted</DataField>
-        </Field>
-        <Field Name="CompanyName">
-          <DataField>CompanyName</DataField>
-        </Field>
-        <Field Name="ProdOrderTableCaptionFilter">
-          <DataField>ProdOrderTableCaptionFilter</DataField>
-        </Field>
-        <Field Name="No_ProdOrder">
-          <DataField>No_ProdOrder</DataField>
-        </Field>
-        <Field Name="Desc_ProdOrder">
-          <DataField>Desc_ProdOrder</DataField>
-        </Field>
-        <Field Name="SourceNo_ProdOrder">
-          <DataField>SourceNo_ProdOrder</DataField>
-        </Field>
-        <Field Name="Status_ProdOrder">
-          <DataField>Status_ProdOrder</DataField>
-        </Field>
-        <Field Name="Qty_ProdOrder">
-          <DataField>Qty_ProdOrder</DataField>
-        </Field>
-        <Field Name="Qty_ProdOrderFormat">
-          <DataField>Qty_ProdOrderFormat</DataField>
-        </Field>
-        <Field Name="Filter_ProdOrder">
-          <DataField>Filter_ProdOrder</DataField>
-        </Field>
-        <Field Name="ProdOrderMaterialRqstnCapt">
-          <DataField>ProdOrderMaterialRqstnCapt</DataField>
-        </Field>
-        <Field Name="CurrReportPageNoCapt">
-          <DataField>CurrReportPageNoCapt</DataField>
-        </Field>
-        <Field Name="ItemNo_ProdOrderComp">
-          <DataField>ItemNo_ProdOrderComp</DataField>
-        </Field>
-        <Field Name="Desc_ProdOrderComp">
-          <DataField>Desc_ProdOrderComp</DataField>
-        </Field>
-        <Field Name="Qtyper_ProdOrderComp">
-          <DataField>Qtyper_ProdOrderComp</DataField>
-        </Field>
-        <Field Name="Qtyper_ProdOrderCompFormat">
-          <DataField>Qtyper_ProdOrderCompFormat</DataField>
-        </Field>
-        <Field Name="UOMCode_ProdOrderComp">
-          <DataField>UOMCode_ProdOrderComp</DataField>
-        </Field>
-        <Field Name="RemainingQty_ProdOrderComp">
-          <DataField>RemainingQty_ProdOrderComp</DataField>
-        </Field>
-        <Field Name="RemainingQty_ProdOrderCompFormat">
-          <DataField>RemainingQty_ProdOrderCompFormat</DataField>
-        </Field>
-        <Field Name="Scrap_ProdOrderComp">
-          <DataField>Scrap_ProdOrderComp</DataField>
-        </Field>
-        <Field Name="Scrap_ProdOrderCompFormat">
-          <DataField>Scrap_ProdOrderCompFormat</DataField>
-        </Field>
-        <Field Name="DueDate_ProdOrderComp">
-          <DataField>DueDate_ProdOrderComp</DataField>
-        </Field>
-        <Field Name="LocationCode_ProdOrderComp">
-          <DataField>LocationCode_ProdOrderComp</DataField>
-        </Field>
-        <Field Name="ComponentQty">
-          <DataField>ComponentQty</DataField>
-        </Field>
-        <Field Name="ComponentQtyFormat">
-          <DataField>ComponentQtyFormat</DataField>
-        </Field>
-        <Field Name="RoutingLinkCode">
-          <DataField>RoutingLinkCode</DataField>
-        </Field>
-        <Field Name="No">
-          <DataField>No</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -5565,4 +5474,95 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>f4355aed-d23a-4dff-a00b-d826a436da84</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="TodayFormatted">
+          <DataField>TodayFormatted</DataField>
+        </Field>
+        <Field Name="CompanyName">
+          <DataField>CompanyName</DataField>
+        </Field>
+        <Field Name="ProdOrderTableCaptionFilter">
+          <DataField>ProdOrderTableCaptionFilter</DataField>
+        </Field>
+        <Field Name="No_ProdOrder">
+          <DataField>No_ProdOrder</DataField>
+        </Field>
+        <Field Name="Desc_ProdOrder">
+          <DataField>Desc_ProdOrder</DataField>
+        </Field>
+        <Field Name="SourceNo_ProdOrder">
+          <DataField>SourceNo_ProdOrder</DataField>
+        </Field>
+        <Field Name="Status_ProdOrder">
+          <DataField>Status_ProdOrder</DataField>
+        </Field>
+        <Field Name="Qty_ProdOrder">
+          <DataField>Qty_ProdOrder</DataField>
+        </Field>
+        <Field Name="Qty_ProdOrderFormat">
+          <DataField>Qty_ProdOrderFormat</DataField>
+        </Field>
+        <Field Name="Filter_ProdOrder">
+          <DataField>Filter_ProdOrder</DataField>
+        </Field>
+        <Field Name="ProdOrderMaterialRqstnCapt">
+          <DataField>ProdOrderMaterialRqstnCapt</DataField>
+        </Field>
+        <Field Name="CurrReportPageNoCapt">
+          <DataField>CurrReportPageNoCapt</DataField>
+        </Field>
+        <Field Name="ItemNo_ProdOrderComp">
+          <DataField>ItemNo_ProdOrderComp</DataField>
+        </Field>
+        <Field Name="Desc_ProdOrderComp">
+          <DataField>Desc_ProdOrderComp</DataField>
+        </Field>
+        <Field Name="Qtyper_ProdOrderComp">
+          <DataField>Qtyper_ProdOrderComp</DataField>
+        </Field>
+        <Field Name="Qtyper_ProdOrderCompFormat">
+          <DataField>Qtyper_ProdOrderCompFormat</DataField>
+        </Field>
+        <Field Name="UOMCode_ProdOrderComp">
+          <DataField>UOMCode_ProdOrderComp</DataField>
+        </Field>
+        <Field Name="RemainingQty_ProdOrderComp">
+          <DataField>RemainingQty_ProdOrderComp</DataField>
+        </Field>
+        <Field Name="RemainingQty_ProdOrderCompFormat">
+          <DataField>RemainingQty_ProdOrderCompFormat</DataField>
+        </Field>
+        <Field Name="Scrap_ProdOrderComp">
+          <DataField>Scrap_ProdOrderComp</DataField>
+        </Field>
+        <Field Name="Scrap_ProdOrderCompFormat">
+          <DataField>Scrap_ProdOrderCompFormat</DataField>
+        </Field>
+        <Field Name="DueDate_ProdOrderComp">
+          <DataField>DueDate_ProdOrderComp</DataField>
+        </Field>
+        <Field Name="LocationCode_ProdOrderComp">
+          <DataField>LocationCode_ProdOrderComp</DataField>
+        </Field>
+        <Field Name="ComponentQty">
+          <DataField>ComponentQty</DataField>
+        </Field>
+        <Field Name="ComponentQtyFormat">
+          <DataField>ComponentQtyFormat</DataField>
+        </Field>
+        <Field Name="RoutingLinkCode">
+          <DataField>RoutingLinkCode</DataField>
+        </Field>
+        <Field Name="No">
+          <DataField>No</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

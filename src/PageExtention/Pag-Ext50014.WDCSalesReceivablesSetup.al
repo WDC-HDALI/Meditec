@@ -23,8 +23,6 @@ pageextension 50014 "WDC Sales & Receivables Setup" extends "Sales & Receivables
         }
     }
     trigger OnAfterGetRecord()
-    var
-        myInt: Integer;
     begin
         SignatureText := Rec.GetSignature();
     end;

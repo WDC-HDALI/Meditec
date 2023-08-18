@@ -131,9 +131,6 @@ pageextension 50009 "WDC Accounting Role Center" extends 9027
             }
         }
     }
-
-    var
-        myInt: Integer;
 }
 
 

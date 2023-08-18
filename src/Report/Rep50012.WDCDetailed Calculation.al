@@ -344,8 +344,6 @@ report 50012 "Detailed Calculation2"
                 DataItemTableView = SORTING(Number);
                 MaxIteration = 1;
                 trigger OnAfterGetRecord()
-                var
-                    myInt: Integer;
                 begin
 
                 end;

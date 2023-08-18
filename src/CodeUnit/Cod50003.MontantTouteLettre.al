@@ -13,8 +13,6 @@ Codeunit 50003 "MontantTouteLettre"
         decimal: Integer;
         nbre: Integer;
         nbre1: Integer;
-        j: Integer;
-        "Chèque": Report 1401;
         chaine1: Text[30];
         VarDeviseEntiere: Text[30];
         VarDeviseDecimal: Text[30];

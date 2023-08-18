@@ -42,7 +42,15 @@ page 50020 "Carton Tracking List"
                 {
                     ApplicationArea = All;
                 }
+                field("Order Line No."; Rec."Order Line No.")
+                {
+                    ApplicationArea = All;
+                }
                 field("Shipment No."; Rec."Shipment No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Shipment Line No."; Rec."Shipment Line No.")
                 {
                     ApplicationArea = All;
                 }
@@ -54,6 +62,7 @@ page 50020 "Carton Tracking List"
                 {
                     ApplicationArea = All;
                 }
+
             }
         }
     }
@@ -85,7 +94,6 @@ page 50020 "Carton Tracking List"
 
     var
         TotalQte: Decimal;
-        incrQte: Decimal;
         CurrCartonNo: code[20];
         CurrLineNo: Integer;
         Text001: Label 'Nombre des SN insérés est supérieur à la quantité %1';

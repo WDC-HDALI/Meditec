@@ -40,15 +40,4 @@ page 50016 "Closed Carton List"
             }
         }
     }
-
-
-
-    var
-        TotalQte: Decimal;
-        CurrDocNo: Code[20];
-        CurrItemNo: Code[20];
-        CurrLocation: Code[20];
-        CurrDocLineNo: Integer;
-        DocQty: Decimal;
-        CurrDocType: enum "Sales Document Type";
 }

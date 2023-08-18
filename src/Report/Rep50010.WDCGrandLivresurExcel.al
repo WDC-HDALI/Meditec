@@ -581,9 +581,6 @@ report 50010 "WDC Grand Livre sur Excel"
         FiltreNumOrigine: Text[50];
         FiltreCodeJournal: Text[250];
         FiltreLettre: Text[100];
-        FiltreAffichLettrage: Option " ","Non Lettré","Lettré";
         FiltreCompte: Text[250];
-        GPurchaseInvoiceHeader: Record 122;
-        DateSort: Boolean;
 }
 

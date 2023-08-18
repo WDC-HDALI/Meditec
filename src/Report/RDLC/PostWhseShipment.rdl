@@ -2222,9 +2222,6 @@ End Function
         <Field Name="CompanyBankAccountNo">
           <DataField>CompanyBankAccountNo</DataField>
         </Field>
-        <Field Name="CompanyBankAccountNo_Lbl">
-          <DataField>CompanyBankAccountNo_Lbl</DataField>
-        </Field>
         <Field Name="CompanyIBAN">
           <DataField>CompanyIBAN</DataField>
         </Field>
