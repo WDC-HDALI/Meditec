@@ -41,11 +41,18 @@ page 50019 "Closed Carton Track. Lines"
                 {
                     ApplicationArea = All;
                 }
+                field("Order Line No."; Rec."Order Line No.")
+                {
+                    ApplicationArea = All;
+                }
                 field("Shipment No."; Rec."Shipment No.")
                 {
                     ApplicationArea = All;
                 }
-
+                field("Shipment Line No."; Rec."Shipment Line No.")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

@@ -97,9 +97,6 @@ xmlport 50000 "WDC Import grand livre"
     }
 
     var
-        GLEntryUpdated: Record "G/L Entry";
-        GLEntryChanged: Record "G/L Entry";
-        GLAccount2: Record "G/L Account";
         Text001: Label 'Import terminé';
         Text002: Label 'Importation en cours';
         windDialog: Dialog;

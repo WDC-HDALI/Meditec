@@ -70,8 +70,6 @@ page 50014 "Carton Tracking Lines"
     end;
 
     Procedure ControlSNnumber()
-    var
-        CartonTrack: Record "Carton Tracking Lines";
     begin
         // CartonTrack.Reset();
         // CartonTrack.SetRange("Carton No.", CurrCartonNo);
@@ -91,8 +89,6 @@ page 50014 "Carton Tracking Lines"
 
     var
         TotalQte: Decimal;
-        incrQte: Decimal;
         CurrCartonNo: code[20];
         CurrLineNo: Integer;
-        Text001: Label 'Nombre des SN insérés est supérieur à la quantité %1';
 }

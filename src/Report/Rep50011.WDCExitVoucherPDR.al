@@ -100,7 +100,6 @@ report 50011 "WDC Exit Voucher PDR"
 
     var
         CompanyInfo: record "Company Information";
-        UserSetup: record "User Setup";
 
 }
 

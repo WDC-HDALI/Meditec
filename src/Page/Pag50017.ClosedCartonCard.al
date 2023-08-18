@@ -128,7 +128,6 @@ page 50017 "Closed Carton Card"
         lItem: Record item;
         lPostDocNo: Code[20];
         WhseSetup: Record "Warehouse Setup";
-        NoSeriesManagement: Codeunit 396;
         lReservationEntry: Record 337;
     begin
         WhseSetup.get;
@@ -221,7 +220,6 @@ page 50017 "Closed Carton Card"
     var
 
         lItemJnlLine: Record 83;
-        lResvEntries: Record 337;
     begin
         lItemJnlLine.Reset();
         lItemJnlLine.SetFilter("Journal Batch Name", 'CARTON');

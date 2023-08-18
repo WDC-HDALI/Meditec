@@ -13,7 +13,6 @@ tableextension 50023 "Wdc Tracking Specification" extends "Tracking Specificatio
     Procedure SetDocumentNoFields()
     var
         lCartonTracking: Record "Carton Tracking Lines";
-        lsalesLines: Record "Sales Line";
     begin
         lCartonTracking.Reset();
         lCartonTracking.SetRange("Serial No.", Rec."Serial No.");

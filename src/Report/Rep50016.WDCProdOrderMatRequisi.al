@@ -52,7 +52,7 @@ report 50016 "WDC Prod. Order - Mat. Requis."
             dataitem("Prod. Order Component"; "Prod. Order Component")
             {
                 DataItemLink = Status = FIELD(Status), "Prod. Order No." = FIELD("No.");
-                DataItemTableView = SORTING(Status, "Prod. Order No.", "Prod. Order Line No.", "Line No.");
+                DataItemTableView = SORTING("Status", "Prod. Order No.", "Prod. Order Line No.", "Line No.");
                 column(ItemNo_ProdOrderComp; "Item No.")
                 {
                     IncludeCaption = true;

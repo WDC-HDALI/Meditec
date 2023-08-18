@@ -124,7 +124,6 @@ pageextension 50020 "WDC Sales Lines" extends "Sales Lines"
     end;
 
     var
-        Customer: Record 18;
         CustomerName: Text[100];
         Item: Record 27;
         Inventory: Decimal;

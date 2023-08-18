@@ -17,8 +17,6 @@ report 50014 "Update Item Ledger Entry"
             end;
 
             trigger OnPostDataItem()
-            var
-                myInt: Integer;
             begin
                 Message('Mise à jour avec succès');
             end;

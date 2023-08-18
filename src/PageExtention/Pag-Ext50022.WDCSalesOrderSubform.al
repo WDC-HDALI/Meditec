@@ -9,14 +9,12 @@ pageextension 50022 "WDC Sales Order Subform" extends "Sales Order Subform"
             {
                 ApplicationArea = all;
                 Image = Compress;
-                CaptionML = FRA = 'Traçabilité par carton';
+                CaptionML = FRA = 'Sélectionner cartons';
                 trigger OnAction()
                 var
 
                     lCartonToPostPage: page "Carton to Post";
                     lCarton: Record Carton;
-                    lCartonTrackinLines: Record "Carton Tracking Lines";
-                    lQteSN: Decimal;
                 begin
                     //rec.TestField("Qty. to Ship");
                     lCarton.RESET;

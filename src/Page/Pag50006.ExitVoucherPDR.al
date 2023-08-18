@@ -219,7 +219,6 @@ page 50006 "Exit Voucher PDR"
     var
 
         lItemJnlLine: Record 83;
-        lResvEntries: Record 337;
     begin
         lItemJnlLine.Reset();
         lItemJnlLine.SetFilter("Journal Batch Name", 'PDR');
@@ -228,11 +227,6 @@ page 50006 "Exit Voucher PDR"
     end;
 
     var
-
-        ItemJnlTemplate: Record "Item Journal Template";
-        ItemJnlLine: Record "Item Journal Line";
-        JournalErrorsMgt: Codeunit "Journal Errors Mgt.";
-        TempJnlBatchName: Code[10];
         ItemJnlPostBatch: Codeunit "Item Jnl.-Post Batch";
         IndexReserv: Integer;
         Index: Integer;

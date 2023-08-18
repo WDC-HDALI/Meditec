@@ -77,6 +77,7 @@ table 50010 "Carton Tracking Lines"
             DataClassification = ToBeClassified;
             Editable = false;
         }
+
         field(9; "Shipment No."; Code[20])
         {
             Caption = 'N° Expédition';
@@ -86,6 +87,7 @@ table 50010 "Carton Tracking Lines"
                                                                   "Entry Type" = const(Sale),
                                                                   "Document Type" = const("Sales Shipment")));
         }
+
 
         field(10; "Customer No."; Code[20])
         {
@@ -113,6 +115,21 @@ table 50010 "Carton Tracking Lines"
         {
             Caption = 'Variant Code';
             TableRelation = "Item Variant".Code WHERE("Item No." = FIELD("Item No."));
+        }
+        field(13; "Shipment Line No."; Integer)
+        {
+            Caption = 'Ligne Expédition';
+            FieldClass = FlowField;
+            Editable = false;
+            CalcFormula = lookup("Item Ledger Entry"."Document Line No." WHERE("Serial No." = FIELD("Serial No."),
+                                                                  "Entry Type" = const(Sale),
+                                                                  "Document Type" = const("Sales Shipment")));
+        }
+        field(14; "Order Line No."; Integer)
+        {
+            Caption = 'No. ligne commande ';
+            DataClassification = ToBeClassified;
+            Editable = false;
         }
     }
 

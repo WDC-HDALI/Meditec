@@ -130,7 +130,6 @@ page 50012 "Carton Card"
         lItem: Record item;
         lPostDocNo: Code[20];
         WhseSetup: Record "Warehouse Setup";
-        NoSeriesManagement: Codeunit 396;
         lReservationEntry: Record 337;
     begin
         WhseSetup.get;
@@ -221,7 +220,6 @@ page 50012 "Carton Card"
     var
 
         lItemJnlLine: Record 83;
-        lResvEntries: Record 337;
     begin
         lItemJnlLine.Reset();
         lItemJnlLine.SetFilter("Journal Batch Name", 'CARTON');
@@ -230,11 +228,6 @@ page 50012 "Carton Card"
     end;
 
     var
-
-        ItemJnlTemplate: Record "Item Journal Template";
-        ItemJnlLine: Record "Item Journal Line";
-        JournalErrorsMgt: Codeunit "Journal Errors Mgt.";
-        TempJnlBatchName: Code[10];
         ItemJnlPostBatch: Codeunit "Item Jnl.-Post Batch";
         IndexReserv: Integer;
         Index: Integer;

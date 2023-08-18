@@ -18,7 +18,6 @@ tableextension 50004 "WDC GenJournalLine" extends "Gen. Journal Line"
     }
     trigger OnBeforeInsert()
     var
-        myInt: Integer;
         GenJnlBatch: Record "Gen. Journal Batch";
     begin
         GenJnlBatch.GET("Journal Template Name", "Journal Batch Name");
