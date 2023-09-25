@@ -20,10 +20,21 @@ table 50008 Carton
             trigger OnValidate()
             var
                 lItem: Record Item;
+                lItemLedgerEnties: record "Item Ledger Entry";
             begin
                 Rec."Item Description" := '';
                 if lItem.Get(rec."Item Carton No.") then
                     Rec."Item Description" := lItem.Description;
+                "Lot No." := '';
+                lItemLedgerEnties.Reset();
+                lItemLedgerEnties.SetCurrentKey("Item No.", "Posting Date");
+                lItemLedgerEnties.SetRange("Item No.", "Item Carton No.");
+                lItemLedgerEnties.SetRange(Open, true);
+                lItemLedgerEnties.SetFilter("Lot No.", '<>%1', '');
+                lItemLedgerEnties.SetFilter("Remaining Quantity", '<>%1', 0);
+                IF lItemLedgerEnties.FindFirst() then
+                    "Lot No." := lItemLedgerEnties."Lot No.";
+
             end;
         }
         field(3; "Item Description"; Text[100])
@@ -108,7 +119,6 @@ table 50008 Carton
             TableRelation = "Lot No. Information"."Lot No." where("Item No." = field("Item Carton No."),
                                                          Inventory = filter(<> 0));                                             //WDC.SH
 
-
         }
         field(13; Selected; Boolean)
         {
@@ -116,7 +126,48 @@ table 50008 Carton
             DataClassification = ToBeClassified;
 
         }
-        field(14; "Not Tot. shipped"; Boolean)
+        field(14; "Not Tot. Ordered"; Boolean)
+        {
+            Caption = 'Rester à utiliser ';
+            FieldClass = FlowField;
+            Editable = false;
+            CalcFormula = exist("Carton Tracking Lines" WHERE("Carton No." = field("No."),
+            "Order No." = filter('')));
+        }
+
+        field(15; "Ship to code"; Code[20])
+        {
+            Caption = 'Code destinataire';
+            DataClassification = ToBeClassified;
+            TableRelation = "Ship-to Address".Code where("Customer No." = field("Customer No."));
+            trigger OnValidate()
+            var
+                lShipAdresse: Record "Ship-to Address";
+                ltrackCarton: Record "Carton Tracking Lines";
+            begin
+                Rec."Ship to name" := '';
+                lShipAdresse.Reset();
+                lShipAdresse.SetRange(Code, Rec."Ship to code");
+                if lShipAdresse.FindFirst() Then begin
+                    Rec."Ship to name" := lShipAdresse.Name;
+                    ltrackCarton.Reset();
+                    ltrackCarton.Setrange("Carton No.", rec."No.");
+                    ltrackCarton.SetRange("Customer No.", Rec."Customer No.");
+                    ltrackCarton.ModifyAll("Ship to code", rec."Ship to code");
+                    ltrackCarton.ModifyAll("Ship to name", rec."Ship to name");
+                end;
+
+
+            end;
+
+        }
+        field(16; "Ship to name"; Text[100])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Nom destinataire';
+            Editable = false;
+        }
+        field(17; "Not Tot. Shipped"; Boolean)
         {
             Caption = 'Reste à expédier';
             FieldClass = FlowField;

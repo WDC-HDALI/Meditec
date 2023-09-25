@@ -35,6 +35,28 @@ page 50015 "Carton List"
                 {
                     ApplicationArea = All;
                 }
+
+                field("Customer No."; Rec."Customer No.")
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Customer Name"; Rec."Customer Name")
+                {
+                    ApplicationArea = All;
+
+                }
+
+                field("Ship to code"; Rec."Ship to code")
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Ship to name"; Rec."Ship to name")
+                {
+                    ApplicationArea = All;
+
+                }
             }
         }
     }

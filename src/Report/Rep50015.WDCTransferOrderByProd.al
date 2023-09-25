@@ -17,6 +17,18 @@ report 50015 WDCTransferOrderByProd
 
                 TransOrder: Boolean;
             begin
+                //Vérification de type de composant
+                clear(ItemCategory);
+                Item.Get("Item No.");
+                if (LocationCodeDepart = '') or (LocationCodeDepart = 'MAG-MP') then begin
+                    if item."Inventory Posting Group" <> 'MP' then
+                        CurrReport.Skip();
+                end else
+                    if (LocationCodeDepart = 'MAG-MC') then begin
+                        if (item."Inventory Posting Group" <> 'CONS') and (item."Inventory Posting Group" <> 'EMB') then
+                            CurrReport.Skip();
+                    end;
+
                 TransOrder := false;
                 TempProdOrderComp.reset;
                 TempProdOrderComp.SetRange("Item No.", "Item No.");
@@ -28,7 +40,7 @@ report 50015 WDCTransferOrderByProd
                     clear(lRestNeedQty);
                     TempProdOrderComp.reset;
                     Clear(Item);
-                    //Calculer la quantité totale du composant Comp-1 pour tout les O.F
+                    //Calculer la quantité totale du composant !!!! COMP-1 !!!!! pour tout les O.F
                     if TempProdOrderComp.FindSet() then
                         repeat
                             lNeededQty += TempProdOrderComp.Quantity;
@@ -183,6 +195,7 @@ report 50015 WDCTransferOrderByProd
         TransferNo: code[20];
         LineNo: Integer;
         lRestNeedQty: Decimal;
+        ItemCategory: code[20];
 
     local procedure CheckCompInTransfOrder(pProdOrderComponent: Record "Prod. Order Component"): Boolean
     var
@@ -192,6 +205,7 @@ report 50015 WDCTransferOrderByProd
         TransferLine.SetRange("Item No.", pProdOrderComponent."Item No.");
         TransferLine.setrange("Prod. Order No.", pProdOrderComponent."Prod. Order No.");
         TransferLine.SetRange("Prod. Order Line", pProdOrderComponent."Prod. Order Line No.");
+        TransferLine.SetRange("Routing Link Code", pProdOrderComponent."Routing Link Code");
         if TransferLine.Count = 0 then
             exit(false)
         else
@@ -251,6 +265,7 @@ report 50015 WDCTransferOrderByProd
                 pRestNeededQty := 0;
             TransferLine."Prod. Order No." := pProdOrderComponent."Prod. Order No.";
             TransferLine."Prod. Order Line" := pProdOrderComponent."Prod. Order Line No.";
+
             TransferLine."Routing Link Code" := pProdOrderComponent."Routing Link Code";
 
             TransferLine.Insert();
@@ -259,27 +274,51 @@ report 50015 WDCTransferOrderByProd
 
     local procedure InsertTempProdOrderCompt(pProdOrderComponent: Record "Prod. Order Component")
     var
-
+        lReservQty: Decimal;
     begin
         //Vérifier si le composant pour cet O.F existe ou pas
+        lReservQty := GetReservationQty(pProdOrderComponent);
         TempProdOrderComp.Reset();
         TempProdOrderComp.SetRange(Status, pProdOrderComponent.Status);
         TempProdOrderComp.SetRange("Prod. Order No.", pProdOrderComponent."Prod. Order No.");
         TempProdOrderComp.SetRange("Prod. Order Line No.", pProdOrderComponent."Prod. Order Line No.");
         TempProdOrderComp.SetRange("Item No.", pProdOrderComponent."Item No.");
+        TempProdOrderComp.SetRange("Routing Link Code", pProdOrderComponent."Routing Link Code");
         if TempProdOrderComp.FindFirst() then begin
-            TempProdOrderComp.Quantity += pProdOrderComponent."Remaining Quantity";
+            TempProdOrderComp.Quantity += pProdOrderComponent."Remaining Quantity" + lReservQty;
             TempProdOrderComp.modify();
-        end else begin
-            TempProdOrderComp.Init();
-            TempProdOrderComp.Status := pProdOrderComponent.Status;
-            TempProdOrderComp."Prod. Order No." := pProdOrderComponent."Prod. Order No.";
-            TempProdOrderComp."Prod. Order Line No." := pProdOrderComponent."Prod. Order Line No.";
-            TempProdOrderComp."Line No." := pProdOrderComponent."Line No.";
-            TempProdOrderComp."Item No." := pProdOrderComponent."Item No.";
-            TempProdOrderComp.Quantity := pProdOrderComponent."Remaining Quantity";
-            TempProdOrderComp.Insert();
-        end;
+        end else
+            if ((pProdOrderComponent."Remaining Quantity" + lReservQty) > 0) then begin
+                TempProdOrderComp.Init();
+                TempProdOrderComp.Status := pProdOrderComponent.Status;
+                TempProdOrderComp."Prod. Order No." := pProdOrderComponent."Prod. Order No.";
+                TempProdOrderComp."Prod. Order Line No." := pProdOrderComponent."Prod. Order Line No.";
+                TempProdOrderComp."Line No." := pProdOrderComponent."Line No.";
+                TempProdOrderComp."Item No." := pProdOrderComponent."Item No.";
+                TempProdOrderComp.Quantity := pProdOrderComponent."Remaining Quantity" + lReservQty;
+                TempProdOrderComp."Routing Link Code" := pProdOrderComponent."Routing Link Code";
+                TempProdOrderComp.Insert();
+            end;
+    end;
+
+    local procedure GetReservationQty(pProdOrderComponent: Record "Prod. Order Component"): Decimal
+    var
+        lReservEntry: Record "Reservation Entry";
+        lTotalQty: Decimal;
+    begin
+        //Chercher la Qté traçabilité du composant sur l’OF
+        lTotalQty := 0;
+        lReservEntry.Reset();
+        lReservEntry.SetCurrentKey("Source Type", "Source Subtype", "Source ID", "Source Batch Name", "Source Prod. Order Line", "Source Ref. No.");
+        lReservEntry.SetRange("Source Type", 5407);
+        lReservEntry.SetRange("Source ID", pProdOrderComponent."Prod. Order No.");
+        lReservEntry.SetRange("Source Prod. Order Line", pProdOrderComponent."Prod. Order Line No.");
+        lReservEntry.SetRange("Source Ref. No.", pProdOrderComponent."Line No.");
+        lReservEntry.SetRange("Item No.", pProdOrderComponent."Item No.");
+        if lReservEntry.FindSet() then
+            lTotalQty += lReservEntry.Quantity;
+
+        exit(lTotalQty);
     end;
 
 }

@@ -5,7 +5,7 @@ page 50021 "Carton to Post"
     PageType = List;
     SourceTable = Carton;
     SourceTableView = sorting("No.") where(Status = filter(Release),
-    "Not Tot. shipped" = filter(true));
+    "Not Tot. Ordered" = filter(true));
     DeleteAllowed = false;
     InsertAllowed = false;
     CardPageId = "Closed Carton Card";
@@ -29,6 +29,37 @@ page 50021 "Carton to Post"
                     ApplicationArea = All;
                     Editable = false;
                 }
+                field("Customer No."; Rec."Customer No.")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Customer Name"; Rec."Customer Name")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+
+                field("Serial No."; Rec."Serial No.")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Not Tot. shipped"; Rec."Not Tot. Ordered")
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Ship to code"; Rec."Ship to code")
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Ship to name"; Rec."Ship to name")
+                {
+                    ApplicationArea = All;
+
+                }
                 field("Item Carton No."; Rec."Item Carton No.")
                 {
                     ApplicationArea = All;
@@ -38,16 +69,6 @@ page 50021 "Carton to Post"
                 {
                     ApplicationArea = All;
                     Editable = false;
-                }
-                field("Serial No."; Rec."Serial No.")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
-                field("Not Tot. shipped"; Rec."Not Tot. shipped")
-                {
-                    ApplicationArea = All;
-
                 }
             }
         }
@@ -104,43 +125,50 @@ page 50021 "Carton to Post"
 
     procedure createTracking()
     var
+        lsalesLines: Record "Sales Line";
         lCarton: Record Carton;
         lCarton2: Record Carton;
         lCartTrackLines: Record "Carton Tracking Lines";
     begin
-        lCarton.Reset();
-        lCarton.SetCurrentKey("Selected", "Customer No.", "No.");
-        lCarton.SetRange(Selected, true);
-        if lCarton.FindFirst() then
+        lsalesLines.Reset();
+        lsalesLines.SetRange("Document No.", CurrDocNo);
+        lsalesLines.SetRange(type, lsalesLines.Type::Item);
+        if lsalesLines.FindFirst() then
             repeat
-                lCarton2.Get(lCarton."No.");
-                lCarton2."Item No. Filter" := CurrItemNo;
-                lCarton2.SetFilter("Item No. Filter", CurrItemNo);
-                lCarton2.CalcFields("Qty Item");
-                lCartTrackLines.Reset();
-                lCartTrackLines.SetCurrentKey("Carton No.", "Item No.", "Ref Line No.", "Serial No.", "Customer No.");
-                lCartTrackLines.SetRange("Carton No.", lCarton."No.");
-                // lCartTrackLines.SetRange("Item No.", CurrItemNo);
-                if lCartTrackLines.FindFirst() then
+                lCarton.Reset();
+                lCarton.SetCurrentKey("Selected", "Customer No.", "No.");
+                lCarton.SetRange(Selected, true);
+                if lCarton.FindFirst() then
                     repeat
-                        If (lCartTrackLines."order No." = '') and (lCartTrackLines."Item No." = CurrItemNo) then Begin
-                            If (lCartTrackLines."Variant Code" <> '') then BEGIN
-                                UpdateSalesLinewithvariant(CurrDocNo, lCartTrackLines."Order Line No.", lCartTrackLines."Item No.", lCartTrackLines."Variant Code");
-                                InsertItemSpecification(lCartTrackLines."Item No.", CurrLocation, lCartTrackLines."Serial No.", lCartTrackLines."Lot No.", lCartTrackLines."Variant Code", VariantLineNo);
-                                lCartTrackLines."Order Line No." := VariantLineNo;
-                                lCartTrackLines."Order No." := CurrDocNo;
-                                lCartTrackLines.Modify();
-                            END ELSE BEGIN
-                                QteToShip += 1;
-                                InsertItemSpecification(lCartTrackLines."Item No.", CurrLocation, lCartTrackLines."Serial No.", lCartTrackLines."Lot No.", lCartTrackLines."Variant Code", CurrDocLineNo);
-                                lCartTrackLines."Order No." := CurrDocNo;
-                                lCartTrackLines.Modify();
-                            END;
-                        End
-                    until lCartTrackLines.Next() = 0;
-            until lCarton.Next() = 0;
-        if QteToShip <> 0 then
-            Update_Qty_SalesLines(CurrDocNo, CurrDocLineNo, QteToShip);
+                        lCarton2.Get(lCarton."No.");
+                        lCarton2."Item No. Filter" := lsalesLines."No.";
+                        lCarton2.SetFilter("Item No. Filter", lsalesLines."No.");
+                        lCarton2.CalcFields("Qty Item");
+                        lCartTrackLines.Reset();
+                        lCartTrackLines.SetCurrentKey("Carton No.", "Item No.", "Ref Line No.", "Serial No.", "Customer No.");
+                        lCartTrackLines.SetRange("Carton No.", lCarton."No.");
+                        if lCartTrackLines.FindFirst() then
+                            repeat
+                                If (lCartTrackLines."order No." = '') and (lCartTrackLines."Item No." = lsalesLines."No.") THEN begin// CurrItemNo) then Begin
+                                    If (lCartTrackLines."Variant Code" <> '') then BEGIN
+                                        UpdateSalesLinewithvariant(CurrDocNo, lCartTrackLines."Order Line No.", lCartTrackLines."Item No.", lCartTrackLines."Variant Code");
+                                        InsertItemSpecification(lCartTrackLines."Item No.", CurrLocation, lCartTrackLines."Serial No.", lCartTrackLines."Lot No.", lCartTrackLines."Variant Code", VariantLineNo);
+                                        lCartTrackLines."Order Line No." := VariantLineNo;
+                                        lCartTrackLines."Order No." := CurrDocNo;
+                                        lCartTrackLines.Modify();
+                                    END ELSE BEGIN
+                                        InsertItemSpecification(lCartTrackLines."Item No.", CurrLocation, lCartTrackLines."Serial No.", lCartTrackLines."Lot No.", lCartTrackLines."Variant Code", lsalesLines."Line No.");
+                                        lCartTrackLines."Order No." := CurrDocNo;
+                                        lCartTrackLines."Order Line No." := lsalesLines."Line No.";
+                                        lCartTrackLines.Modify();
+                                    END;
+                                End
+                            until lCartTrackLines.Next() = 0;
+                    until lCarton.Next() = 0;
+                Update_Qty_SalesLines(lsalesLines."Document No.", lsalesLines."Line No.");
+            until lsalesLines.Next() = 0;
+
+
     END;
 
     procedure InsertSalesLinewithvariant(pItemNo: code[20]; pVariantCode: Code[10]; pQty: Decimal)
@@ -215,7 +243,7 @@ page 50021 "Carton to Post"
 
     end;
 
-    procedure Update_Qty_SalesLines(pDocNo: code[20]; pRefLineNo: Integer; pQteToShip: Decimal)
+    procedure Update_Qty_SalesLines(pDocNo: code[20]; pRefLineNo: Integer)
     var
         LsalesLines: Record "Sales Line";
         lTrackLines: Record "Carton Tracking Lines";
@@ -229,8 +257,14 @@ page 50021 "Carton to Post"
             lTrackLines.SetRange("Order Line No.", pRefLineNo);
             lTrackLines.Setfilter("Variant Code", '%1', '');
             if lTrackLines.FindFirst() Then begin
-                LsalesLines.Validate("Qty. to Ship", lTrackLines.Count);
+                if lTrackLines.Count < LsalesLines.Quantity Then
+                    LsalesLines.Validate("Qty. to Ship", lTrackLines.Count)
+                else
+                    LsalesLines.Validate(Quantity, lTrackLines.Count);
                 LsalesLines."Qty. to Invoice" := 0;
+                LsalesLines.Modify(true);
+            end else begin
+                LsalesLines.Validate("Qty. to Ship", 0);
                 LsalesLines.Modify(true);
             end;
         end;
@@ -305,7 +339,7 @@ page 50021 "Carton to Post"
         DocQty: Decimal;
         CurrDocType: enum "Sales Document Type";
         SelectedAll: Boolean;
-        QteToShip: Decimal;
+        //QteToShip: Decimal;
         VariantLineNo: Integer;
 
 }

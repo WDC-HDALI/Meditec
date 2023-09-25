@@ -38,22 +38,28 @@ table 50010 "Carton Tracking Lines"
             trigger OnValidate()
             var
                 lItemLedgEnt: Record "Item Ledger Entry";
+                lItem: Record Item;
+                ltext001: Label 'N° serie ne doit pas être vide';
             begin
-
-                Rec."Item No." := '';
-                Rec."Lot No." := '';
-                Rec."Variant Code" := '';
-                Quantity := 0;
-                lItemLedgEnt.Reset;
-                lItemLedgEnt.SetCurrentKey("Item No.", "Entry Type", "Variant Code", "Drop Shipment", "Location Code", "Posting Date");
-                lItemLedgEnt.SetRange("Serial No.", rec."Serial No.");
-                if lItemLedgEnt.FindFirst() then begin
-                    Quantity := 1;
-                    Rec."Lot No." := lItemLedgEnt."Lot No.";
-                    Rec."Item No." := lItemLedgEnt."Item No.";
-                    Rec."Variant Code" := lItemLedgEnt."Variant Code";
-                end;
-                ControlItemRefCustomer;
+                if "Serial No." <> '' then begin
+                    Rec."Item No." := '';
+                    Rec."Lot No." := '';
+                    Rec."Variant Code" := '';
+                    Quantity := 0;
+                    lItemLedgEnt.Reset;
+                    lItemLedgEnt.SetCurrentKey("Item No.", "Entry Type", "Variant Code", "Drop Shipment", "Location Code", "Posting Date");
+                    lItemLedgEnt.SetRange("Serial No.", rec."Serial No.");
+                    if lItemLedgEnt.FindFirst() then begin
+                        Quantity := 1;
+                        Rec."Lot No." := lItemLedgEnt."Lot No.";
+                        Rec."Variant Code" := lItemLedgEnt."Variant Code";
+                        Rec."Item No." := lItemLedgEnt."Item No.";
+                        lItem.Get(lItemLedgEnt."Item No.");
+                        Rec."Item Description" := lItem.Description;
+                    end;
+                    ControlItemRefCustomer;
+                end else
+                    Error(ltext001);
             end;
 
         }
@@ -115,6 +121,7 @@ table 50010 "Carton Tracking Lines"
         {
             Caption = 'Variant Code';
             TableRelation = "Item Variant".Code WHERE("Item No." = FIELD("Item No."));
+            Editable = false;
         }
         field(13; "Shipment Line No."; Integer)
         {
@@ -131,6 +138,35 @@ table 50010 "Carton Tracking Lines"
             DataClassification = ToBeClassified;
             Editable = false;
         }
+        field(15; "Ship to code"; Code[20])
+        {
+            Caption = 'Code destinataire';
+            DataClassification = ToBeClassified;
+            TableRelation = "Ship-to Address".Code where("Customer No." = field("Customer No."));
+            trigger OnValidate()
+            var
+                lShipAdresse: Record "Ship-to Address";
+            begin
+                Rec."Ship to name" := '';
+                lShipAdresse.Reset();
+                lShipAdresse.SetRange(Code, Rec."Ship to code");
+                if lShipAdresse.FindFirst() Then
+                    Rec."Ship to name" := lShipAdresse.Name;
+            end;
+
+        }
+        field(16; "Ship to name"; Text[100])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Nom destinataire';
+            Editable = false;
+        }
+        field(17; "Item Description"; Text[100])
+        {
+            Caption = 'Description article';
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
     }
 
     keys
@@ -140,10 +176,36 @@ table 50010 "Carton Tracking Lines"
             Clustered = true;
         }
     }
+    trigger OnInsert()
+    var
+        lCarton: Record Carton;
+        ltext001: Label 'N° serie ne doit pas être vide';
+    begin
+        if "Serial No." = '' then
+            Error(ltext001);
+        if lCarton.Get(Rec."Carton No.") then
+            rec.Validate("Ship to code", lCarton."Ship to code");
+
+    end;
+
+    trigger OnModify()
+    var
+        lCarton: Record Carton;
+        ltext001: Label 'N° serie ne doit pas être vide';
+    begin
+        if "Serial No." = '' then
+            Error(ltext001);
+        if lCarton.Get(Rec."Carton No.") then
+            rec.Validate("Ship to code", lCarton."Ship to code");
+
+
+    end;
+
     procedure ControlItemRefCustomer()
     var
         lItemRef: record "Item Reference";
-        ltext001: Label 'Cet article n''est pas à ce client.\ Veuillez vérifier!!';
+        lText001: Label 'Cet article n''est pas à ce client.\ Veuillez vérifier!!';
+        lText002: Label 'Article de client inconnu,\veillez remplir le client pour cet article';
     begin
         lItemRef.Reset();
         lItemRef.SetRange("Item No.", Rec."Item No.");
@@ -152,6 +214,7 @@ table 50010 "Carton Tracking Lines"
             lItemRef.SetRange("Reference Type No.", Rec."Customer No.");
             If Not lItemRef.FindFirst() then
                 Error(ltext001);
-        END
+        END ELSE
+            Error(lText002);
     end;
 }

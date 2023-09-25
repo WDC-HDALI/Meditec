@@ -15,6 +15,10 @@ page 50019 "Closed Carton Track. Lines"
                 {
                     ApplicationArea = All;
                 }
+                field("Item Description"; Rec."Item Description")
+                {
+                    ApplicationArea = All;
+                }
                 field("Serial No."; Rec."Serial No.")
                 {
                     ApplicationArea = All;
@@ -30,10 +34,6 @@ page 50019 "Closed Carton Track. Lines"
                 }
 
                 field(Quantity; Rec.Quantity)
-                {
-                    ApplicationArea = All;
-                }
-                field("Carton No."; Rec."Carton No.")
                 {
                     ApplicationArea = All;
                 }
@@ -53,6 +53,7 @@ page 50019 "Closed Carton Track. Lines"
                 {
                     ApplicationArea = All;
                 }
+
             }
         }
     }

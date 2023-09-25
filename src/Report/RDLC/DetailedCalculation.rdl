@@ -3373,9 +3373,10 @@
                             <PaddingRight>5pt</PaddingRight>
                           </Style>
                         </Textbox>
-                        <ColSpan>2</ColSpan>
+                        <ColSpan>3</ColSpan>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell />
                     <TablixCell />
                     <TablixCell>
                       <CellContents>
@@ -3437,10 +3438,8 @@
                             <PaddingRight>5pt</PaddingRight>
                           </Style>
                         </Textbox>
-                        <ColSpan>2</ColSpan>
                       </CellContents>
                     </TablixCell>
-                    <TablixCell />
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="ProdUnitCostCapt">
@@ -4727,7 +4726,7 @@
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;-#,0.00;''</Format>
+                                    <Format>#,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4747,6 +4746,7 @@
                             <PaddingRight>5pt</PaddingRight>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -4762,7 +4762,7 @@
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;-#,0.00;''</Format>
+                                    <Format>#,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4782,6 +4782,7 @@
                           </Style>
                         </Textbox>
                         <ColSpan>2</ColSpan>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell />
@@ -4945,9 +4946,10 @@
                             <PaddingRight>5pt</PaddingRight>
                           </Style>
                         </Textbox>
-                        <ColSpan>2</ColSpan>
+                        <ColSpan>3</ColSpan>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell />
                     <TablixCell />
                     <TablixCell>
                       <CellContents>
@@ -4962,7 +4964,7 @@
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>N</Format>
+                                    <Format>=Fields!ProdBOMLineLevelQtyFormat.Value</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4995,7 +4997,6 @@
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>=Fields!RunTime_RtngLineFormat.Value</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -5011,10 +5012,8 @@
                             <PaddingRight>5pt</PaddingRight>
                           </Style>
                         </Textbox>
-                        <ColSpan>2</ColSpan>
                       </CellContents>
                     </TablixCell>
-                    <TablixCell />
                     <TablixCell>
                       <CellContents>
                         <Textbox Name="CompItemUnitCost">
@@ -5028,7 +5027,7 @@
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;-#,0.00;''</Format>
+                                    <Format>#,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -5046,6 +5045,7 @@
                             <PaddingRight>5pt</PaddingRight>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -5057,11 +5057,11 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!CostTotal.Value * Fields!ExchangeRateAmt.Value</Value>
+                                  <Value>=Fields!CostTotal.Value / Fields!ExchangeRateAmt.Value</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;-#,0.00;''</Format>
+                                    <Format>#,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -5092,11 +5092,11 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!LastCost.Value / Fields!ExchangeRateAmt.Value</Value>
+                                  <Value>=Fields!LastCost.Value</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;-#,0.00;''</Format>
+                                    <Format>#,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -5113,6 +5113,7 @@
                             <PaddingLeft>5pt</PaddingLeft>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -5128,7 +5129,7 @@
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <Format>#,0.00;(#,0.00);''</Format>
+                                    <Format>#,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -5147,6 +5148,7 @@
                             <PaddingLeft>5pt</PaddingLeft>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -6292,7 +6294,7 @@
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;-#,0.00;''</Format>
+                                    <Format>#,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -6308,6 +6310,7 @@
                             <PaddingLeft>5pt</PaddingLeft>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -6355,7 +6358,7 @@
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;-#,0.00;''</Format>
+                                    <Format>#,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -6374,6 +6377,7 @@
                             <PaddingLeft>5pt</PaddingLeft>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -7417,7 +7421,7 @@
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;-#,0.00;''</Format>
+                                    <Format>#,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -7433,6 +7437,7 @@
                             <PaddingLeft>5pt</PaddingLeft>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -8180,7 +8185,7 @@
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;-#,0.00;''</Format>
+                                    <Format>#,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -8198,6 +8203,7 @@
                             <PaddingLeft>5pt</PaddingLeft>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -8519,7 +8525,7 @@
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;-#,0.00;''</Format>
+                                    <Format>#,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -8535,6 +8541,7 @@
                             <PaddingLeft>5pt</PaddingLeft>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -8582,7 +8589,7 @@
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;-#,0.00;''</Format>
+                                    <Format>#,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -8598,6 +8605,7 @@
                             <PaddingLeft>5pt</PaddingLeft>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -9672,7 +9680,7 @@
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;-#,0.00;''</Format>
+                                    <Format>#,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -9688,6 +9696,7 @@
                             <PaddingLeft>5pt</PaddingLeft>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -9735,7 +9744,7 @@
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>#,0.00;-#,0.00;''</Format>
+                                    <Format>#,0.00</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -9751,6 +9760,7 @@
                             <PaddingLeft>5pt</PaddingLeft>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -10354,10 +10364,10 @@
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>=Fields!UnitPrice.Value/ Fields!ExchangeRateAmt.Value</Value>
+                                                <Value>=Fields!UnitPrice.Value</Value>
                                                 <Style>
                                                   <FontSize>8pt</FontSize>
-                                                  <Format>#,0.00;-#,0.00;''</Format>
+                                                  <Format>#,0.00</Format>
                                                 </Style>
                                               </TextRun>
                                             </TextRuns>
@@ -10376,6 +10386,7 @@
                                           <PaddingBottom>2pt</PaddingBottom>
                                         </Style>
                                       </Textbox>
+                                      <rd:Selected>true</rd:Selected>
                                     </CellContents>
                                   </TablixCell>
                                   <TablixCell>
@@ -10387,10 +10398,10 @@
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>=(((Fields!UnitPrice.Value / Fields!ExchangeRateAmt.Value)-Fields!MargeBrut.Value)/(Fields!UnitPrice.Value / Fields!ExchangeRateAmt.Value))*100</Value>
+                                                <Value>=Fields!MargeBrut.Value</Value>
                                                 <Style>
                                                   <FontSize>8pt</FontSize>
-                                                  <Format>#,0.00;(#,0.00);''</Format>
+                                                  <Format>0.00%</Format>
                                                 </Style>
                                               </TextRun>
                                             </TextRuns>
@@ -10420,10 +10431,10 @@
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>=(((Fields!UnitPrice.Value / Fields!ExchangeRateAmt.Value)-Fields!MargeNet.Value)/(Fields!UnitPrice.Value / Fields!ExchangeRateAmt.Value))*100</Value>
+                                                <Value>=Fields!MargeNet.Value</Value>
                                                 <Style>
                                                   <FontSize>8pt</FontSize>
-                                                  <Format>#,0.00;(#,0.00);''</Format>
+                                                  <Format>0.00%</Format>
                                                 </Style>
                                               </TextRun>
                                             </TextRuns>
@@ -10453,10 +10464,10 @@
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>=Fields!Marge2.Value*100</Value>
+                                                <Value>=Fields!Marge2.Value</Value>
                                                 <Style>
                                                   <FontSize>8pt</FontSize>
-                                                  <Format>#,0.00;(#,0.00);''</Format>
+                                                  <Format>0.00%</Format>
                                                 </Style>
                                               </TextRun>
                                             </TextRuns>
@@ -10488,10 +10499,10 @@
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>=(((Fields!UnitPrice.Value / Fields!ExchangeRateAmt.Value)-Fields!Marge3.Value)/(Fields!UnitPrice.Value / Fields!ExchangeRateAmt.Value))*100</Value>
+                                                <Value>=Fields!Marge3.Value</Value>
                                                 <Style>
                                                   <FontSize>8pt</FontSize>
-                                                  <Format>#,0.00;(#,0.00);''</Format>
+                                                  <Format>0.00%</Format>
                                                 </Style>
                                               </TextRun>
                                             </TextRuns>

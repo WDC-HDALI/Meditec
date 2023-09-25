@@ -15,25 +15,22 @@ pageextension 50022 "WDC Sales Order Subform" extends "Sales Order Subform"
 
                     lCartonToPostPage: page "Carton to Post";
                     lCarton: Record Carton;
+                    lsalesHeader: record "Sales Header";
                 begin
-                    //rec.TestField("Qty. to Ship");
-                    lCarton.RESET;
-                    CLEAR(lCartonToPostPage);
-                    lCarton.Setrange(Status, lCarton.Status::Release);
-                    lCarton.Setrange(Shipped, false);
-                    lCarton.Setrange("Customer No.", Rec."Bill-to Customer No.");
-                    lCartonToPostPage.SetFields(Rec."Document Type", rec."Document No.", rec."Line No.", rec."No.", rec.Quantity, Rec."Location Code");
-                    lCartonToPostPage.SETTABLEVIEW(lCarton);
-                    lCartonToPostPage.SETRECORD(lCarton);
-                    // lCarton."Item No. Filter" := Rec."No.";
-                    // lCarton.SetFilter("Item No. Filter", Rec."No.");
-                    // lCarton.CalcFields("Qty Item");
-                    // lCarton.SetFilter("Qty Item", '<>%1', 0);
-                    lCartonToPostPage.RUNMODAL;
-                    // IF lCartonToPostPage.RUNMODAL = ACTION::OK THEN BEGIN
-                    //     rec.OpenItemTrackingLines();
-                    // end;
-                end;
+                    if lsalesHeader.GET(Rec."Document Type", Rec."Document No.") Then BEGIn
+                        lCarton.RESET;
+                        CLEAR(lCartonToPostPage);
+                        lCarton.SetCurrentKey("No.");
+                        lCarton.Setrange(Status, lCarton.Status::Release);
+                        lCarton.Setrange(Shipped, false);
+                        lCarton.Setrange("Customer No.", Rec."Bill-to Customer No.");
+                        lCarton.SetRange("Ship to code", lsalesHeader."Ship-to Code");
+                        lCartonToPostPage.SetFields(Rec."Document Type", rec."Document No.", rec."Line No.", rec."No.", rec.Quantity, Rec."Location Code");
+                        lCartonToPostPage.SETTABLEVIEW(lCarton);
+                        lCartonToPostPage.SETRECORD(lCarton);
+                        lCartonToPostPage.RUNMODAL;
+                    end;
+                End;
             }
         }
 
