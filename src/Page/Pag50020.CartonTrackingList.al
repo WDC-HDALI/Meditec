@@ -16,6 +16,10 @@ page 50020 "Carton Tracking List"
                 {
                     ApplicationArea = All;
                 }
+                field("Item Description"; Rec."Item Description")
+                {
+                    ApplicationArea = All;
+                }
                 field("Serial No."; Rec."Serial No.")
                 {
                     ApplicationArea = All;
@@ -61,6 +65,17 @@ page 50020 "Carton Tracking List"
                 field("Customer Name"; Rec."Customer Name")
                 {
                     ApplicationArea = All;
+                }
+
+                field("Ship to code"; Rec."Ship to code")
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Ship to name"; Rec."Ship to name")
+                {
+                    ApplicationArea = All;
+
                 }
 
             }

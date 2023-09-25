@@ -30,7 +30,18 @@ page 50017 "Closed Carton Card"
                 field("Customer Name"; Rec."Customer Name")
                 {
                     ApplicationArea = All;
-                    ;
+
+                }
+
+                field("Ship to code"; Rec."Ship to code")
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Ship to name"; Rec."Ship to name")
+                {
+                    ApplicationArea = All;
+
                 }
                 field(Status; Rec.Status)
                 {

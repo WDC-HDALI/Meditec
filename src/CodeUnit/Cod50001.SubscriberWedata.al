@@ -78,5 +78,33 @@ codeunit 50001 "Subscriber Wedata"
         lSalesShipmentHeader.GET(SalesShptLine."Document No.");
         SalesLine.Description := CopyStr(SalesLine.Description + StrSubstNo(text001, lSalesShipmentHeader."External Document No."), 1, 100);
     end;
+
+    //    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Sales Document", 'OnCodeOnAfterSalesLineCheck', '', FALSE, FALSE)]
+    // Local procedure OnBeforePostPurchaseDoc(Var SalesLine: Record "Sales Line")
+    // Var
+    //     ltext001: Label 'Veuillez vérifier le code client d''article %1';
+    //     lCarton: Record Carton;
+
+    // begin
+    //     if SalesLine."Document Type"= SalesLine."Document Type"::Order Then 
+    //     If SalesLine.Type = SalesLine.Type::Item then
+    //             if lCarton."Customer Code" <> '' then
+    //                 if SalesLine."Sell-to Customer No." <> lItem."Customer Code" then
+    //                     Error(ltext001, SalesLine."No.");
+    // end;
+    // [EventSubscriber(ObjectType::Table, database::"Purchase Line", 'OnBeforeTestStatusOpen', '', FALSE, FALSE)]
+    // local procedure OnBeforeTestStatusOpen(var PurchaseLine: Record "Purchase Line"; var PurchaseHeader: Record "Purchase Header"; xPurchaseLine: Record "Purchase Line"; CallingFieldNo: Integer; var IsHandled: Boolean)
+
+    // begin
+    //     if (CallingFieldNo = 7) or (CallingFieldNo = 7) Then
+    //         IsHandled := true;
+
+    // end;
+    //         [EventSubscriber(ObjectType::Page, PAGE::"Purchase Order", 'OnAfterValidateEvent', 'Ship-to Code', FALSE, FALSE)]
+    //     local procedure OnAfterValidateEvent(var Rec: Record "Purchase Header")
+
+    //     begin
+    // Rec.TestStatusIsNotReleased()
+    //     end;
 }
 

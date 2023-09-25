@@ -115,10 +115,13 @@ report 50012 "Detailed Calculation2"
                 column(ProdUnitCost; ProdUnitCost)
                 {
                     AutoFormatType = 2;
+                    DecimalPlaces = 0 : 5;
                 }
                 column(ProdTotalCost; ProdTotalCost)
                 {
                     AutoFormatType = 1;
+                    DecimalPlaces = 0 : 5;
+
                 }
                 column(CostTimeCaption; CostTimeCaptionLbl)
                 {
@@ -207,6 +210,8 @@ report 50012 "Detailed Calculation2"
                     }
                     column(ProdBOMLineLevelQty; ProdBOMLine[Level].Quantity)
                     {
+
+                        DecimalPlaces = 0 : 5;
                     }
                     column(UnitCost_CompItem; CompItem."Unit Cost")
                     {
@@ -221,6 +226,7 @@ report 50012 "Detailed Calculation2"
                     column(CostTotal; CostTotal)
                     {
                         AutoFormatType = 1;
+                        DecimalPlaces = 0 : 5;
                     }
                     column(BaseUOM_CompItem; CompItem."Base Unit of Measure")
                     {
@@ -230,9 +236,11 @@ report 50012 "Detailed Calculation2"
                     }
                     column(LastCost; LastCost)
                     {
+                        DecimalPlaces = 0 : 5;
                     }
                     column(LastCostTotal; LastCostTotal)
                     {
+                        DecimalPlaces = 0 : 5;
                     }
                 }
 
@@ -288,11 +296,22 @@ report 50012 "Detailed Calculation2"
                                     ValueEntry.SetRange("Item Ledger Entry No.", ItemLedgerEntry."Entry No.");
                                     IF ValueEntry.FindSet() THEN begin
                                         GetLastestExchangeRate('EUR', ValueEntry."Posting Date", LastExchangeRateAmt); //wdc.sh
-                                        LastCost := ValueEntry."Cost per Unit" / LastExchangeRateAmt; // SH-17-076-2023
-                                        LastCostTotal := ProdBOMLine[Level].Quantity * ValueEntry."Cost per Unit" / LastExchangeRateAmt;  // SH-17-076-2023
+                                        if ValueEntry."Cost per Unit" <> 0 then
+                                            LastCost := ValueEntry."Cost per Unit" / LastExchangeRateAmt   // SH-17-076-2023
+                                        ELSE
+                                            LastCost := CompItem."Unit Cost" / LastExchangeRateAmt;
+                                        LastCostTotal := ProdBOMLine[Level].Quantity * LastCost;
+                                        TotaLastCost2 += LastCostTotal;
+                                    end else begin
+                                        LastCost := CompItem."Unit Cost" / ExchangeRateAmt;
+                                        LastCostTotal := ProdBOMLine[Level].Quantity * LastCost;
                                         TotaLastCost2 += LastCostTotal;
                                     end;
 
+                                end else begin
+                                    LastCost := CompItem."Unit Cost" / ExchangeRateAmt;
+                                    LastCostTotal := ProdBOMLine[Level].Quantity * LastCost;
+                                    TotaLastCost2 += LastCostTotal;
                                 end;
                                 //>>WDC.SH
 
@@ -363,13 +382,14 @@ report 50012 "Detailed Calculation2"
                 }
                 column(FooterCostTotal; FooterCostTotal)
                 {
-
+                    DecimalPlaces = 0 : 5;
                 }
                 column(SingleLevelMfgOvhdCaption; SingleLevelMfgOvhdCaptionLbl)
                 {
                 }
                 column(FooterProdTotalCost; FooterProdTotalCost)
                 {
+                    DecimalPlaces = 0 : 5;
                 }
 
             }
@@ -397,8 +417,9 @@ report 50012 "Detailed Calculation2"
                 column(MinimumQuantity; SalesPrice."Minimum Quantity")
                 {
                 }
-                column(UnitPrice; SalesPrice."Unit Price")
+                column(UnitPrice; SalesUnitPrice)
                 {
+                    DecimalPlaces = 0 : 5;
                 }
                 column(UnitofMeasureCode; SalesPrice."Unit of Measure Code")
                 {
@@ -424,15 +445,36 @@ report 50012 "Detailed Calculation2"
                 var
 
                     Customer: Record Customer;
+                    ExchangeRateAmt2: Decimal;
 
                 begin
+                    case SalesPrice."Currency Code" of
+                        'EUR':
+                            SalesUnitPrice := SalesPrice."Unit Price";
+                        '', 'TND':
+                            SalesUnitPrice := SalesPrice."Unit Price" / ExchangeRateAmt;
+                        else begin
+                            GetLastestExchangeRate(SalesPrice."Currency Code", ExchangeRateDate, ExchangeRateAmt2); //wdc.sh
+                            SalesUnitPrice := (SalesPrice."Unit Price" * ExchangeRateAmt2) / ExchangeRateAmt;
+                        end;
+
+                    end;
+
+
 
                     if Customer.get("Sales Code") then;
                     SalesName := Customer.Name;
-                    MargeBrut := FooterCostTotal * ExchangeRateAmt;//("Unit Price" - FooterCostTotal) / "Unit Price"; //FooterCostTotal; 
-                    MargeNet := (FooterCostTotal + FooterProdTotalCost) * ExchangeRateAmt;//("Unit Price" - FooterCostTotal + FooterProdTotalCost) / "Unit Price"; //FooterCostTotal + FooterProdTotalCost;
-                    Marge2 := ("Unit Price" * ExchangeRateAmt - TotaLastCost2) / ("Unit Price" * ExchangeRateAmt);
-                    Marge3 := TotaLastCost2 + FooterProdTotalCost * ExchangeRateAmt;
+
+                    MargeBrut := FooterCostTotal / ExchangeRateAmt;
+                    MargeBrut := (SalesUnitPrice - MargeBrut) / (SalesUnitPrice);
+
+                    MargeNet := (FooterCostTotal + FooterProdTotalCost) / ExchangeRateAmt;//("Unit Price" - FooterCostTotal + FooterProdTotalCost) / "Unit Price"; //FooterCostTotal + FooterProdTotalCost;
+                    MargeNet := (SalesUnitPrice - MargeNet) / (SalesUnitPrice);
+
+                    Marge2 := (SalesUnitPrice - TotaLastCost2) / (SalesUnitPrice);
+                    Marge3 := TotaLastCost2 + FooterProdTotalCost / ExchangeRateAmt;
+                    Marge3 := (SalesUnitPrice - Marge3) / (SalesUnitPrice);
+
                 end;
             }
 
@@ -563,6 +605,7 @@ report 50012 "Detailed Calculation2"
         FooterCostTotal: Decimal;
         MargeNet: Decimal;
         MargeBrut: Decimal;
+        SalesUnitPrice: Decimal;
 
         /* Text000: Label 'As of ';
          CurrReportPageNoCaptLbl: Label 'Page';
@@ -608,6 +651,8 @@ report 50012 "Detailed Calculation2"
             //if CurrencyExchangeRate."Exchange Rate Amount" <> 0 then
             Amt := CurrencyExchangeRate."Relational Exch. Rate Amount" / CurrencyExchangeRate."Exchange Rate Amount";
         end;
+        if Amt = 0 then
+            Amt := 1;
     end;
 }
 

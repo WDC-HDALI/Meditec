@@ -25,17 +25,36 @@ page 50016 "Closed Carton List"
                 {
                     ApplicationArea = All;
                 }
-                field("Item Carton No."; Rec."Item Carton No.")
+                field("Customer No."; Rec."Customer No.")
                 {
                     ApplicationArea = All;
+                    Editable = false;
                 }
-                field("Item Description"; Rec."Item Description")
+                field("Customer Name"; Rec."Customer Name")
                 {
                     ApplicationArea = All;
+                    Editable = false;
                 }
+
                 field("Serial No."; Rec."Serial No.")
                 {
                     ApplicationArea = All;
+                }
+
+                field("Ship to code"; Rec."Ship to code")
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Ship to name"; Rec."Ship to name")
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Not Tot. shipped"; Rec."Not Tot. Ordered")
+                {
+                    ApplicationArea = All;
+
                 }
             }
         }

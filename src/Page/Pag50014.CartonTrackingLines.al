@@ -20,6 +20,10 @@ page 50014 "Carton Tracking Lines"
                 {
                     ApplicationArea = All;
                 }
+                field("Item Description"; Rec."Item Description")
+                {
+                    ApplicationArea = All;
+                }
                 field("Lot No."; Rec."Lot No.")
                 {
                     ApplicationArea = All;
@@ -30,10 +34,6 @@ page 50014 "Carton Tracking Lines"
                     ApplicationArea = All;
                 }
                 field(Quantity; Rec.Quantity)
-                {
-                    ApplicationArea = All;
-                }
-                field("Carton No."; Rec."Carton No.")
                 {
                     ApplicationArea = All;
                 }

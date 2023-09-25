@@ -25,9 +25,19 @@ page 50012 "Carton Card"
                 field("Customer Name"; Rec."Customer Name")
                 {
                     ApplicationArea = All;
-                    ;
+
                 }
 
+                field("Ship to code"; Rec."Ship to code")
+                {
+                    ApplicationArea = All;
+
+                }
+                field("Ship to name"; Rec."Ship to name")
+                {
+                    ApplicationArea = All;
+
+                }
                 field(Status; Rec.Status)
                 {
                     ApplicationArea = All;
@@ -114,6 +124,7 @@ page 50012 "Carton Card"
         Rec.TestField("Item Carton No.");
         Rec.TestField("Assembly Date");
         Rec.TestField("Lot No.");
+
         lcartTrackLines.Reset();
         lcartTrackLines.SetRange("Carton No.", pCartonNo);
         if not lcartTrackLines.FindFirst() then
@@ -136,7 +147,7 @@ page 50012 "Carton Card"
         ModeleFeuille := 'ARTICLE';
         NomFeuille := 'CARTON';
         Init_ItemJNLLine;
-        //InitIndex;
+
         lPostDocNo := Rec."No."; //WDC.SH
 
         lItem.Get(Rec."Item Carton No.");
@@ -183,12 +194,10 @@ page 50012 "Carton Card"
                     lReservationEntry."Planning Flexibility" := lReservationEntry."Planning Flexibility"::Unlimited;
                     lReservationEntry."Lot No." := Rec."Lot No.";
                     lReservationEntry.INSERT(true);
-                    //IndexReserv := IndexReserv + 1; /////////
                 end;
             end;
         End;
         ItemJnlPostBatch.Run(lItemJnlLine);
-        //Index := Index + 1000;
     End;
 
     procedure InitIndex()
