@@ -1,6 +1,7 @@
 report 50016 "WDC Prod. Order - Mat. Requis."
 
 {
+    //WDC01  20-10-2023  WDC.CHG  Add new field
     DefaultLayout = RDLC;
     RDLCLayout = './src/Report/RDLC/ProdOrderMatRequisition.RDL';
     ApplicationArea = Manufacturing;
@@ -94,6 +95,9 @@ report 50016 "WDC Prod. Order - Mat. Requis."
                 column(No; No)           //WDC.SH
                 {
                 }
+                column(QtyCons; QtyCons)           //WDC.CHG
+                {
+                }
                 trigger OnAfterGetRecord()
                 begin
                     with ReservationEntry do begin
@@ -121,12 +125,26 @@ report 50016 "WDC Prod. Order - Mat. Requis."
                     end;
                     ComponentQty := "Prod. Order Component"."Quantity per" * "Production Order".Quantity;   //WDC.SH
                     No += 1;
+                    ////////////
+                    //<<CHG
+                    QtyCons := 0;
+                    ItemLedgerEntry.Reset();
+                    ItemLedgerEntry.SetRange("Entry Type", ItemLedgerEntry."Entry Type"::Consumption);
+                    ItemLedgerEntry.SetRange("Order Type", ItemLedgerEntry."Order Type"::Production);
+                    ItemLedgerEntry.SetRange("Order No.", "Prod. Order No.");
+                    ItemLedgerEntry.SetRange("Order Line No.", "Prod. Order Line No.");
+                    ItemLedgerEntry.SetRange("Item No.", "Item No.");
+                    If ItemLedgerEntry.FindSet then
+                        repeat
+                            QtyCons += Abs(ItemLedgerEntry."Invoiced Quantity");
+                        until ItemLedgerEntry.Next() = 0;
+                    //CHG>>
                 end;
 
 
                 trigger OnPreDataItem()
                 begin
-                    SetFilter("Remaining Quantity", '<>0');
+                    //  SetFilter("Remaining Quantity", '<>0');
                 end;
             }
 
@@ -164,5 +182,8 @@ report 50016 "WDC Prod. Order - Mat. Requis."
         CurrReportPageNoCaptLbl: Label 'Page';
         ComponentQty: Decimal;
         No: Integer;
+        ItemLedgerEntry: Record "Item Ledger Entry"; //WDC.CHG
+        QtyCons: Decimal;  //WDC.CHG
+
 }
 

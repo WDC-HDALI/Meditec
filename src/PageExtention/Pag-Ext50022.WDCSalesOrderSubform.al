@@ -1,5 +1,18 @@
 pageextension 50022 "WDC Sales Order Subform" extends "Sales Order Subform"
 {
+    layout
+    {
+
+
+        addafter(Quantity)
+        {
+            field("Currency Code"; Rec."Currency Code")
+            {
+                ApplicationArea = all;
+
+            }
+        }
+    }
 
     actions
     {

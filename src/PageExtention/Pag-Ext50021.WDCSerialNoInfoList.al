@@ -17,4 +17,36 @@ pageextension 50021 "WDC Serial No. Info List" extends "Serial No. Information L
 
         }
     }
+    actions
+    {
+        addafter("&Item Tracing")
+        {
+            action(Barcode)
+            {
+                Image = BarCode;
+                ApplicationArea = all;
+                CaptionML = FRA = 'Ticket Article';
+                Promoted = true;
+                PromotedCategory = Report;
+                PromotedIsBig = true;
+                trigger OnAction()
+                var
+                    lSerialInfo: Record 6504;
+                    lRepPFTicket: Report "WDC PF Ticket";
+
+
+                begin
+                    Clear(lSerialInfo);
+                    lSerialInfo.Reset();
+                    lSerialInfo.SetRange("Serial No.", Rec."Serial No.");
+                    If lSerialInfo.FindFirst() then begin
+                        lRepPFTicket.SetTableView(lSerialInfo);
+                        lRepPFTicket.Run();
+                    end;
+
+                end;
+            }
+
+        }
+    }
 }

@@ -34,11 +34,11 @@ xmlport 50001 "WDC Import Stock"
                 {
 
                 }
-                fieldelement(LotN; "Item Journal Line"."Lot No.")
+                fieldelement(LotN; "Item Journal Line"."New Lot No.")
                 {
 
                 }
-                fieldelement(SerialN; "Item Journal Line"."Serial No.")
+                fieldelement(SerialN; "Item Journal Line"."New Serial No.")
                 {
 
                 }
@@ -57,8 +57,11 @@ xmlport 50001 "WDC Import Stock"
                     //CodeEmplacement := BinCode;
                     //IF NOT EVALUATE(Quantites, Qty) THEN
                     Quantites := "Item Journal Line".Quantity;
-                    NumLot := "Item Journal Line"."Lot No.";
-                    NumSerie := "Item Journal Line"."Serial No.";
+
+                    NumLot := "Item Journal Line"."New Lot No.";
+                    NumSerie := "Item Journal Line"."New Serial No.";
+                    "Item Journal Line"."New Lot No." := '';
+                    "Item Journal Line"."New Serial No." := '';
                     //IF NOT EVALUATE(Cout, Cost) THEN
                     Cout := "Item Journal Line"."Unit Amount";
 
@@ -97,37 +100,37 @@ xmlport 50001 "WDC Import Stock"
                     IF lItem."Costing Method" <> lItem."Costing Method"::Standard THEN
                         ItemJournalLine.VALIDATE("Unit Amount", Cout);
                     IF ItemJournalLine.INSERT THEN BEGIN
-                        IF (NumLot = '') AND (lItem."Item Tracking Code" <> '') THEN
-                            ERROR('article %1 sans lot', CodeArticle)
-                        ELSE
-                            IF (NumLot <> '') AND (lItem."Item Tracking Code" <> '') And (lItem."Item Tracking Code" <> 'PF') THEN BEGIN
-                                lReservationEntry.INIT;
-                                lReservationEntry."Entry No." := IndexReserv;
-                                lReservationEntry.Positive := TRUE;
-                                lReservationEntry."Item No." := CodeArticle;
-                                lReservationEntry."Location Code" := CodeMagasin;
-                                lReservationEntry."Quantity (Base)" := ItemJournalLine."Quantity (Base)";
-                                lReservationEntry."Reservation Status" := lReservationEntry."Reservation Status"::Prospect;
-                                lReservationEntry."Creation Date" := DateCompatabilisation;
-                                lReservationEntry."Source Type" := 83;
-                                lReservationEntry."Source Subtype" := 2;
-                                lReservationEntry."Source ID" := ModeleFeuille;
-                                lReservationEntry."Source Batch Name" := NomFeuille;
-                                lReservationEntry."Source Ref. No." := Index;
-                                lReservationEntry."Expected Receipt Date" := DateCompatabilisation;
-                                lReservationEntry."Created By" := USERID;
-                                lReservationEntry."Qty. per Unit of Measure" := 1;
-                                lReservationEntry.Quantity := ItemJournalLine.Quantity;
-                                lReservationEntry."Planning Flexibility" := lReservationEntry."Planning Flexibility"::Unlimited;
-                                lReservationEntry."Qty. to Handle (Base)" := ItemJournalLine."Quantity (Base)";
-                                lReservationEntry."Qty. to Invoice (Base)" := ItemJournalLine."Quantity (Base)";
-                                lReservationEntry."Lot No." := NumLot;
-                                lReservationEntry."Item Tracking" := lReservationEntry."Item Tracking"::"Lot No.";
-                                IF lReservationEntry.INSERT THEN
-                                    IndexReserv := IndexReserv + 1
-                                ELSE
-                                    ERROR('Echec d''insertion de Lot d''article %1', CodeArticle);
-                            END;
+                        // IF (NumLot = '') AND (lItem."Item Tracking Code" <> '') THEN
+                        //     ERROR('article %1 sans lot', CodeArticle)
+                        // ELSE
+                        IF (NumLot <> '') AND (lItem."Item Tracking Code" <> '') And (lItem."Item Tracking Code" <> 'PF') THEN BEGIN
+                            lReservationEntry.INIT;
+                            lReservationEntry."Entry No." := IndexReserv;
+                            lReservationEntry.Positive := TRUE;
+                            lReservationEntry."Item No." := CodeArticle;
+                            lReservationEntry."Location Code" := CodeMagasin;
+                            lReservationEntry."Quantity (Base)" := ItemJournalLine."Quantity (Base)";
+                            lReservationEntry."Reservation Status" := lReservationEntry."Reservation Status"::Prospect;
+                            lReservationEntry."Creation Date" := DateCompatabilisation;
+                            lReservationEntry."Source Type" := 83;
+                            lReservationEntry."Source Subtype" := 2;
+                            lReservationEntry."Source ID" := ModeleFeuille;
+                            lReservationEntry."Source Batch Name" := NomFeuille;
+                            lReservationEntry."Source Ref. No." := Index;
+                            lReservationEntry."Expected Receipt Date" := DateCompatabilisation;
+                            lReservationEntry."Created By" := USERID;
+                            lReservationEntry."Qty. per Unit of Measure" := 1;
+                            lReservationEntry.Quantity := ItemJournalLine.Quantity;
+                            lReservationEntry."Planning Flexibility" := lReservationEntry."Planning Flexibility"::Unlimited;
+                            lReservationEntry."Qty. to Handle (Base)" := ItemJournalLine."Quantity (Base)";
+                            lReservationEntry."Qty. to Invoice (Base)" := ItemJournalLine."Quantity (Base)";
+                            lReservationEntry."Lot No." := NumLot;
+                            lReservationEntry."Item Tracking" := lReservationEntry."Item Tracking"::"Lot No.";
+                            IF lReservationEntry.INSERT THEN
+                                IndexReserv := IndexReserv + 1
+                            ELSE
+                                ERROR('Echec d''insertion de Lot d''article %1', CodeArticle);
+                        END;
                         IF (NumSerie = '') AND (lItem."Item Tracking Code" = 'PF') THEN
                             ERROR('Article %1 sans numéro de serie', CodeArticle);
                         IF (NumLot = '') AND (lItem."Item Tracking Code" = 'PF') THEN

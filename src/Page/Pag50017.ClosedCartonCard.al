@@ -113,6 +113,25 @@ page 50017 "Closed Carton Card"
 
                 end;
             }
+            action(Ticket)
+            {
+                ApplicationArea = ItemTracking;
+                Caption = 'Ticket carton';
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                Image = PrintCover;
+                trigger OnAction()
+                var
+                    lCarton: record carton;
+                begin
+                    lCarton.Reset();
+                    lCarton.SetRange("No.", Rec."No.");
+                    if lCarton.FindFirst() then
+                        Report.Run(50020, true, false, lCarton);
+
+                end;
+            }
 
         }
     }
