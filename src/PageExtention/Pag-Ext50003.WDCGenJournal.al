@@ -17,6 +17,10 @@ pageextension 50003 "WDC GenJournal" extends "General Journal"
             {
                 ApplicationArea = All;
             }
+            field("Currency Factor"; Rec."Currency Factor")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 }

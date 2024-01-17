@@ -89,11 +89,40 @@ page 50012 "Carton Card"
     {
         area(Processing)
         {
+
+            action(CloseAndPrint)
+            {
+                ApplicationArea = ItemTracking;
+                Caption = 'Lancer & imprimer';
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                Image = PostPrint;
+                trigger OnAction()
+                var
+                    lCarton: record carton;
+                    ltext001: Label 'Voulez-vous Lancer et imprimer le carton?';
+                begin
+                    if Confirm(ltext001) Then begin
+                        CheckCarton(Rec."No.");
+                        Rec.Status := rec.Status::Release;
+                        Rec.Modify();
+                        AdjustInventoryCaton(Rec."No.", WorkDate());
+
+                        lCarton.Reset();
+                        lCarton.SetRange("No.", Rec."No.");
+                        if lCarton.FindFirst() then
+                            Report.Run(50020, true, false, lCarton);
+                    end;
+                end;
+            }
+
+
             action(Close)
             {
                 ApplicationArea = ItemTracking;
                 Caption = 'Lancer';
-                Image = ReleaseDoc;
+                Image = Post;
                 Promoted = true;
                 PromotedIsBig = true;
                 PromotedCategory = Process;
@@ -109,6 +138,25 @@ page 50012 "Carton Card"
                         AdjustInventoryCaton(Rec."No.", WorkDate());
                     end;
                 End;
+            }
+            action(Ticket)
+            {
+                ApplicationArea = ItemTracking;
+                Caption = 'Imprimer';
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                Image = PrintCover;
+                trigger OnAction()
+                var
+                    lCarton: record carton;
+                begin
+                    lCarton.Reset();
+                    lCarton.SetRange("No.", Rec."No.");
+                    if lCarton.FindFirst() then
+                        Report.Run(50020, true, false, lCarton);
+
+                end;
             }
 
         }

@@ -7,12 +7,16 @@ report 50014 "Update Item Ledger Entry"
     {
         dataitem(ItemLedgerEntry; "Item Ledger Entry")
         {
+
             RequestFilterFields = "Entry No.";
+            DataItemTableView = where("Location Code" = filter('MAG-MC'),
+            "Document Type" = filter("Purchase Receipt"));
             trigger OnPreDataItem()
             var
 
             begin
                 ItemLedgerEntry.SetRange("Location Code", 'MAG-MC');
+                ItemLedgerEntry.SetRange("Document Type", ItemLedgerEntry."Document Type"::"Purchase Receipt");
                 //ItemLedgerEntry.SetFilter("Entry No.", '%1|%2', 1289, 1290);
             end;
 
