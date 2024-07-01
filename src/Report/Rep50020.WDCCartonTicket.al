@@ -4,6 +4,7 @@ report 50020 "WDC Carton Ticket"
     DefaultLayout = RDLC;
     RDLCLayout = './src/Report/RDLC/CartonTicket.rdl';
     PreviewMode = PrintLayout;
+
     dataset
     {
 
@@ -39,6 +40,7 @@ report 50020 "WDC Carton Ticket"
             {
                 DataItemLink = "Carton No." = field("No.");
                 DataItemLinkReference = carton;
+
 
                 column(Serial_No_; "Serial No.")
                 {
@@ -91,6 +93,37 @@ report 50020 "WDC Carton Ticket"
                         TotalQty += CartonTrackLine.Quantity;
                     until CartonTrackLine.Next() = 0;
             end;
+
+            trigger OnPreDataItem()
+            begin
+                Carton.Reset();
+                Carton.SetFilter("No.", cartonfilter);
+
+            end;
+        }
+
+    }
+
+
+    requestpage
+    {
+        SaveValues = true;
+
+        layout
+        {
+            area(content)
+            {
+                group(Options)
+                {
+                    Caption = 'Options';
+                    field(cartonfilter; cartonfilter)
+                    {
+                        ApplicationArea = Basic, Suite;
+                        TableRelation = "Carton Tracking Lines";
+                    }
+
+                }
+            }
         }
     }
     var
@@ -102,4 +135,6 @@ report 50020 "WDC Carton Ticket"
         BarcodeStringSNCarton: Text;
         CartonTrackLine: Record "Carton Tracking Lines";
         TotalQty: Integer;
+        cartonfilter: Code[20];
+
 }

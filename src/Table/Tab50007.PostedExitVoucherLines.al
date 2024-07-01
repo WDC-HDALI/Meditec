@@ -83,6 +83,12 @@ table 50007 "Posted Exit Voucher Lines"
             Caption = 'No. Lot';
             TableRelation = "Lot No. Information"."Lot No." where("Item No." = field("No."));
         }
+        field(14; "Variant Code"; Code[10])//WDC.IM
+        {
+            Caption = 'Variant Code';
+            TableRelation = "Item Variant".Code WHERE("Item No." = field("No."));
+            Editable = false;
+        }
     }
     keys
     {

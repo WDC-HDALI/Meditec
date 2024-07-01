@@ -59,4 +59,30 @@ page 50016 "Closed Carton List"
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            action(Ticket)
+            {
+                ApplicationArea = all;
+                Caption = 'Ticket carton';
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedCategory = Process;
+                Image = PrintCover;
+                // RunObject = report 50020;
+                trigger OnAction()
+                var
+                    lCarton: record carton;
+                begin
+                    lCarton.Reset();
+                    lCarton.SetFilter("No.", Rec."No.");
+                    if lCarton.FindFirst() then
+                        Report.Run(50020, true, false, lCarton);
+
+                end;
+            }
+        }
+    }
 }

@@ -31,6 +31,11 @@ pageextension 50002 "WDC Item Card" extends "Item Card"
             {
                 ApplicationArea = all;
             }
+            field("Transport cost"; Rec."Transport cost")
+            {
+                ApplicationArea = all;
+            }
+
 
         }
         addafter("Item Category Code")

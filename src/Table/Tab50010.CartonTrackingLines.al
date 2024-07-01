@@ -2,6 +2,8 @@ table 50010 "Carton Tracking Lines"
 {
     Caption = 'Lignes Traçabilité Carton';
     DataClassification = ToBeClassified;
+    LookupPageId = "Carton Tracking List";
+    DrillDownPageId = "Carton Tracking List";
 
     fields
     {
@@ -34,7 +36,8 @@ table 50010 "Carton Tracking Lines"
             Caption = 'No. de série';
             DataClassification = ToBeClassified;
             TableRelation = "Serial No. Information"."Serial No." where(Inventory = filter(<> 0),
-                                                         "Assembled in Carton" = filter(''));
+                                                         "Assembled in Carton" = filter(''),
+                                                         "Location Filter" = filter('MAG-PF'));
             trigger OnValidate()
             var
                 lItemLedgEnt: Record "Item Ledger Entry";
@@ -49,6 +52,8 @@ table 50010 "Carton Tracking Lines"
                     lItemLedgEnt.Reset;
                     lItemLedgEnt.SetCurrentKey("Item No.", "Entry Type", "Variant Code", "Drop Shipment", "Location Code", "Posting Date");
                     lItemLedgEnt.SetRange("Serial No.", rec."Serial No.");
+                    lItemLedgEnt.SetFilter("Location Code", 'MAG-PF');
+                    lItemLedgEnt.SetRange(Open, TRUE);//WDC.IM
                     if lItemLedgEnt.FindFirst() then begin
                         Quantity := 1;
                         Rec."Lot No." := lItemLedgEnt."Lot No.";
@@ -67,9 +72,10 @@ table 50010 "Carton Tracking Lines"
         {
             Caption = 'No. de lot';
             DataClassification = ToBeClassified;
-            Editable = false;
+            Editable = false;//WDC.IM
             TableRelation = "Lot No. Information" where("Item No." = field("Item No."),
-                                                         Inventory = filter(<> 0));
+                                                                    Inventory = filter(<> 0),
+                                                                    "Location Filter" = filter('MAG-PF'));
         }
         field(7; Quantity; Decimal)
         {
@@ -83,19 +89,26 @@ table 50010 "Carton Tracking Lines"
             DataClassification = ToBeClassified;
             Editable = false;
         }
+        //<<WDC.IM
+        field(9; "Entry No. doc"; Integer)
+        {
+            FieldClass = FlowField;
+            CalcFormula = max("Item Ledger Entry"."Entry No." where("Serial No." = field("Serial No."), "Entry Type" = const(sale)));
+        }
+        field(10; "Entry No. Filter"; Integer)
+        {
 
-        field(9; "Shipment No."; Code[20])
+        }
+        field(11; "Shipment No."; Code[20])
         {
             Caption = 'N° Expédition';
             FieldClass = FlowField;
             Editable = false;
-            CalcFormula = lookup("Item Ledger Entry"."Document No." WHERE("Serial No." = FIELD("Serial No."),
-                                                                  "Entry Type" = const(Sale),
-                                                                  "Document Type" = const("Sales Shipment")));
+            CalcFormula = lookup("Item Ledger Entry"."Document No." WHERE("Entry No." = field("Entry No. Filter")));//WDC.IM
+            //"Document Type" = const("Sales Shipment"))); //CMT WDC.IM
         }
-
-
-        field(10; "Customer No."; Code[20])
+        //>>WDC.IM
+        field(12; "Customer No."; Code[20])
         {
             Caption = 'No. client';
             DataClassification = ToBeClassified;
@@ -110,35 +123,34 @@ table 50010 "Carton Tracking Lines"
                     Rec."Customer Name" := lCustomer.Name;
             end;
         }
-        field(11; "Customer Name"; Text[100])
+        field(13; "Customer Name"; Text[100])
         {
             Caption = 'Nom client';
             DataClassification = ToBeClassified;
             Editable = false;
         }
 
-        field(12; "Variant Code"; Code[10])
+        field(14; "Variant Code"; Code[10])
         {
             Caption = 'Variant Code';
             TableRelation = "Item Variant".Code WHERE("Item No." = FIELD("Item No."));
             Editable = false;
         }
-        field(13; "Shipment Line No."; Integer)
+        field(15; "Shipment Line No."; Integer)
         {
             Caption = 'Ligne Expédition';
             FieldClass = FlowField;
             Editable = false;
-            CalcFormula = lookup("Item Ledger Entry"."Document Line No." WHERE("Serial No." = FIELD("Serial No."),
-                                                                  "Entry Type" = const(Sale),
-                                                                  "Document Type" = const("Sales Shipment")));
+            CalcFormula = lookup("Item Ledger Entry"."Document Line No." WHERE("Entry No." = field("Entry No. Filter"))); //WDC.IM
+            //                                                       "Document Type" = const("Sales Shipment"))); //CMT WDC.IM
         }
-        field(14; "Order Line No."; Integer)
+        field(16; "Order Line No."; Integer)
         {
             Caption = 'No. ligne commande ';
             DataClassification = ToBeClassified;
             Editable = false;
         }
-        field(15; "Ship to code"; Code[20])
+        field(17; "Ship to code"; Code[20])
         {
             Caption = 'Code destinataire';
             DataClassification = ToBeClassified;
@@ -155,13 +167,13 @@ table 50010 "Carton Tracking Lines"
             end;
 
         }
-        field(16; "Ship to name"; Text[100])
+        field(18; "Ship to name"; Text[100])
         {
             DataClassification = ToBeClassified;
             Caption = 'Nom destinataire';
             Editable = false;
         }
-        field(17; "Item Description"; Text[100])
+        field(19; "Item Description"; Text[100])
         {
             Caption = 'Description article';
             DataClassification = ToBeClassified;
@@ -174,6 +186,12 @@ table 50010 "Carton Tracking Lines"
         key(PK; "Carton No.", "Item No.", "Ref Line No.", "Serial No.", "Customer No.")
         {
             Clustered = true;
+        }
+        key(Key1; "Item No.", "Variant Code")//WDC.IM
+        {
+        }
+        key(Key2; "Customer No.", "Carton No.", "Order No.")//WDC.IM
+        {
         }
     }
     trigger OnInsert()
@@ -204,17 +222,15 @@ table 50010 "Carton Tracking Lines"
     procedure ControlItemRefCustomer()
     var
         lItemRef: record "Item Reference";
+        lItem: Record item;
         lText001: Label 'Cet article n''est pas à ce client.\ Veuillez vérifier!!';
         lText002: Label 'Article de client inconnu,\veillez remplir le client pour cet article';
     begin
-        lItemRef.Reset();
-        lItemRef.SetRange("Item No.", Rec."Item No.");
-        if lItemRef.FindFirst() then BEGIN // Pour éviter les erreurs des articles qui n'ont pas des réference 
-            lItemRef.SetRange("Reference Type", lItemRef."Reference Type"::Customer);
-            lItemRef.SetRange("Reference Type No.", Rec."Customer No.");
-            If Not lItemRef.FindFirst() then
-                Error(ltext001);
-        END ELSE
-            Error(lText002);
+        If lItem.Get(rec."Item No.") Then
+            if (lItem."Customer Code" <> Rec."Customer No.") and (lItem."Customer Code" <> '') then
+                Error(ltext001)
+            else
+                if (lItem."Customer Code" = '') then
+                    Error(lText002);
     end;
 }

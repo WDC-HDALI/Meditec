@@ -19,6 +19,10 @@ report 50000 "WDC Posted Sales Invoice"
             column(MethodTransport; Header."Transport Method")
             {
             }
+            column(ItemCategDescr; ItemCateg.Description)
+            {
+
+            }
 
             column(DocumentExt; Header."External Document No.")
             {
@@ -32,9 +36,6 @@ report 50000 "WDC Posted Sales Invoice"
             column(CompanyCity; companyinfo.City)
             {
             }
-            // column(LegalForm; companyinfo."Legal Form")  
-            // {
-            // }
             column(NoDevis; Header."Quote No.")
             {
             }
@@ -69,12 +70,6 @@ report 50000 "WDC Posted Sales Invoice"
             column(CompanySIRET; companyinfo."Registration No.")
             {
             }
-            // column(CompanyRegister; companyinfo."Trade Register")  
-            // {
-            // }
-            // column(companyinfo_Capital; companyinfo."Stock Capital")  
-            // {
-            // }
             column(Paiement; Paiement)
             {
             }
@@ -88,6 +83,9 @@ report 50000 "WDC Posted Sales Invoice"
             {
             }
             column(TVA_Intra; Cust."VAT Registration No.")
+            {
+            }
+            column(EORI; Cust."EORI Number")
             {
             }
 
@@ -140,7 +138,7 @@ report 50000 "WDC Posted Sales Invoice"
             column(CompanyGiroNo_Lbl; CompanyInfoGiroNoLbl)
             {
             }
-            column(CompanyBankName; CompanyInfo."Bank Name")
+            column(CompanyBankName; BankAccount.Name)
             {
             }
             column(CompanyBankName_Lbl; CompanyInfoBankNameLbl)
@@ -158,13 +156,13 @@ report 50000 "WDC Posted Sales Invoice"
             column(CompanyBankAccountNo_Lbl; CompanyInfoBankAccNoLbl)
             {
             }
-            column(CompanyIBAN; CompanyInfo.IBAN)
+            column(CompanyIBAN; BankAccount.IBAN)
             {
             }
             column(CompanyIBAN_Lbl; CompanyInfo.FieldCaption(IBAN))
             {
             }
-            column(CompanySWIFT; CompanyInfo."SWIFT Code")
+            column(CompanySWIFT; BankAccount."SWIFT Code")
             {
             }
             column(CompanySWIFT_Lbl; CompanyInfo.FieldCaption("SWIFT Code"))
@@ -673,6 +671,9 @@ report 50000 "WDC Posted Sales Invoice"
                 column(Emballage; Emballage)
                 {
                 }
+                column(transport_cost; transport_cost)
+                {
+                }
                 column(TotalRemise; TotalRemise)
                 {
                 }
@@ -880,6 +881,7 @@ report 50000 "WDC Posted Sales Invoice"
                 trigger OnAfterGetRecord()
                 var
                     lItem: record Item;
+                    lShipmentNo: Code[20];
                 begin
                     if Type = Type::"G/L Account" then
                         "No." := '';
@@ -921,10 +923,19 @@ report 50000 "WDC Posted Sales Invoice"
                         Clear(DummyCompanyInfo.Picture);
                     FirstLineHasBeenOutput := true;
                     //<<Meditec
+                    transport_cost := false;
+                    Emballage := false;//WDC.IM
                     if Line.Type = Line.type::Item then
-                        if lItem.Get(Line."No.") then
+                        if lItem.Get(Line."No.") then BEGIN
+                            if lShipmentNo <> "Shipment No." then begin
+                                NbCartons += CalcNbrCartonMeditec("Shipment No.", "Shipment Line No.");
+                                lShipmentNo := "Shipment No.";
+                            end;
                             if lItem."Packing Item" then
                                 Emballage := True;
+                            transport_cost := litem."Transport cost"
+                        END;
+
                     //>>Meditec
                     FormatDocument.SetSalesInvoiceLine(Line, FormattedQuantity, FormattedUnitPrice, FormattedVATPct, FormattedLineAmount);
 
@@ -1125,9 +1136,10 @@ report 50000 "WDC Posted Sales Invoice"
             var
                 CurrencyExchangeRate: Record "Currency Exchange Rate";
                 EnvInfoProxy: Codeunit "Env. Info Proxy";
-
+                lItem: Record Item;
 
             begin
+                if BankAccount.get(Header."Company Bank Account Code") then;
                 CalcValueMeditecAfterDevCarton();
                 if EnvInfoProxy.IsInvoicing then begin
                     "Language Code" := Language.GetUserLanguageCode;
@@ -1153,6 +1165,9 @@ report 50000 "WDC Posted Sales Invoice"
                     //<<WDC HD 
                     repeat
                         TotalRemise += GsalesLine."Line Discount Amount";
+                        If (GsalesLine.Type = GsalesLine.Type::Item) and (GsalesLine."Gen. Prod. Posting Group" = 'PF') then
+                            if lItem.Get(GsalesLine."No.") Then
+                                If ItemCateg.get(lItem."Item Category Code") Then;
                     until GsalesLine.Next = 0;
                 End;
                 //>>WDC
@@ -1330,6 +1345,8 @@ report 50000 "WDC Posted Sales Invoice"
 
     var
         Emballage: Boolean;
+        transport_cost: Boolean;
+        ItemCateg: Record "Item Category";
         CuTTLettre: Codeunit MontantTouteLettre;
         MtTtLettres: Text;
         TotalEmballage: Decimal;
@@ -1344,6 +1361,7 @@ report 50000 "WDC Posted Sales Invoice"
         Paiement: Text;
         CustSell: Record Customer;
         MonthTxt: Text;
+        BankAccount: Record 270;
         BDMRInvoiceNo: Text;
         NumeroDescription: integer;
         LineToAdd: Integer;
@@ -1624,51 +1642,25 @@ report 50000 "WDC Posted Sales Invoice"
         lSalesInvLines.SetRange("Document No.", Header."No.");
         if lSalesInvLines.FindFirst() then
             repeat
-                if lSalesInvLines.Type = lSalesInvLines.type::Item then
+                if lSalesInvLines.Type = lSalesInvLines.type::Item then begin
                     if lItem.Get(lSalesInvLines."No.") then begin
-                        if lShipmentNo <> lSalesInvLines."Shipment No." then begin
-                            NbCartons += CalcNbrCartonMeditec(lSalesInvLines."Shipment No.", lSalesInvLines."Shipment Line No.");
-                            lShipmentNo := lSalesInvLines."Shipment No."
-                        end;
-                        If lItem."Packaging Type" = lItem."Packaging Type"::Pallet then
+                        If lItem."Packaging Type" = lItem."Packaging Type"::Pallet then begin
+                            TotPoidBrut += lItem."Net Weight" * lSalesInvLines.Quantity;
                             NbPalette += lSalesInvLines.Quantity;
-                    end else begin
-                        TotPoidNet += lItem."Net Weight" * lSalesInvLines.Quantity;
-                        NbPieces += lSalesInvLines.Quantity;
-                    end;
-                TotPoidBrut += lItem."Net Weight" * lSalesInvLines.Quantity;
-            until lSalesInvLines.Next() = 0;
-        //<<MeditecHD
-    end;
-
-    procedure CalcValueMeditec()
-    var
-        lSalesInvLines: record "Sales Invoice Line";
-        lItem: Record item;
-    begin
-        //>>MeditecHD
-        NbCartons := 0;
-        NbPalette := 0;
-        TotPoidNet := 0;
-        TotPoidBrut := 0;
-        NbPieces := 0;
-        lSalesInvLines.Reset();
-        lSalesInvLines.SetRange("Document No.", Header."No.");
-        if lSalesInvLines.FindFirst() then
-            repeat
-                if lSalesInvLines.Type = lSalesInvLines.type::Item then
-                    if lItem.Get(lSalesInvLines."No.") then
-                        if lItem."Packing Item" then begin
                             TotalEmballage += lSalesInvLines."Unit Price" * lSalesInvLines.Quantity;
-                            If lItem."Packaging Type" = lItem."Packaging Type"::Carton then
-                                NbCartons += lSalesInvLines.Quantity;
-                            If lItem."Packaging Type" = lItem."Packaging Type"::Pallet then
-                                NbPalette += lSalesInvLines.Quantity;
                         end else begin
-                            TotPoidNet += lItem."Net Weight" * lSalesInvLines.Quantity;
-                            NbPieces += lSalesInvLines.Quantity;
+                            If (lItem."Packaging Type" = lItem."Packaging Type"::" ") and not lItem."Transport cost" then begin
+                                NbPieces += lSalesInvLines.Quantity;
+                                TotPoidNet += lItem."Net Weight" * lSalesInvLines.Quantity;
+                                TotPoidBrut += lItem."Net Weight" * lSalesInvLines.Quantity;
+                            end;
+
+                            If lItem."Transport cost" then
+                                TotalEmballage += lSalesInvLines."Unit Price" * lSalesInvLines.Quantity;
                         end;
-                TotPoidBrut += lItem."Net Weight" * lSalesInvLines.Quantity;
+                    end;
+                end;
+
             until lSalesInvLines.Next() = 0;
         //<<MeditecHD
     end;
@@ -1678,21 +1670,49 @@ report 50000 "WDC Posted Sales Invoice"
         lTrackCartons: Record "Carton Tracking Lines";
         lCartonNo: Code[20];
         lNbCarton: Decimal;
+        lItem: Record Item;
+        lcarton: Record Carton;
     begin
+        //<<WDC.IM
         lCartonNo := '';
+        // lTrackCartons.Reset();
+        // lTrackCartons.SetCurrentKey("Carton No.", "Item No.", "Ref Line No.", "Serial No.", "Customer No.");
+        // lTrackCartons.SetRange("Shipment No.", pshipmentNo);
+        // lTrackCartons.SetRange("Shipment Line No.", pShipLineNo);
+        // lTrackCartons.SetRange("Customer No.", Header."Sell-to Customer No.");
+        // if lTrackCartons.FindFirst() then
+        //     repeat
+        //         if lCartonNo <> lTrackCartons."Carton No." Then begin
+        //             lNbCarton += 1;
+        //             if lcarton.Get(lTrackCartons."Carton No.") then
+        //                 if lItem.get(lcarton."Item Carton No.") Then
+        //                     TotPoidBrut += lItem."Net Weight";
+        //             //TotalEmballage += lItem."Net Weight";
+        //             lCartonNo := lTrackCartons."Carton No.";
+        //         end;
+        //     until lTrackCartons.Next() = 0;
+        // exit(lNbCarton);
         lTrackCartons.Reset();
-        lTrackCartons.SetCurrentKey("Carton No.", "Item No.", "Ref Line No.", "Serial No.", "Customer No.");
-        lTrackCartons.SetRange("Shipment No.", pshipmentNo);
-        lTrackCartons.SetRange("Shipment Line No.", pShipLineNo);
+        lTrackCartons.SetCurrentKey("Customer No.", "Carton No.", "Order No.");
         lTrackCartons.SetRange("Customer No.", Header."Sell-to Customer No.");
-        if lTrackCartons.FindFirst() then
+        if lTrackCartons.FindSet() then begin
             repeat
-                if lCartonNo <> lTrackCartons."Carton No." Then begin
-                    lNbCarton += 1;
-                    lCartonNo := lTrackCartons."Carton No.";
+                lTrackCartons.CalcFields("Entry No. doc");
+                lTrackCartons."Entry No. Filter" := lTrackCartons."Entry No. doc";
+                lTrackCartons.CalcFields("Shipment No.", "Shipment Line No.");
+                if ((lTrackCartons."Shipment No." = pshipmentNo) and (lTrackCartons."Shipment Line No." = pShipLineNo)) then begin
+                    if lCartonNo <> lTrackCartons."Carton No." Then begin
+                        lNbCarton += 1;
+                        if lcarton.Get(lTrackCartons."Carton No.") then
+                            if lItem.get(lcarton."Item Carton No.") Then
+                                TotPoidBrut += lItem."Net Weight";
+                        lCartonNo := lTrackCartons."Carton No.";
+                    end;
                 end;
             until lTrackCartons.Next() = 0;
-        exit(lNbCarton);
-    End;
+            exit(lNbCarton);
+        End;
+        //>>WDC.IM
+    end;
 }
 

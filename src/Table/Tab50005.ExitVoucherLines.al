@@ -87,7 +87,8 @@ table 50005 "Exit Voucher Lines"
         {
             Caption = 'No. Lot';
             TableRelation = "Lot No. Information"."Lot No." where("Item No." = field("No."),
-                                                                 "Location Filter" = field("Location Code"));
+                                                                 "Location Filter" = field("Location Code"),
+                                                                 Inventory = filter(<> 0));
         }
         field(13; Inventory; Decimal)
         {
@@ -99,6 +100,11 @@ table 50005 "Exit Voucher Lines"
             DecimalPlaces = 0 : 5;
             Editable = false;
             FieldClass = FlowField;
+        }
+        field(14; "Variant Code"; Code[10])//WDC.IM
+        {
+            Caption = 'Variant Code';
+            TableRelation = "Item Variant".Code WHERE("Item No." = field("No."));
         }
     }
     keys

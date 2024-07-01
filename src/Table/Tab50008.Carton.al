@@ -2,8 +2,11 @@ table 50008 Carton
 {
     Caption = 'Carton';
     DataClassification = ToBeClassified;
-    LookupPageId = "Carton List";
-    DrillDownPageId = "Carton List";
+    // LookupPageId = "Carton List";
+    //DrillDownPageId = "Carton List";
+
+    LookupPageId = "Closed Carton List";
+    DrillDownPageId = "Closed Carton List";
 
     fields
     {
@@ -21,19 +24,27 @@ table 50008 Carton
             var
                 lItem: Record Item;
                 lItemLedgerEnties: record "Item Ledger Entry";
+                LotInformation: Record "Lot No. Information";
             begin
                 Rec."Item Description" := '';
+                "Lot No." := '';
                 if lItem.Get(rec."Item Carton No.") then
                     Rec."Item Description" := lItem.Description;
-                "Lot No." := '';
-                lItemLedgerEnties.Reset();
-                lItemLedgerEnties.SetCurrentKey("Item No.", "Posting Date");
-                lItemLedgerEnties.SetRange("Item No.", "Item Carton No.");
-                lItemLedgerEnties.SetRange(Open, true);
-                lItemLedgerEnties.SetFilter("Lot No.", '<>%1', '');
-                lItemLedgerEnties.SetFilter("Remaining Quantity", '<>%1', 0);
-                IF lItemLedgerEnties.FindFirst() then
-                    "Lot No." := lItemLedgerEnties."Lot No.";
+
+                // lItemLedgerEnties.Reset();
+                // lItemLedgerEnties.SetCurrentKey("Item No.", "Posting Date");
+                // lItemLedgerEnties.SetRange("Item No.", "Item Carton No.");
+                // lItemLedgerEnties.SetRange(Open, true);
+                // lItemLedgerEnties.SetFilter("Lot No.", '<>%1', '');
+                // lItemLedgerEnties.SetFilter("Remaining Quantity", '<>%1', 0);
+                // IF lItemLedgerEnties.FindFirst() then
+                //     "Lot No." := lItemLedgerEnties."Lot No.";
+                LotInformation.Reset();
+                LotInformation.SetRange("Item No.", "Item Carton No.");
+                LotInformation.SetFilter(Inventory, '<>%1', 0);
+                LotInformation.SetFilter("Location Filter", 'MAG-MC');
+                If LotInformation.FindFirst() then
+                    "Lot No." := LotInformation."Lot No.";
 
             end;
         }
@@ -86,6 +97,9 @@ table 50008 Carton
                     ELSE
                         lCartTrackLines.DeleteAll();
                 Rec."Customer Name" := '';
+                Rec.Validate("Ship to code", '');
+                Rec.Validate("Item Carton No.", '');
+                Rec."Serial No." := '';
                 if lCustomer.Get(rec."Customer No.") then begin
                     Rec."Customer Name" := lCustomer.Name;
                     Rec."Serial No." := CopyStr("Customer Name" + '-' + Rec."No.", 1, 50);
@@ -117,7 +131,8 @@ table 50008 Carton
             Caption = 'No. Lot';
             DataClassification = ToBeClassified;
             TableRelation = "Lot No. Information"."Lot No." where("Item No." = field("Item Carton No."),
-                                                         Inventory = filter(<> 0));                                             //WDC.SH
+                                                         Inventory = filter(<> 0),
+                                                         "Location Filter" = filter('MAG-MC'));                                             //WDC.SH
 
         }
         field(13; Selected; Boolean)

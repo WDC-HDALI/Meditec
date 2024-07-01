@@ -19,12 +19,12 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>7.58777cm</Width>
+                  <Width>5.92177cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
-                  <Height>0.7905cm</Height>
+                  <Height>0.25cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -36,7 +36,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!Item_No_.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -66,7 +68,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.854cm</Height>
+                  <Height>0.25cm</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -78,7 +80,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!Description.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontSize>7pt</FontSize>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -128,7 +132,7 @@
                     </SortExpression>
                   </SortExpressions>
                   <TablixHeader>
-                    <Size>6.525cm</Size>
+                    <Size>4.859cm</Size>
                     <CellContents>
                       <Textbox Name="SerialNoBarcode1">
                         <CanGrow>true</CanGrow>
@@ -140,7 +144,7 @@
                                 <Value>=Fields!SerialNoBarcode.Value</Value>
                                 <Style>
                                   <FontFamily>IDAutomationC128M</FontFamily>
-                                  <FontSize>12pt</FontSize>
+                                  <FontSize>9pt</FontSize>
                                 </Style>
                               </TextRun>
                             </TextRuns>
@@ -186,10 +190,10 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Result</DataSetName>
-            <Top>0.62653cm</Top>
+            <Top>0.02cm</Top>
             <Left>0.06106cm</Left>
-            <Height>1.6445cm</Height>
-            <Width>14.11277cm</Width>
+            <Height>0.5cm</Height>
+            <Width>10.78077cm</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -197,85 +201,18 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>2.27103cm</Height>
+        <Height>0.52cm</Height>
         <Style />
       </Body>
-      <Width>14.2585cm</Width>
+      <Width>10.85066cm</Width>
       <Page>
         <PageHeader>
-          <Height>4.35209cm</Height>
+          <Height>2.09cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
             <Rectangle Name="Rectangle2">
               <ReportItems>
-                <Textbox Name="Textbox14">
-                  <CanGrow>true</CanGrow>
-                  <KeepTogether>true</KeepTogether>
-                  <Paragraphs>
-                    <Paragraph>
-                      <TextRuns>
-                        <TextRun>
-                          <Value>=First(Fields!Customer_Name.Value, "DataSet_Result") &amp; " 23-24"</Value>
-                          <Style>
-                            <Color>White</Color>
-                          </Style>
-                        </TextRun>
-                      </TextRuns>
-                      <Style>
-                        <TextAlign>Right</TextAlign>
-                      </Style>
-                    </Paragraph>
-                  </Paragraphs>
-                  <rd:DefaultName>Textbox11</rd:DefaultName>
-                  <Top>0.07967cm</Top>
-                  <Left>7.3643cm</Left>
-                  <Height>1.37639cm</Height>
-                  <Width>6.80953cm</Width>
-                  <Style>
-                    <Border>
-                      <Style>None</Style>
-                    </Border>
-                    <PaddingLeft>2pt</PaddingLeft>
-                    <PaddingRight>2pt</PaddingRight>
-                    <PaddingTop>2pt</PaddingTop>
-                    <PaddingBottom>2pt</PaddingBottom>
-                  </Style>
-                </Textbox>
-                <Textbox Name="Description7">
-                  <CanGrow>true</CanGrow>
-                  <KeepTogether>true</KeepTogether>
-                  <Paragraphs>
-                    <Paragraph>
-                      <TextRuns>
-                        <TextRun>
-                          <Value>BOX NUMBER :</Value>
-                          <Style>
-                            <Color>White</Color>
-                          </Style>
-                        </TextRun>
-                      </TextRuns>
-                      <Style>
-                        <TextAlign>Center</TextAlign>
-                      </Style>
-                    </Paragraph>
-                  </Paragraphs>
-                  <rd:DefaultName>Description1</rd:DefaultName>
-                  <Top>0.07967cm</Top>
-                  <Left>3.34189cm</Left>
-                  <Height>0.6cm</Height>
-                  <Width>3.5287cm</Width>
-                  <ZIndex>1</ZIndex>
-                  <Style>
-                    <Border>
-                      <Style>None</Style>
-                    </Border>
-                    <PaddingLeft>2pt</PaddingLeft>
-                    <PaddingRight>2pt</PaddingRight>
-                    <PaddingTop>2pt</PaddingTop>
-                    <PaddingBottom>2pt</PaddingBottom>
-                  </Style>
-                </Textbox>
                 <Textbox Name="Textbox15">
                   <CanGrow>true</CanGrow>
                   <KeepTogether>true</KeepTogether>
@@ -285,6 +222,7 @@
                         <TextRun>
                           <Value>COUNTRY CODE</Value>
                           <Style>
+                            <FontSize>7pt</FontSize>
                             <Color>White</Color>
                           </Style>
                         </TextRun>
@@ -298,6 +236,7 @@
                         <TextRun>
                           <Value>MADE IN TUNISIA</Value>
                           <Style>
+                            <FontSize>7pt</FontSize>
                             <Color>White</Color>
                           </Style>
                         </TextRun>
@@ -308,11 +247,10 @@
                     </Paragraph>
                   </Paragraphs>
                   <rd:DefaultName>Textbox11</rd:DefaultName>
-                  <Top>3.2481cm</Top>
-                  <Left>9.79865cm</Left>
-                  <Height>0.9276cm</Height>
-                  <Width>3.14538cm</Width>
-                  <ZIndex>2</ZIndex>
+                  <Top>1.0299cm</Top>
+                  <Left>6.89706cm</Left>
+                  <Height>0.76521cm</Height>
+                  <Width>2.66913cm</Width>
                   <Style>
                     <Border>
                       <Style>None</Style>
@@ -333,7 +271,7 @@
                         <TextRun>
                           <Value>TN</Value>
                           <Style>
-                            <FontSize>20pt</FontSize>
+                            <FontSize>16pt</FontSize>
                             <FontWeight>Bold</FontWeight>
                             <Color>White</Color>
                           </Style>
@@ -345,119 +283,16 @@
                     </Paragraph>
                   </Paragraphs>
                   <rd:DefaultName>Textbox11</rd:DefaultName>
-                  <Top>3.2481cm</Top>
-                  <Left>13.03928cm</Left>
-                  <Height>0.9276cm</Height>
-                  <Width>1.1028cm</Width>
-                  <ZIndex>3</ZIndex>
+                  <Top>1.0299cm</Top>
+                  <Left>9.56618cm</Left>
+                  <Height>0.76521cm</Height>
+                  <Width>1.2492cm</Width>
+                  <ZIndex>1</ZIndex>
                   <Style>
                     <Border>
                       <Style>None</Style>
                     </Border>
                     <VerticalAlign>Middle</VerticalAlign>
-                    <PaddingLeft>2pt</PaddingLeft>
-                    <PaddingRight>2pt</PaddingRight>
-                    <PaddingTop>2pt</PaddingTop>
-                    <PaddingBottom>2pt</PaddingBottom>
-                  </Style>
-                </Textbox>
-                <Textbox Name="Description8">
-                  <CanGrow>true</CanGrow>
-                  <KeepTogether>true</KeepTogether>
-                  <Paragraphs>
-                    <Paragraph>
-                      <TextRuns>
-                        <TextRun>
-                          <Value>QTY:</Value>
-                          <Style>
-                            <Color>White</Color>
-                          </Style>
-                        </TextRun>
-                      </TextRuns>
-                      <Style>
-                        <TextAlign>Center</TextAlign>
-                      </Style>
-                    </Paragraph>
-                  </Paragraphs>
-                  <rd:DefaultName>Description1</rd:DefaultName>
-                  <Top>0.07967cm</Top>
-                  <Left>0.06106cm</Left>
-                  <Height>0.6cm</Height>
-                  <Width>2.6397cm</Width>
-                  <ZIndex>4</ZIndex>
-                  <Style>
-                    <Border>
-                      <Style>None</Style>
-                    </Border>
-                    <PaddingLeft>2pt</PaddingLeft>
-                    <PaddingRight>2pt</PaddingRight>
-                    <PaddingTop>2pt</PaddingTop>
-                    <PaddingBottom>2pt</PaddingBottom>
-                  </Style>
-                </Textbox>
-                <Textbox Name="Description9">
-                  <CanGrow>true</CanGrow>
-                  <KeepTogether>true</KeepTogether>
-                  <Paragraphs>
-                    <Paragraph>
-                      <TextRuns>
-                        <TextRun>
-                          <Value>=First(Fields!Quantity.Value, "DataSet_Result")</Value>
-                          <Style>
-                            <Format>#,0;-#,0;''</Format>
-                            <Color>White</Color>
-                          </Style>
-                        </TextRun>
-                      </TextRuns>
-                      <Style>
-                        <TextAlign>Center</TextAlign>
-                      </Style>
-                    </Paragraph>
-                  </Paragraphs>
-                  <rd:DefaultName>Description1</rd:DefaultName>
-                  <Top>0.85606cm</Top>
-                  <Left>0.06106cm</Left>
-                  <Height>0.6cm</Height>
-                  <Width>2.6397cm</Width>
-                  <ZIndex>5</ZIndex>
-                  <Style>
-                    <Border>
-                      <Style>None</Style>
-                    </Border>
-                    <PaddingLeft>2pt</PaddingLeft>
-                    <PaddingRight>2pt</PaddingRight>
-                    <PaddingTop>2pt</PaddingTop>
-                    <PaddingBottom>2pt</PaddingBottom>
-                  </Style>
-                </Textbox>
-                <Textbox Name="Description10">
-                  <CanGrow>true</CanGrow>
-                  <KeepTogether>true</KeepTogether>
-                  <Paragraphs>
-                    <Paragraph>
-                      <TextRuns>
-                        <TextRun>
-                          <Value>=First(Fields!Carton_No_.Value, "DataSet_Result")</Value>
-                          <Style>
-                            <Color>White</Color>
-                          </Style>
-                        </TextRun>
-                      </TextRuns>
-                      <Style>
-                        <TextAlign>Center</TextAlign>
-                      </Style>
-                    </Paragraph>
-                  </Paragraphs>
-                  <rd:DefaultName>Description1</rd:DefaultName>
-                  <Top>0.85606cm</Top>
-                  <Left>3.34189cm</Left>
-                  <Height>0.6cm</Height>
-                  <Width>3.5287cm</Width>
-                  <ZIndex>6</ZIndex>
-                  <Style>
-                    <Border>
-                      <Style>None</Style>
-                    </Border>
                     <PaddingLeft>2pt</PaddingLeft>
                     <PaddingRight>2pt</PaddingRight>
                     <PaddingTop>2pt</PaddingTop>
@@ -473,10 +308,10 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=First(Fields!SerialCarton.Value, "DataSet_Result")</Value>
+                              <Value>=Fields!SerialCarton.Value</Value>
                               <Style>
                                 <FontFamily>IDAutomationC128M</FontFamily>
-                                <FontSize>12pt</FontSize>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -486,18 +321,18 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Description1</rd:DefaultName>
-                      <Top>0.24825cm</Top>
-                      <Left>0.254cm</Left>
-                      <Height>1.36951cm</Height>
-                      <Width>8.87084cm</Width>
+                      <Top>0.02cm</Top>
+                      <Left>0.03528cm</Left>
+                      <Height>1.10694cm</Height>
+                      <Width>6.69488cm</Width>
                       <Style>
                         <Border>
                           <Style>None</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
+                        <PaddingTop>1pt</PaddingTop>
+                        <PaddingBottom>1pt</PaddingBottom>
                       </Style>
                     </Textbox>
                     <Textbox Name="Description12">
@@ -507,9 +342,9 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=First(Fields!SNCart_Num.Value, "DataSet_Result")</Value>
+                              <Value>=Fields!SNCart_Num.Value</Value>
                               <Style>
-                                <FontSize>6pt</FontSize>
+                                <FontSize>5pt</FontSize>
                                 <Format>#,0;-#,0;''</Format>
                               </Style>
                             </TextRun>
@@ -520,10 +355,10 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Description1</rd:DefaultName>
-                      <Top>1.68025cm</Top>
-                      <Left>0.508cm</Left>
-                      <Height>0.20834cm</Height>
-                      <Width>8.61684cm</Width>
+                      <Top>1.17cm</Top>
+                      <Left>0.03528cm</Left>
+                      <Height>0.26711cm</Height>
+                      <Width>6.69488cm</Width>
                       <ZIndex>1</ZIndex>
                       <Style>
                         <Border>
@@ -531,17 +366,15 @@
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
                   </ReportItems>
                   <KeepTogether>true</KeepTogether>
-                  <Top>1.76953cm</Top>
-                  <Left>0.22225cm</Left>
-                  <Height>2.40617cm</Height>
-                  <Width>9.40001cm</Width>
-                  <ZIndex>7</ZIndex>
+                  <Top>0.358cm</Top>
+                  <Left>0.09634cm</Left>
+                  <Height>1.43711cm</Height>
+                  <Width>6.76544cm</Width>
+                  <ZIndex>2</ZIndex>
                   <Style>
                     <Border>
                       <Style>None</Style>
@@ -549,10 +382,118 @@
                     <BackgroundColor>White</BackgroundColor>
                   </Style>
                 </Rectangle>
+                <Textbox Name="Description8">
+                  <CanGrow>true</CanGrow>
+                  <KeepTogether>true</KeepTogether>
+                  <Paragraphs>
+                    <Paragraph>
+                      <TextRuns>
+                        <TextRun>
+                          <Value>="QTY:" &amp; system.Environment.NewLine &amp; Fields!Quantity.Value</Value>
+                          <Style>
+                            <FontSize>6pt</FontSize>
+                            <FontWeight>Bold</FontWeight>
+                            <Color>White</Color>
+                          </Style>
+                        </TextRun>
+                      </TextRuns>
+                      <Style>
+                        <TextAlign>Center</TextAlign>
+                      </Style>
+                    </Paragraph>
+                  </Paragraphs>
+                  <rd:DefaultName>Description1</rd:DefaultName>
+                  <Top>0.03944cm</Top>
+                  <Left>0.09634cm</Left>
+                  <Height>0.29cm</Height>
+                  <Width>2.63749cm</Width>
+                  <ZIndex>3</ZIndex>
+                  <Style>
+                    <Border>
+                      <Style>None</Style>
+                    </Border>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>1pt</PaddingBottom>
+                  </Style>
+                </Textbox>
+                <Textbox Name="Description7">
+                  <CanGrow>true</CanGrow>
+                  <KeepTogether>true</KeepTogether>
+                  <Paragraphs>
+                    <Paragraph>
+                      <TextRuns>
+                        <TextRun>
+                          <Value>="BOX NUMBER :" &amp; system.Environment.NewLine &amp; Fields!Carton_No_.Value</Value>
+                          <Style>
+                            <FontSize>6pt</FontSize>
+                            <FontWeight>Bold</FontWeight>
+                            <Color>White</Color>
+                          </Style>
+                        </TextRun>
+                      </TextRuns>
+                      <Style>
+                        <TextAlign>Center</TextAlign>
+                      </Style>
+                    </Paragraph>
+                  </Paragraphs>
+                  <rd:DefaultName>Description1</rd:DefaultName>
+                  <Top>0.03944cm</Top>
+                  <Left>3.02439cm</Left>
+                  <Height>0.29cm</Height>
+                  <Width>3.26412cm</Width>
+                  <ZIndex>4</ZIndex>
+                  <Style>
+                    <Border>
+                      <Style>None</Style>
+                    </Border>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>1pt</PaddingBottom>
+                  </Style>
+                </Textbox>
+                <Textbox Name="Textbox14">
+                  <CanGrow>true</CanGrow>
+                  <KeepTogether>true</KeepTogether>
+                  <Paragraphs>
+                    <Paragraph>
+                      <TextRuns>
+                        <TextRun>
+                          <Value>=Fields!Customer_Name.Value &amp; " 24-25"</Value>
+                          <Style>
+                            <FontSize>6pt</FontSize>
+                            <FontWeight>Bold</FontWeight>
+                            <Color>White</Color>
+                          </Style>
+                        </TextRun>
+                      </TextRuns>
+                      <Style>
+                        <TextAlign>Right</TextAlign>
+                      </Style>
+                    </Paragraph>
+                  </Paragraphs>
+                  <rd:DefaultName>Textbox11</rd:DefaultName>
+                  <Top>0.03944cm</Top>
+                  <Left>6.39434cm</Left>
+                  <Height>0.29cm</Height>
+                  <Width>4.4475cm</Width>
+                  <ZIndex>5</ZIndex>
+                  <Style>
+                    <Border>
+                      <Style>None</Style>
+                    </Border>
+                    <PaddingLeft>2pt</PaddingLeft>
+                    <PaddingRight>2pt</PaddingRight>
+                    <PaddingTop>2pt</PaddingTop>
+                    <PaddingBottom>1pt</PaddingBottom>
+                  </Style>
+                </Textbox>
               </ReportItems>
               <KeepTogether>true</KeepTogether>
-              <Height>4.35209cm</Height>
-              <Width>14.2585cm</Width>
+              <Height>2.085cm</Height>
+              <Width>10.85066cm</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -567,11 +508,11 @@
             </Border>
           </Style>
         </PageHeader>
-        <PageHeight>15cm</PageHeight>
-        <PageWidth>14.8cm</PageWidth>
-        <LeftMargin>0.2cm</LeftMargin>
-        <TopMargin>0.5cm</TopMargin>
-        <BottomMargin>0.5cm</BottomMargin>
+        <PageHeight>8cm</PageHeight>
+        <PageWidth>12cm</PageWidth>
+        <LeftMargin>0.5cm</LeftMargin>
+        <RightMargin>0.5cm</RightMargin>
+        <TopMargin>0.2cm</TopMargin>
         <ColumnSpacing>1.27cm</ColumnSpacing>
         <Style />
       </Page>

@@ -4,11 +4,16 @@ report 50019 "WDC PF Ticket"
     DefaultLayout = RDLC;
     RDLCLayout = './src/Report/RDLC/PfTicket.rdl';
     PreviewMode = PrintLayout;
+
     dataset
     {
         dataitem(SerialNoInformation; "Serial No. Information")
         {
             RequestFilterFields = "Serial No.";
+            column(CustomerName; customer.Name)
+            {
+
+            }
             column(Serial_No_; "Serial No.")
             {
 
@@ -43,13 +48,16 @@ report 50019 "WDC PF Ticket"
             {
 
             }
+            column(combinaisonSN; combinaisonSN)
+            {
+
+            }
 
             trigger OnAfterGetRecord()
             var
                 Item: Record Item;
                 ItemRef: Record "Item Reference";
                 Variant: Record "Item Variant";
-
                 BarcodeSymbolygy: Enum "Barcode Symbology";
                 BracodesFontProvider: Interface "Barcode Font Provider";
 
@@ -64,10 +72,9 @@ report 50019 "WDC PF Ticket"
                 BracodesFontProvider.ValidateInput(BarcodeString, BarcodeSymbolygy);
                 SerialNo := BracodesFontProvider.EncodeFont(BarcodeString, BarcodeSymbolygy);
 
-                Item.Reset();
                 Item.Get(SerialNoInformation."Item No.");
                 Description := Item.Description;
-                Item.CalcFields("Customer Code");
+
                 if Item."Customer Code" = 'C00001' then
                     if SerialNoInformation."Variant Code" = '' then begin
                         ItemRef.Reset();
@@ -78,7 +85,7 @@ report 50019 "WDC PF Ticket"
                     else begin
                         ItemRef.Reset();
                         ItemRef.SetRange(ItemRef."Item No.", Item."No.");
-                        ItemRef.SetRange(ItemRef."Variant Code", SerialNoInformation."Variant Code");
+                        ItemRef.SetRange("Variant Code", SerialNoInformation."Variant Code");
                         if ItemRef.FindFirst() then begin
                             FactoryCode := ItemRef."Reference No.";
                             RetailCode := ItemRef."Variant Code";
@@ -94,6 +101,28 @@ report 50019 "WDC PF Ticket"
                     BracodesFontProvider.ValidateInput(BarecodeString2, BarcodeSymbolygy);
                     RetailCodeBarreCode := BracodesFontProvider.EncodeFont(BarecodeString2, BarcodeSymbolygy);
                 end;
+                if customer.get(Item."Customer Code") then
+                    abv := customer."Customer Abreviation";
+
+                itemledgerEntry.Reset();
+                itemledgerEntry.SetRange("Serial No.", SerialNoInformation."Serial No.");
+                if itemledgerEntry.FindSet() then Begin
+                    if (itemledgerEntry."Entry Type" = itemledgerEntry."Entry Type"::Output) AND (itemledgerEntry.Quantity > 0) then begin
+                        OFlance.Reset();
+                        OFlance.SetRange("No.", itemledgerEntry."Document No.");
+                        if OFlance.FindSet() then
+                            modele := OFlance.model;
+                    end;
+                end;
+
+                combinaisonSN := SerialNoInformation."Serial No.";//abv + '-' + modele + '-' + SerialNoInformation."Serial No.";
+
+
+
+
+
+
+
 
             end;
         }
@@ -107,4 +136,14 @@ report 50019 "WDC PF Ticket"
         RetailCode: Code[20];
         FactoryCodeBarreCode: Text;
         RetailCodeBarreCode: Text;
+        ItemRef2: Record "Item Reference";
+        customer: Record Customer;
+
+        //itemvar: Page "Item Tracking Lines";
+        Iemtrachingline: page "Enter Customized SN";
+        abv: text;
+        itemledgerEntry: Record "Item Ledger Entry";
+        OFlance: Record "Production Order";
+        modele: Text;
+        combinaisonSN: text[500];
 }

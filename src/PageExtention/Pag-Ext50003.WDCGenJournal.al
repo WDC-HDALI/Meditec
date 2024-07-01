@@ -13,6 +13,14 @@ pageextension 50003 "WDC GenJournal" extends "General Journal"
             {
                 ApplicationArea = All;
             }
+            field("Source Type"; Rec."Source Type")
+            {
+                ApplicationArea = All;
+            }
+            field("Source No."; Rec."Source No.")
+            {
+                ApplicationArea = All;
+            }
             field(Lettrage; Rec.Lettrage)
             {
                 ApplicationArea = All;
@@ -21,6 +29,7 @@ pageextension 50003 "WDC GenJournal" extends "General Journal"
             {
                 ApplicationArea = All;
             }
+
         }
     }
 }
