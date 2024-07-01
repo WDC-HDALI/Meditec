@@ -5,6 +5,7 @@ page 50019 "Closed Carton Track. Lines"
     SourceTable = "Carton Tracking Lines";
     Editable = false;
     DeleteAllowed = false;
+
     layout
     {
         area(content)
@@ -54,8 +55,19 @@ page 50019 "Closed Carton Track. Lines"
                     ApplicationArea = All;
                 }
 
-            }
-        }
-    }
 
+            }
+
+        }
+
+    }
+    //<<WDC.IM
+    trigger OnAfterGetRecord()
+    begin
+        Rec.CalcFields("Entry No. doc");
+        Rec."Entry No. Filter" := Rec."Entry No. doc";
+        Rec.CalcFields("Shipment No.");
+        Rec.CalcFields("Shipment Line No.");
+    end;
+    //>>WDC.IM
 }

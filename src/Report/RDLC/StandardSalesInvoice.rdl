@@ -906,7 +906,7 @@ Cstr(Fields!DocumentExt.Value) + Chr(177)  +
                                                   </TablixMember>
                                                   <TablixMember>
                                                     <Visibility>
-                                                      <Hidden>=IIF((Fields!LineNo_Line.Value = 0) OR (Fields!Emballage.Value=True), True, False)</Hidden>
+                                                      <Hidden>=IIF((Fields!LineNo_Line.Value = 0) OR (Fields!Emballage.Value=True)OR (Fields!transport_cost.Value=True), True, False)</Hidden>
                                                     </Visibility>
                                                   </TablixMember>
                                                 </TablixMembers>
@@ -1103,7 +1103,7 @@ Cstr(Fields!DocumentExt.Value) + Chr(177)  +
                                                   <Paragraph>
                                                     <TextRuns>
                                                       <TextRun>
-                                                        <Value>FRAIS DE L'EMBALLAGE</Value>
+                                                        <Value>=IIF(Fields!ShipmentMethodCode.Value="DAP","FRAIS TRANSPORT","FRAIS DE L'EMBALLAGE")</Value>
                                                         <Style>
                                                           <FontWeight>Bold</FontWeight>
                                                         </Style>
@@ -1287,12 +1287,13 @@ Cstr(Fields!DocumentExt.Value) + Chr(177)  +
                                                       <TextRun>
                                                         <Value>=First(Fields!TotalEmballage.Value , "DataSet_Result")</Value>
                                                         <Style>
-                                                          <Format>#,0.00;-#,0.00;''</Format>
+                                                          <FontWeight>Bold</FontWeight>
+                                                          <Format>#,0.00'€';-#,0.00'€';''</Format>
                                                         </Style>
                                                       </TextRun>
                                                     </TextRuns>
                                                     <Style>
-                                                      <TextAlign>Right</TextAlign>
+                                                      <TextAlign>Center</TextAlign>
                                                     </Style>
                                                   </Paragraph>
                                                 </Paragraphs>
@@ -1305,6 +1306,7 @@ Cstr(Fields!DocumentExt.Value) + Chr(177)  +
                                                   <PaddingRight>2pt</PaddingRight>
                                                   <PaddingTop>2pt</PaddingTop>
                                                   <PaddingBottom>2pt</PaddingBottom>
+                                                  <rd:FormatSymbolCulture>fr-FR</rd:FormatSymbolCulture>
                                                 </Style>
                                               </Textbox>
                                             </CellContents>
@@ -1696,7 +1698,7 @@ Cstr(Fields!DocumentExt.Value) + Chr(177)  +
                                                   <Paragraph>
                                                     <TextRuns>
                                                       <TextRun>
-                                                        <Value>=First(Fields!TotPoidBrut.Value, "DataSet_Result")</Value>
+                                                        <Value>=Last(Fields!TotPoidBrut.Value, "DataSet_Result")</Value>
                                                         <Style>
                                                           <Format>#,0.00;-#,0.00;''</Format>
                                                         </Style>
@@ -1762,9 +1764,9 @@ Cstr(Fields!DocumentExt.Value) + Chr(177)  +
                                                   <Paragraph>
                                                     <TextRuns>
                                                       <TextRun>
-                                                        <Value>=First(Fields!NbCarton.Value, "DataSet_Result")</Value>
+                                                        <Value>=Last(Fields!NbCarton.Value, "DataSet_Result")</Value>
                                                         <Style>
-                                                          <Format>#,0.00;-#,0.00;''</Format>
+                                                          <Format>#,0</Format>
                                                         </Style>
                                                       </TextRun>
                                                     </TextRuns>
@@ -1797,7 +1799,7 @@ Cstr(Fields!DocumentExt.Value) + Chr(177)  +
                                                       <TextRun>
                                                         <Value>=First(Fields!NbPieces.Value , "DataSet_Result")</Value>
                                                         <Style>
-                                                          <Format>#,0.00;-#,0.00;''</Format>
+                                                          <Format>#,0</Format>
                                                         </Style>
                                                       </TextRun>
                                                     </TextRuns>
@@ -1830,7 +1832,7 @@ Cstr(Fields!DocumentExt.Value) + Chr(177)  +
                                                       <TextRun>
                                                         <Value>=First(Fields!NbPalettes.Value, "DataSet_Result")</Value>
                                                         <Style>
-                                                          <Format>#,0.00;-#,0.00;''</Format>
+                                                          <Format>#,0</Format>
                                                         </Style>
                                                       </TextRun>
                                                     </TextRuns>
@@ -1972,7 +1974,7 @@ Cstr(Fields!DocumentExt.Value) + Chr(177)  +
                                         <Paragraph>
                                           <TextRuns>
                                             <TextRun>
-                                              <Value>="Banque: " &amp; First(Fields!CompanyBankName.Value, "DataSet_Result") &amp; "  - IBAN:" &amp; First(Fields!CompanyIBAN.Value, "DataSet_Result") &amp; "   swift BIC:" &amp; First(Fields!CompanySWIFT.Value, "DataSet_Result")</Value>
+                                              <Value>="Banque: " &amp; Fields!CompanyBankName.Value &amp; "  - IBAN:" &amp; Fields!CompanyIBAN.Value &amp; "   swift BIC:" &amp; Fields!CompanySWIFT.Value</Value>
                                               <Style />
                                             </TextRun>
                                           </TextRuns>
@@ -2226,7 +2228,7 @@ The exporter of the products covered by this document declares that unless clear
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value>Désignation: SNOWBOARDS</Value>
+                                          <Value>="Désignation: " &amp; first(Fields!ItemCategDescr.Value, "DataSet_Result")</Value>
                                           <Style />
                                         </TextRun>
                                       </TextRuns>
@@ -2743,7 +2745,7 @@ The exporter of the products covered by this document declares that unless clear
                     <Paragraph>
                       <TextRuns>
                         <TextRun>
-                          <Value>="VAT# " &amp; Code.GetData(36,1)</Value>
+                          <Value>=IIF(Code.GetData(36,1) &lt;&gt;"","VAT : " &amp; Code.GetData(36,1),"")</Value>
                           <Style>
                             <FontSize>9pt</FontSize>
                             <FontWeight>Bold</FontWeight>
@@ -2756,8 +2758,8 @@ The exporter of the products covered by this document declares that unless clear
                     </Paragraph>
                   </Paragraphs>
                   <rd:DefaultName>Textbox26</rd:DefaultName>
-                  <Top>1.47764cm</Top>
-                  <Height>0.3cm</Height>
+                  <Top>2.13792cm</Top>
+                  <Height>0.27472cm</Height>
                   <Width>5.22944cm</Width>
                   <ZIndex>4</ZIndex>
                   <Style>
@@ -2836,7 +2838,7 @@ The exporter of the products covered by this document declares that unless clear
                     <Paragraph>
                       <TextRuns>
                         <TextRun>
-                          <Value>="VAT# " &amp; Code.GetData(36,1)</Value>
+                          <Value>=IIF(Code.GetData(36,1) &lt;&gt;"","VAT : " &amp; Code.GetData(36,1),"")</Value>
                           <Style>
                             <FontSize>9pt</FontSize>
                             <FontWeight>Bold</FontWeight>
@@ -2849,9 +2851,9 @@ The exporter of the products covered by this document declares that unless clear
                     </Paragraph>
                   </Paragraphs>
                   <rd:DefaultName>Textbox26</rd:DefaultName>
-                  <Top>1.47764cm</Top>
+                  <Top>2.13792cm</Top>
                   <Left>5.34176cm</Left>
-                  <Height>0.3cm</Height>
+                  <Height>0.27472cm</Height>
                   <Width>5.21768cm</Width>
                   <ZIndex>8</ZIndex>
                   <Style>
@@ -2989,7 +2991,7 @@ The exporter of the products covered by this document declares that unless clear
                     </Paragraph>
                   </Paragraphs>
                   <rd:DefaultName>Textbox26</rd:DefaultName>
-                  <Top>2.11764cm</Top>
+                  <Top>1.48264cm</Top>
                   <Left>5.33cm</Left>
                   <Height>0.3cm</Height>
                   <Width>5.1754cm</Width>
@@ -3024,7 +3026,7 @@ The exporter of the products covered by this document declares that unless clear
                     </Paragraph>
                   </Paragraphs>
                   <rd:DefaultName>Textbox26</rd:DefaultName>
-                  <Top>2.43764cm</Top>
+                  <Top>1.80264cm</Top>
                   <Left>5.32659cm</Left>
                   <Height>0.3cm</Height>
                   <Width>5.1754cm</Width>
@@ -3059,7 +3061,7 @@ The exporter of the products covered by this document declares that unless clear
                     </Paragraph>
                   </Paragraphs>
                   <rd:DefaultName>Textbox26</rd:DefaultName>
-                  <Top>2.11764cm</Top>
+                  <Top>1.48264cm</Top>
                   <Height>0.3cm</Height>
                   <Width>5.21716cm</Width>
                   <ZIndex>14</ZIndex>
@@ -3093,7 +3095,7 @@ The exporter of the products covered by this document declares that unless clear
                     </Paragraph>
                   </Paragraphs>
                   <rd:DefaultName>Textbox26</rd:DefaultName>
-                  <Top>2.43764cm</Top>
+                  <Top>1.80264cm</Top>
                   <Height>0.3cm</Height>
                   <Width>5.22076cm</Width>
                   <ZIndex>15</ZIndex>
@@ -3114,7 +3116,7 @@ The exporter of the products covered by this document declares that unless clear
                     <Paragraph>
                       <TextRuns>
                         <TextRun>
-                          <Value>EORI#</Value>
+                          <Value>=IIF(Fields!EORI.Value&lt;&gt;"" ,"EORI : "+Fields!EORI.Value,"")</Value>
                           <Style>
                             <FontSize>9pt</FontSize>
                             <FontWeight>Bold</FontWeight>
@@ -3127,7 +3129,7 @@ The exporter of the products covered by this document declares that unless clear
                     </Paragraph>
                   </Paragraphs>
                   <rd:DefaultName>Textbox26</rd:DefaultName>
-                  <Top>1.79764cm</Top>
+                  <Top>2.43264cm</Top>
                   <Height>0.3cm</Height>
                   <Width>5.22944cm</Width>
                   <ZIndex>16</ZIndex>
@@ -3148,7 +3150,7 @@ The exporter of the products covered by this document declares that unless clear
                     <Paragraph>
                       <TextRuns>
                         <TextRun>
-                          <Value>EORI#</Value>
+                          <Value>=IIF(Fields!EORI.Value&lt;&gt;"" ,"EORI : "+Fields!EORI.Value,"")</Value>
                           <Style>
                             <FontSize>9pt</FontSize>
                             <FontWeight>Bold</FontWeight>
@@ -3161,7 +3163,7 @@ The exporter of the products covered by this document declares that unless clear
                     </Paragraph>
                   </Paragraphs>
                   <rd:DefaultName>Textbox26</rd:DefaultName>
-                  <Top>1.79764cm</Top>
+                  <Top>2.43264cm</Top>
                   <Left>5.33cm</Left>
                   <Height>0.3cm</Height>
                   <Width>5.22944cm</Width>
@@ -3433,7 +3435,7 @@ The exporter of the products covered by this document declares that unless clear
                     </TextRun>
                   </TextRuns>
                   <Style>
-                    <TextAlign>Left</TextAlign>
+                    <TextAlign>Center</TextAlign>
                   </Style>
                 </Paragraph>
               </Paragraphs>
@@ -3468,6 +3470,7 @@ The exporter of the products covered by this document declares that unless clear
                   <Width>1pt</Width>
                 </RightBorder>
                 <BackgroundColor>LightGrey</BackgroundColor>
+                <VerticalAlign>Middle</VerticalAlign>
                 <PaddingLeft>2pt</PaddingLeft>
                 <PaddingRight>2pt</PaddingRight>
                 <PaddingTop>2pt</PaddingTop>
@@ -3743,6 +3746,9 @@ End Function
         <Field Name="MethodTransport">
           <DataField>MethodTransport</DataField>
         </Field>
+        <Field Name="ItemCategDescr">
+          <DataField>ItemCategDescr</DataField>
+        </Field>
         <Field Name="DocumentExt">
           <DataField>DocumentExt</DataField>
         </Field>
@@ -3805,6 +3811,9 @@ End Function
         </Field>
         <Field Name="TVA_Intra">
           <DataField>TVA_Intra</DataField>
+        </Field>
+        <Field Name="EORI">
+          <DataField>EORI</DataField>
         </Field>
         <Field Name="CompanyAddress1">
           <DataField>CompanyAddress1</DataField>
@@ -4351,6 +4360,9 @@ End Function
         </Field>
         <Field Name="Emballage">
           <DataField>Emballage</DataField>
+        </Field>
+        <Field Name="transport_cost">
+          <DataField>transport_cost</DataField>
         </Field>
         <Field Name="TotalRemise">
           <DataField>TotalRemise</DataField>

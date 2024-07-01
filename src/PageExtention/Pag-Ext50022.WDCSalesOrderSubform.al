@@ -30,7 +30,7 @@ pageextension 50022 "WDC Sales Order Subform" extends "Sales Order Subform"
                     lCarton: Record Carton;
                     lsalesHeader: record "Sales Header";
                 begin
-                    if lsalesHeader.GET(Rec."Document Type", Rec."Document No.") Then BEGIn
+                    if lsalesHeader.GET(Rec."Document Type", Rec."Document No.") Then BEGIN
                         lCarton.RESET;
                         CLEAR(lCartonToPostPage);
                         lCarton.SetCurrentKey("No.");

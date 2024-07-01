@@ -1,5 +1,8 @@
 report 50017 "WDC Sales Invoice Proforma"
 {
+    /**********************************Documentation*********************
+    //WDC01     WDC.IM      27.06.2024      Changer le calcul
+    *********************************************************************/
     RDLCLayout = './src/Report/RDLC/SalesInvoiceProforma.rdl';
     CaptionML = ENU = 'Sales Invoice Proforma', FRA = 'Facture vente proforma';
     Description = 'Facture vente';
@@ -15,11 +18,14 @@ report 50017 "WDC Sales Invoice Proforma"
         {
             DataItemTableView = SORTING("No.");
             RequestFilterFields = "No.", "Sell-to Customer No.", "No. Printed";
-            RequestFilterHeading = 'Posted Sales Invoice';
+            RequestFilterHeading = 'Sales Invoice';
             column(MethodTransport; Header."Transport Method")
             {
             }
+            column(ItemCategDescr; ItemCateg.Description)
+            {
 
+            }
             column(DocumentExt; Header."External Document No.")
             {
             }
@@ -32,9 +38,6 @@ report 50017 "WDC Sales Invoice Proforma"
             column(CompanyCity; companyinfo.City)
             {
             }
-            // column(LegalForm; companyinfo."Legal Form")  
-            // {
-            // }
             column(NoDevis; Header."Quote No.")
             {
             }
@@ -69,12 +72,6 @@ report 50017 "WDC Sales Invoice Proforma"
             column(CompanySIRET; companyinfo."Registration No.")
             {
             }
-            // column(CompanyRegister; companyinfo."Trade Register")  
-            // {
-            // }
-            // column(companyinfo_Capital; companyinfo."Stock Capital")  
-            // {
-            // }
             column(Paiement; Paiement)
             {
             }
@@ -90,7 +87,9 @@ report 50017 "WDC Sales Invoice Proforma"
             column(TVA_Intra; Cust."VAT Registration No.")
             {
             }
-
+            column(EORI; Cust."EORI Number")
+            {
+            }
             column(CompanyAddress1; CompanyAddr[1])
             {
             }
@@ -140,7 +139,7 @@ report 50017 "WDC Sales Invoice Proforma"
             column(CompanyGiroNo_Lbl; CompanyInfoGiroNoLbl)
             {
             }
-            column(CompanyBankName; CompanyInfo."Bank Name")
+            column(CompanyBankName; BankAccount.Name)
             {
             }
             column(CompanyBankName_Lbl; CompanyInfoBankNameLbl)
@@ -158,13 +157,13 @@ report 50017 "WDC Sales Invoice Proforma"
             column(CompanyBankAccountNo_Lbl; CompanyInfoBankAccNoLbl)
             {
             }
-            column(CompanyIBAN; CompanyInfo.IBAN)
+            column(CompanyIBAN; BankAccount.IBAN)
             {
             }
             column(CompanyIBAN_Lbl; CompanyInfo.FieldCaption(IBAN))
             {
             }
-            column(CompanySWIFT; CompanyInfo."SWIFT Code")
+            column(CompanySWIFT; BankAccount."SWIFT Code")
             {
             }
             column(CompanySWIFT_Lbl; CompanyInfo.FieldCaption("SWIFT Code"))
@@ -642,6 +641,12 @@ report 50017 "WDC Sales Invoice Proforma"
                 column(WorkDescriptionLine; WorkDescriptionLine)
                 {
                 }
+                trigger OnPreDataItem()
+                begin
+                    if not ShowWorkDescription then
+                        CurrReport.Break();
+                    Header."Work Description".CreateInStream(WorkDescriptionInstream, TEXTENCODING::UTF8);
+                end;
 
                 trigger OnAfterGetRecord()
                 var
@@ -660,12 +665,7 @@ report 50017 "WDC Sales Invoice Proforma"
                     Clear(WorkDescriptionInstream)
                 end;
 
-                trigger OnPreDataItem()
-                begin
-                    if not ShowWorkDescription then
-                        CurrReport.Break();
-                    Header."Work Description".CreateInStream(WorkDescriptionInstream, TEXTENCODING::UTF8);
-                end;
+
             }
             dataitem(Line; "Sales Line")
             {
@@ -673,6 +673,10 @@ report 50017 "WDC Sales Invoice Proforma"
                 DataItemLinkReference = Header;
                 DataItemTableView = SORTING("Document No.", "Line No.");
                 column(Emballage; Emballage)
+                {
+                }
+
+                column(transport_cost; transport_cost)
                 {
                 }
                 column(TotalRemise; TotalRemise)
@@ -728,6 +732,7 @@ report 50017 "WDC Sales Invoice Proforma"
                 column(ItemNo_Line; "No.")
                 {
                 }
+
                 column(ItemNo_Line_Lbl; FieldCaption("No."))
                 {
                 }
@@ -882,6 +887,7 @@ report 50017 "WDC Sales Invoice Proforma"
                 trigger OnAfterGetRecord()
                 var
                     lItem: record Item;
+                    lShipmentNo: Code[20];
                 begin
                     if Type = Type::"G/L Account" then
                         "No." := '';
@@ -923,14 +929,20 @@ report 50017 "WDC Sales Invoice Proforma"
                         Clear(DummyCompanyInfo.Picture);
                     FirstLineHasBeenOutput := true;
                     //<<Meditec
+                    transport_cost := false;
+                    Emballage := false;//WDC.IM
                     if Line.Type = Line.type::Item then
-                        if lItem.Get(Line."No.") then
+                        if lItem.Get(Line."No.") then begin
+                            if lShipmentNo <> "Shipment No." then begin
+                                NbCartons += CalcNbrCartonMeditec("Shipment No.", "Shipment Line No.");
+                                lShipmentNo := "Shipment No.";
+                            end;
                             if lItem."Packing Item" then
                                 Emballage := True;
+                            transport_cost := litem."Transport cost";
+                        end;
                     //>>Meditec
                     FormatDocument.SetSalesLine(Line, FormattedQuantity, FormattedUnitPrice, FormattedVATPct, FormattedLineAmount);
-
-
                 End;
 
                 trigger OnPreDataItem()
@@ -1128,10 +1140,11 @@ report 50017 "WDC Sales Invoice Proforma"
                 CurrencyExchangeRate: Record "Currency Exchange Rate";
                 PaymentServiceSetup: Record "Payment Service Setup";
                 EnvInfoProxy: Codeunit "Env. Info Proxy";
-
-
+                lItem: record item;
             begin
-                CalcValueMeditec();
+
+                if BankAccount.get(Header."Company Bank Account Code") then;
+                CalcValueMeditecAfterDevCarton;
                 if EnvInfoProxy.IsInvoicing then begin
                     "Language Code" := Language.GetUserLanguageCode;
                     CurrReport.Language := Language.GetLanguageIdOrDefault("Language Code");
@@ -1156,7 +1169,11 @@ report 50017 "WDC Sales Invoice Proforma"
                     //<<WDC HD 
                     repeat
                         TotalRemise += GsalesLine."Line Discount Amount";
+                        If (GsalesLine.Type = GsalesLine.Type::Item) and (GsalesLine."Gen. Prod. Posting Group" = 'PF') then
+                            if lItem.Get(GsalesLine."No.") Then
+                                If ItemCateg.get(lItem."Item Category Code") Then;
                     until GsalesLine.Next = 0;
+
                 End;
                 //>>WDC
                 ChecksPayableText := StrSubstNo(ChecksPayableLbl, CompanyInfo.Name);
@@ -1164,10 +1181,6 @@ report 50017 "WDC Sales Invoice Proforma"
                 FormatDocumentFields(Header);
                 if SellToContact.Get("Sell-to Contact No.") then;
                 if BillToContact.Get("Bill-to Contact No.") then;
-
-
-                // FillLeftHeader;
-                // FillRightHeader;
 
 
                 if not Cust.Get("Bill-to Customer No.") then
@@ -1183,18 +1196,8 @@ report 50017 "WDC Sales Invoice Proforma"
 
                 GetLineFeeNoteOnReportHist("No.");
 
-                //PaymentServiceSetup.CreateReportingArgs(PaymentReportingArgument, Header);
 
                 CalcFields("Amount Including VAT");
-                /*RemainingAmount := GetRemainingAmount;
-                if RemainingAmount = 0 then
-                    RemainingAmountTxt := AlreadyPaidLbl
-                else
-                    if RemainingAmount <> "Amount Including VAT" then
-                        RemainingAmountTxt := StrSubstNo(PartiallyPaidLbl, Format(RemainingAmount, 0, '<Precision,2><Standard Format,0>'))
-                    else
-                        RemainingAmountTxt := '';
-                */
 
                 TotalSubTotal := 0;
                 TotalInvDiscAmount := 0;
@@ -1202,10 +1205,6 @@ report 50017 "WDC Sales Invoice Proforma"
                 TotalAmountVAT := 0;
                 TotalAmountInclVAT := 0;
                 TotalPaymentDiscOnVAT := 0;
-                /*
-                if ("Order No." = '') and "Prepayment Invoice" then
-                    "Order No." := "Prepayment Order No.";
-                */
                 //<<WDC
                 MonthTxt := Format(DATE2DMY("Posting Date", 2));
                 IF StrLen(MonthTxt) <> 2 then
@@ -1340,7 +1339,9 @@ report 50017 "WDC Sales Invoice Proforma"
     end;
 
     var
+        ItemCateg: record "Item Category";
         Emballage: Boolean;
+        transport_cost: Boolean;
         CuTTLettre: Codeunit MontantTouteLettre;
         MtTtLettres: Text;
         TotalEmballage: Decimal;
@@ -1360,6 +1361,7 @@ report 50017 "WDC Sales Invoice Proforma"
         Paiement: Text;
         CustSell: Record Customer;
         MonthTxt: Text;
+
         BDMRInvoiceNo: Text;
         NumeroDescription: integer;
         LineToAdd: Integer;
@@ -1418,6 +1420,7 @@ report 50017 "WDC Sales Invoice Proforma"
         DummyCompanyInfo: Record "Company Information";
         SalesSetup: Record "Sales & Receivables Setup";
         Cust: Record Customer;
+        BankAccount: Record 270;
         RespCenter: Record "Responsibility Center";
         VATClause: Record "VAT Clause";
         TempLineFeeNoteOnReportHist: Record "Line Fee Note on Report Hist." temporary;
@@ -1535,23 +1538,6 @@ report 50017 "WDC Sales Invoice Proforma"
         exit(UnitOfMeasure.Description);
     end;
 
-    // local procedure CreateReportTotalLines()
-    // begin
-    //     ReportTotalsLine.DeleteAll();
-    //     if (TotalInvDiscAmount <> 0) or (TotalAmountVAT <> 0) then
-    //         ReportTotalsLine.Add(SubtotalLbl, TotalSubTotal, true, false, false);
-    //     if TotalInvDiscAmount <> 0 then begin
-    //         ReportTotalsLine.Add(InvDiscountAmtLbl, TotalInvDiscAmount, false, false, false);
-    //         if TotalAmountVAT <> 0 then
-    //             if Header."Prices Including VAT" then
-    //                 ReportTotalsLine.Add(TotalInclVATText, TotalAmountInclVAT, true, false, false)
-    //             else
-    //                 ReportTotalsLine.Add(TotalExclVATText, TotalAmount, true, false, false);
-    //     end;
-    //     if TotalAmountVAT <> 0 then
-    //         ReportTotalsLine.Add(VATAmountLine.VATAmountText, TotalAmountVAT, false, true, false);
-    // end;
-
     local procedure GetLineFeeNoteOnReportHist(SalesInvoiceHeaderNo: Code[20])
     var
         LineFeeNoteOnReportHist: Record "Line Fee Note on Report Hist.";
@@ -1586,36 +1572,6 @@ report 50017 "WDC Sales Invoice Proforma"
         end;
     end;
 
-    // local procedure FillLeftHeader()
-    // begin
-    //     LeftHeader.DeleteAll();
-    //     FillNameValueTable(LeftHeader, Header.FieldCaption("External Document No."), Header."External Document No.");
-    //     FillNameValueTable(LeftHeader, Header.FieldCaption("Bill-to Customer No."), Header."Bill-to Customer No.");
-    //     FillNameValueTable(LeftHeader, Header.GetCustomerVATRegistrationNumberLbl, Header.GetCustomerVATRegistrationNumber);
-    //     FillNameValueTable(LeftHeader, Header.GetCustomerGlobalLocationNumberLbl, Header.GetCustomerGlobalLocationNumber);
-    //     FillNameValueTable(LeftHeader, InvNoLbl, Header."No.");
-    //     FillNameValueTable(LeftHeader, Header.FieldCaption("Order No."), Header."Order No.");
-    //     FillNameValueTable(LeftHeader, Header.FieldCaption("Document Date"), Format(Header."Document Date", 0, 4));
-    //     FillNameValueTable(LeftHeader, Header.FieldCaption("Due Date"), Format(Header."Due Date", 0, 4));
-    //     FillNameValueTable(LeftHeader, PaymentTermsDescLbl, PaymentTerms.Description);
-    //     FillNameValueTable(LeftHeader, PaymentMethodDescLbl, PaymentMethod.Description);
-    //     FillNameValueTable(LeftHeader, Cust.GetLegalEntityTypeLbl, Cust.GetLegalEntityType);
-    //     FillNameValueTable(LeftHeader, ShptMethodDescLbl, ShipmentMethod.Description);
-    // end;
-
-    // local procedure FillRightHeader()
-    // begin
-    //     RightHeader.DeleteAll();
-    //     FillNameValueTable(RightHeader, EMailLbl, CompanyInfo."E-Mail");
-    //     FillNameValueTable(RightHeader, HomePageLbl, CompanyInfo."Home Page");
-    //     FillNameValueTable(RightHeader, CompanyInfoPhoneNoLbl, CompanyInfo."Phone No.");
-    //     FillNameValueTable(RightHeader, CompanyInfo.GetRegistrationNumberLbl, CompanyInfo.GetRegistrationNumber);
-    //     FillNameValueTable(RightHeader, CompanyInfoBankNameLbl, CompanyInfo."Bank Name");
-    //     FillNameValueTable(RightHeader, CompanyInfoGiroNoLbl, CompanyInfo."Giro No.");
-    //     FillNameValueTable(RightHeader, CompanyInfo.FieldCaption(IBAN), CompanyInfo.IBAN);
-    //     FillNameValueTable(RightHeader, CompanyInfo.FieldCaption("SWIFT Code"), CompanyInfo."SWIFT Code");
-    //     FillNameValueTable(RightHeader, Header.GetPaymentReferenceLbl, Header.GetPaymentReference);
-    // end;
 
     local procedure FillNameValueTable(var NameValueBuffer: Record "Name/Value Buffer"; Name: Text; Value: Text)
     var
@@ -1677,10 +1633,11 @@ report 50017 "WDC Sales Invoice Proforma"
         exit(true);
     end;
 
-    procedure CalcValueMeditec()
+    procedure CalcValueMeditecAfterDevCarton()
     var
-        lSalesInvLines: record "Sales line";//"Sales invoice line";
+        lSalesLines: record "Sales Line";
         lItem: Record item;
+        lShipmentNo: code[20];
     begin
         //>>MeditecHD
         NbCartons := 0;
@@ -1688,25 +1645,82 @@ report 50017 "WDC Sales Invoice Proforma"
         TotPoidNet := 0;
         TotPoidBrut := 0;
         NbPieces := 0;
-        lSalesInvLines.Reset();
-        lSalesInvLines.SetRange("Document No.", Header."No.");
-        if lSalesInvLines.FindFirst() then
+        lShipmentNo := '';
+        lSalesLines.Reset();
+        lSalesLines.SetCurrentKey("Shipment No.", "Shipment Line No.");
+        lSalesLines.SetRange("Document No.", Header."No.");
+        if lSalesLines.FindFirst() then
             repeat
-                if lSalesInvLines.Type = lSalesInvLines.type::Item then
-                    if lItem.Get(lSalesInvLines."No.") then
-                        if lItem."Packing Item" then begin
-                            TotalEmballage += lSalesInvLines."Unit Price" * lSalesInvLines.Quantity;
-                            If lItem."Packaging Type" = lItem."Packaging Type"::Carton then
-                                NbCartons += lSalesInvLines.Quantity;
-                            If lItem."Packaging Type" = lItem."Packaging Type"::Pallet then
-                                NbPalette += lSalesInvLines.Quantity;
+                if lSalesLines.Type = lSalesLines.type::Item then begin
+                    if lItem.Get(lSalesLines."No.") then begin
+                        If lItem."Packaging Type" = lItem."Packaging Type"::Pallet then begin
+                            TotPoidBrut += lItem."Net Weight" * lSalesLines.Quantity;
+                            NbPalette += lSalesLines.Quantity;
+                            TotalEmballage += lSalesLines."Unit Price" * lSalesLines.Quantity;
                         end else begin
-                            TotPoidNet += lItem."Net Weight" * lSalesInvLines.Quantity;
-                            NbPieces += lSalesInvLines.Quantity;
+                            If (lItem."Packaging Type" = lItem."Packaging Type"::" ") and not lItem."Transport cost" then begin
+                                NbPieces += lSalesLines.Quantity;
+                                TotPoidNet += lItem."Net Weight" * lSalesLines.Quantity;
+                                TotPoidBrut += lItem."Net Weight" * lSalesLines.Quantity;
+                            end;
+
+                            If lItem."Transport cost" then
+                                TotalEmballage += lSalesLines."Unit Price" * lSalesLines.Quantity;
                         end;
-                TotPoidBrut += lItem."Net Weight" * lSalesInvLines.Quantity;
-            until lSalesInvLines.Next() = 0;
+                    end;
+                end;
+            until lSalesLines.Next() = 0;
         //<<MeditecHD
     end;
+
+    procedure CalcNbrCartonMeditec(pshipmentNo: Code[20]; pShipLineNo: Integer): Decimal
+    var
+        lTrackCartons: Record "Carton Tracking Lines";
+        lCartonNo: Code[20];
+        lNbCarton: Decimal;
+        lcarton: Record Carton;
+        lItem: Record Item;
+    begin
+        lCartonNo := '';
+        //<<WDC01
+        // lTrackCartons.Reset();
+        // lTrackCartons.SetCurrentKey("Carton No.", "Item No.", "Ref Line No.", "Serial No.", "Customer No.");
+        // lTrackCartons.CalcFields("Shipment No.", "Shipment Line No.");
+        // lTrackCartons.SetRange("Shipment No.", pshipmentNo);
+        // lTrackCartons.SetRange("Shipment Line No.", pShipLineNo);
+        // lTrackCartons.SetRange("Customer No.", Header."Sell-to Customer No.");
+        // if lTrackCartons.FindFirst() then
+        //     repeat
+        //         if lCartonNo <> lTrackCartons."Carton No." Then begin
+        //             lNbCarton += 1;
+        //             if lcarton.Get(lTrackCartons."Carton No.") then
+        //                 if lItem.get(lcarton."Item Carton No.") Then
+        //                     TotPoidBrut += lItem."Net Weight";
+        //             lCartonNo := lTrackCartons."Carton No.";
+        //         end;
+        //     until lTrackCartons.Next() = 0;
+        // exit(lNbCarton);
+        lTrackCartons.Reset();
+        lTrackCartons.SetCurrentKey("Customer No.", "Carton No.", "Order No.");
+        lTrackCartons.SetRange("Customer No.", Header."Sell-to Customer No.");
+        if lTrackCartons.FindSet() then begin
+            repeat
+                lTrackCartons.CalcFields("Entry No. doc");
+                lTrackCartons."Entry No. Filter" := lTrackCartons."Entry No. doc";
+                lTrackCartons.CalcFields("Shipment No.", "Shipment Line No.");
+                if ((lTrackCartons."Shipment No." = pshipmentNo) and (lTrackCartons."Shipment Line No." = pShipLineNo)) then begin
+                    if lCartonNo <> lTrackCartons."Carton No." Then begin
+                        lNbCarton += 1;
+                        if lcarton.Get(lTrackCartons."Carton No.") then
+                            if lItem.get(lcarton."Item Carton No.") Then
+                                TotPoidBrut += lItem."Net Weight";
+                        lCartonNo := lTrackCartons."Carton No.";
+                    end;
+                end;
+            until lTrackCartons.Next() = 0;
+            exit(lNbCarton);
+        end;
+        //>>WDC01
+    End;
 }
 

@@ -81,6 +81,15 @@ page 50020 "Carton Tracking List"
             }
         }
     }
+    //<<WDC.IM
+    trigger OnAfterGetRecord()
+    begin
+        Rec.CalcFields("Entry No. doc");
+        Rec."Entry No. Filter" := Rec."Entry No. doc";
+        Rec.CalcFields("Shipment No.");
+        Rec.CalcFields("Shipment Line No.");
+    end;
+    //>>WDC.IM
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     begin
 

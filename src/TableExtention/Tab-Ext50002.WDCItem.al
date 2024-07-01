@@ -1,5 +1,7 @@
 tableextension 50002 "WDC Item" extends Item
 {
+    DrillDownPageID = "Item Lookup"; //WDC01.CHG
+    LookupPageID = "Item Lookup"; //WDC01.CHG
     fields
     {
         field(50000; "Item Stage"; Code[20])
@@ -12,9 +14,7 @@ tableextension 50002 "WDC Item" extends Item
         {
             CaptionML = FRA = 'Code client', ENU = 'Custmer Code';
             TableRelation = "Customer";
-            Editable = false;
-            FieldClass = FlowField;
-            CalcFormula = lookup("Item Reference"."Reference Type No." where("Item No." = field("No."), "Reference Type" = const(Customer)));
+            DataClassification = ToBeClassified;
         }
         field(50002; "Packing Item"; Boolean)
         {
@@ -67,6 +67,11 @@ tableextension 50002 "WDC Item" extends Item
             CaptionML = FRA = 'Moule article', ENU = 'Item Mussel';
             DataClassification = ToBeClassified;
             TableRelation = "WDC Item Mussel";
+        }
+        field(50006; "Transport cost"; Boolean)
+        {
+            CaptionML = FRA = 'Frais Transport', ENU = 'Transport cost';
+            DataClassification = ToBeClassified;
         }
 
         modify("Item Category Code")

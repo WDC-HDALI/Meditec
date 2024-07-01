@@ -20,6 +20,11 @@ page 50007 "Exit Voucher Lines"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Description field.';
                 }
+                field("Variant Code"; Rec."Variant Code")//WDC.IM
+                {
+                    ApplicationArea = All;
+                }
+
                 field(Quantity; Rec.Quantity)
                 {
                     ApplicationArea = All;

@@ -104,7 +104,7 @@ page 50017 "Closed Carton Card"
                 var
                     ltext001: Label 'Voulez-vous réouvrir le carton?';
                 begin
-                    CheckCarton(Rec."No.");
+                    CheckCarton(Rec."No.");//WDC.IM
                     if Confirm(ltext001) Then begin
                         Rec.Status := rec.Status::Open;
                         Rec.Modify();
@@ -139,14 +139,29 @@ page 50017 "Closed Carton Card"
     var
         lCartonstrack: Record "Carton Tracking Lines";
         ltext001: Label 'L''ouverture du Carton expediée est interdie';
+        lSerialInfo: Record "Serial No. Information";
+        lItemLedgerEntry: Record "Item Ledger Entry";
     begin
         lCartonstrack.Reset();
         lCartonstrack.SetRange("Carton No.", pCartonNo);
         if lCartonstrack.FindFirst() then
             repeat
+                // lSerialInfo.Get(lCartonstrack."Item No.", lCartonstrack."Variant Code", lCartonstrack."Serial No.");// CMT By WDC.IM
+                // lSerialInfo.CalcFields(Inventory);// CMT By WDC.IM
+                // if lSerialInfo.Inventory = 0 then// CMT By WDC.IM
+                //<<WDC.IM
+                lCartonstrack.CalcFields("Entry No. doc");
+                lCartonstrack."Entry No. Filter" := lCartonstrack."Entry No. doc";
                 lCartonstrack.CalcFields("Shipment No.");
-                if lCartonstrack."Shipment No." <> '' Then
+                lCartonstrack.CalcFields("Shipment Line No.");
+                lItemLedgerEntry.Reset();
+                lItemLedgerEntry.SetCurrentKey("Item No.");
+                lItemLedgerEntry.SetRange("Item No.", lCartonstrack."Item No.");
+                lItemLedgerEntry.SetRange("Document Type", lItemLedgerEntry."Document Type"::"Sales Shipment");
+                lItemLedgerEntry.SetRange("Document No.", lCartonstrack."Shipment No.");
+                if lItemLedgerEntry.FindSet() then
                     Error(ltext001);
+            //>>WDC.IM
             until lCartonstrack.Next() = 0;
     end;
 

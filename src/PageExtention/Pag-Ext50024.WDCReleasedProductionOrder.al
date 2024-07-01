@@ -1,7 +1,21 @@
 pageextension 50024 "WDC Released Production Order" extends "Released Production Order"
 {
+    layout
+    {
+        addafter("Source No.")
+        {
+            field("Version Model"; Rec."Model")
+            {
+
+                ApplicationArea = all;
+
+
+            }
+        }
+    }
     actions
     {
+
         addlast("&Print")
         {
             action("FicheProd")

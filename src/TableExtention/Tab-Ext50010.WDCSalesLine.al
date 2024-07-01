@@ -5,14 +5,13 @@ tableextension 50010 "WDC Sales Line" extends "Sales Line"
         modify("No.")
         {
             trigger OnAfterValidate()
+            var
+                lItem: Record Item;
             begin
                 if (Type = type::Item) and ("No." <> '') then begin
-                    lItemReference.Reset();
-                    lItemReference.SetRange("Item No.", "No.");
-                    lItemReference.SetRange("Reference Type", "Item Reference Type"::Customer);
-                    lItemReference.SetFilter("Reference Type No.", '<>%1', "Sell-to Customer No.");
-                    if lItemReference.Count <> 0 then
-                        Error(lText001, "No.", "Sell-to Customer No.");
+                    if lItem.Get(rec."No.") then
+                        if (lItem."Customer Code" <> Rec."Sell-to Customer No.") and (lItem."Gen. Prod. Posting Group" = 'PF') then
+                            Error(lText001, "No.", "Sell-to Customer No.");
                 end;
             end;
         }
@@ -38,8 +37,9 @@ tableextension 50010 "WDC Sales Line" extends "Sales Line"
             LcartonTrackLines.Reset();
             LcartonTrackLines.SetRange("Order No.", Rec."Document No.");
             LcartonTrackLines.Setrange("Item No.", Rec."No.");
-            if LcartonTrackLines.FindFirst() then
-                LcartonTrackLines.ModifyAll("Order No.", '');
+            //if LcartonTrackLines.FindFirst() then begin
+            LcartonTrackLines.ModifyAll("Order Line No.", 0);
+            LcartonTrackLines.ModifyAll("Order No.", '');
 
         end;
     end;

@@ -105,6 +105,7 @@ page 50012 "Carton Card"
                 begin
                     if Confirm(ltext001) Then begin
                         CheckCarton(Rec."No.");
+                        CheckStock(Rec."No.");//WDC.IM
                         Rec.Status := rec.Status::Release;
                         Rec.Modify();
                         AdjustInventoryCaton(Rec."No.", WorkDate());
@@ -133,6 +134,7 @@ page 50012 "Carton Card"
                 begin
                     if Confirm(ltext001) Then begin
                         CheckCarton(Rec."No.");
+                        CheckStock(Rec."No.");//WDC.IM
                         Rec.Status := rec.Status::Release;
                         Rec.Modify();
                         AdjustInventoryCaton(Rec."No.", WorkDate());
@@ -161,6 +163,26 @@ page 50012 "Carton Card"
 
         }
     }
+    //<<WDC.IM
+    procedure CheckStock(pcarton: Code[20])
+    var
+        CartonTrackingLines: Record "Carton Tracking Lines";
+        SerialNoInformation: Record "Serial No. Information";
+        lText01: Label 'Stock insufisant pour l''article %1 avec N° série %2';
+    begin
+        CartonTrackingLines.Reset();
+        CartonTrackingLines.SetRange("Carton No.", pcarton);
+        if CartonTrackingLines.FindSet() then begin
+            repeat
+                SerialNoInformation.Reset();
+                SerialNoInformation.Get(CartonTrackingLines."Item No.", CartonTrackingLines."Variant Code", CartonTrackingLines."Serial No.");
+                SerialNoInformation.CalcFields(Inventory);
+                if SerialNoInformation.Inventory = 0 then
+                    Error(lText01, CartonTrackingLines."Item No.", CartonTrackingLines."Serial No.");
+            until (CartonTrackingLines.Next() = 0)
+        end;
+    end;
+    //>>WDC.IM
     procedure CheckCarton(pCartonNo: Code[20]): Boolean
     var
 

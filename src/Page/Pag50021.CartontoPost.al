@@ -1,6 +1,9 @@
 page 50021 "Carton to Post"
 {
+    //**************Documentation*************
 
+
+    //***************************************
     Caption = 'Cartons à expédier';
     PageType = List;
     SourceTable = Carton;
@@ -110,7 +113,7 @@ page 50021 "Carton to Post"
                     ltext001: Label 'Voulez-vous insérer les traçabiltés des cartons séléctionnées';
                 begin
                     if Confirm(ltext001) then
-                        createTracking();
+                        createTracking2();//WDC.IM
                 end;
             }
 
@@ -122,6 +125,190 @@ page 50021 "Carton to Post"
     begin
 
     end;
+    //<<WDC.IM
+    procedure createTracking2()
+    var
+        lsalesLines: Record "Sales Line";
+        lsalesLines2: Record "Sales Line";
+        lCarton: Record Carton;
+        lCartTrackLines: Record "Carton Tracking Lines";
+        lCartTrackLines2: Record "Carton Tracking Lines";
+        lCartTrackLines1: Record "Carton Tracking Lines";
+    begin
+        lCarton.Reset();
+        lCarton.SetCurrentKey("Selected", "Customer No.", "No.");
+        lCarton.SetRange(Selected, true);
+        if lCarton.FindSet() then begin
+            begin
+                repeat
+                    lCartTrackLines.Reset();
+                    lCartTrackLines.SetCurrentKey("Carton No.", "Item No.", "Ref Line No.", "Serial No.", "Customer No.");
+                    lCartTrackLines.SetRange("Carton No.", lCarton."No.");
+                    if lCartTrackLines.FindFirst() then begin
+                        repeat
+                            lCartTrackLines."Order No." := CurrDocNo;
+                            lCartTrackLines.Modify();
+                        until (lCartTrackLines.Next() = 0)
+                    end;
+                until (lCarton.Next() = 0)
+            end;
+            lCartTrackLines.Reset();
+            lCartTrackLines.SetCurrentKey("Item No.", "Variant Code");
+            lCartTrackLines.SetRange("Order No.", CurrDocNo);
+            if lCartTrackLines.FindSet() then begin
+                ItemNo := '';
+                VariantCode := '';
+                repeat
+                    if (ItemNo <> lCartTrackLines."Item No.") or (VariantCode <> lCartTrackLines."Variant Code") then begin
+                        NbArticle := 0;
+                        lCartTrackLines2.Reset();
+                        lCartTrackLines2.SetCurrentKey("Item No.");
+                        lCartTrackLines2.SetRange("Order No.", CurrDocNo);
+                        lCartTrackLines2.SetRange("Variant Code", lCartTrackLines."Variant Code");
+                        lCartTrackLines2.SetRange("Item No.", lCartTrackLines."Item No.");
+                        NbArticle := lCartTrackLines2.Count;
+                        if NbArticle > 0 then begin
+                            lsalesLines.Reset();
+                            lsalesLines.SetRange("Document No.", CurrDocNo);
+                            lsalesLines.SetRange(type, lsalesLines.Type::Item);
+                            lsalesLines.SetRange("No.", lCartTrackLines."Item No.");
+                            lsalesLines.SetRange("Variant Code", lCartTrackLines."Variant Code");
+                            if lsalesLines.FindSet() then begin
+                                if NbArticle < LsalesLines.Quantity Then
+                                    LsalesLines.Validate("Qty. to Ship", NbArticle)
+                                else begin
+                                    LsalesLines.Validate(Quantity, NbArticle);
+                                    LsalesLines.Validate("Qty. to Ship", NbArticle);
+                                end;
+                                LsalesLines."Qty. to Invoice" := 0;
+                                LsalesLines.Modify(true);
+                            end
+                            else begin
+                                InsertSalesLine2(lCartTrackLines."Item No.", lCartTrackLines."Variant Code", NbArticle);
+                            end;
+                        end;
+                        ItemNo := lCartTrackLines."Item No.";
+                        VariantCode := lCartTrackLines."Variant Code";
+                    end;
+                until (lCartTrackLines.Next() = 0)
+            end;
+            lsalesLines2.Reset();
+            lsalesLines2.SetCurrentKey("Document Type", Type, "No.", "Variant Code", "Drop Shipment", "Location Code", "Shipment Date");
+            lsalesLines2.SetRange("Document Type", lsalesLines2."Document Type"::Order);
+            lsalesLines2.SetRange("Document No.", CurrDocNo);
+            lsalesLines2.SetRange(Type, lsalesLines2.Type::Item);
+            if lsalesLines2.FindSet() then begin
+                SalesLineItemNo := '';
+                SalesLineVariant := '';
+                repeat
+                    if (lsalesLines2."No." <> SalesLineItemNo) or (lsalesLines2."Variant Code" <> SalesLineVariant) then begin
+                        SalesLineItemNo := lsalesLines2."No.";
+                        SalesLineVariant := lsalesLines2."Variant Code";
+                        SourceRefLineNo := lsalesLines2."Line No.";
+                        lCartTrackLines1.Reset();
+                        lCartTrackLines1.SetCurrentKey("Item No.");
+                        lCartTrackLines1.SetRange("Order No.", CurrDocNo);
+                        lCartTrackLines1.SetRange("Item No.", lsalesLines2."No.");
+                        lCartTrackLines1.SetRange("Variant Code", lsalesLines2."Variant Code");
+                        if lCartTrackLines1.FindSet() then begin
+                            repeat
+                                InsertItemSpecification2(lCartTrackLines1."Item No.", CurrLocation, lCartTrackLines1."Serial No.", lCartTrackLines1."Lot No.", lCartTrackLines1."Variant Code", SourceRefLineNo);
+                                lCartTrackLines1."Order Line No." := lsalesLines2."Line No.";
+                                lCartTrackLines1.Modify();
+                            until (lCartTrackLines1.Next() = 0)
+                        end;
+                    end;
+                until (lsalesLines2.Next() = 0)
+            end;
+        end;
+    end;
+
+    procedure InsertSalesLine2(pItemNo: code[20]; pVariantCode: Code[10]; pQty: Decimal)
+    var
+        lSalesLines: Record "Sales Line";
+    begin
+        lSalesLines.Reset();
+        lSalesLines.SetRange("Document No.", CurrDocNo);
+        if lSalesLines.FindLast() then
+            VariantLineNo := lSalesLines."Line No." + 10000
+        else
+            VariantLineNo := 10000;
+
+        lSalesLines.init;
+        lSalesLines."Document Type" := lSalesLines."Document Type"::Order;
+        lSalesLines."Document No." := CurrDocNo;
+        lSalesLines.Type := lSalesLines.Type::Item;
+        lSalesLines."Line No." := VariantLineNo;
+        lSalesLines.Insert(true);
+        lSalesLines.Validate("No.", pItemNo);
+        lSalesLines."Location Code" := 'MAG-PF';
+        lSalesLines."Variant Code" := pVariantCode;
+        lSalesLines.Validate(Quantity, pQty);
+        lSalesLines.Validate("Qty. to Ship", pQty);
+        lsalesLines."Qty. to Invoice" := 0;
+        lSalesLines.Modify(true);
+    end;
+
+    procedure InsertItemSpecification2(pItem: code[20]; pLocationCode: code[20]; pSerialNo: Code[50]; pLotNo: Code[50]; pVariantCode: code[10]; pLineNo: Integer)
+    var
+        lReservationEntry: Record 337;
+        lItem: Record Item;
+        TrackingSpecification: Record "Tracking Specification";
+    begin
+        lItem.Get(pItem);
+        if (lItem."Item Tracking Code" = 'PF') THEN BEGIN
+            //Clear(lReservationEntry);
+            lReservationEntry.Reset();
+            lReservationEntry.SetRange("Item Tracking", lReservationEntry."Item Tracking"::"Lot and Serial No.");
+            lReservationEntry.SetRange("Reservation Status", lReservationEntry."Reservation Status"::Surplus);
+            lReservationEntry.SetRange("Item No.", lItem."No.");
+            lReservationEntry.SetRange("Location Code", pLocationCode);
+            lReservationEntry.SetRange("Source ID", CurrDocNo);
+            lReservationEntry.SetRange("Variant Code", pVariantCode);
+            lReservationEntry.SetRange("Serial No.", pSerialNo);
+            lReservationEntry.SetRange("Lot No.", pLotNo);
+            lReservationEntry.SetRange("Source Type", 37);
+            if lReservationEntry.FindSet() then
+                lReservationEntry.DeleteAll();
+            lReservationEntry.Reset();
+            lReservationEntry.SetRange("Serial No.", pSerialNo);
+            lReservationEntry.SetRange("Lot No.", pLotNo);
+            lReservationEntry.SetRange("Item No.", lItem."No.");
+            lReservationEntry.SetRange("Source Type", 37);
+            // if lReservationEntry.FindSet() then begin
+            //     repeat
+            //         if lReservationEntry."Source ID" <> CurrDocNo then
+            //             Error('Cet Article N° %1 avec N° série %2 est reservé pour une autre commande', lItem."No.", pSerialNo);
+            //     until lReservationEntry.Next() = 0;
+            // end;
+            lReservationEntry.Init();
+            lReservationEntry."Entry No." := lReservationEntry.GetLastEntryNo + 1;
+            lReservationEntry."Item Tracking" := lReservationEntry."Item Tracking"::"Lot and Serial No.";
+            lReservationEntry.validate("Item No.", lItem."No.");
+            lReservationEntry."Location Code" := pLocationCode;
+            lReservationEntry.Validate("Quantity (Base)", -1);
+            lReservationEntry.Validate("Qty. per Unit of Measure", 1);
+            lReservationEntry.Validate(Quantity, -1);
+            lReservationEntry.validate("Qty. to Handle (Base)", -1);
+            lReservationEntry."Qty. to Invoice (Base)" := -1;
+            lReservationEntry."Reservation Status" := lReservationEntry."Reservation Status"::Surplus;
+            lReservationEntry."Creation Date" := WorkDate;
+            lReservationEntry."Shipment Date" := WorkDate();
+            lReservationEntry."Source Type" := 37;
+            lReservationEntry."Source Subtype" := 1;
+            lReservationEntry."Source ID" := CurrDocNo;
+            lReservationEntry."Source Ref. No." := pLineNo;
+            lReservationEntry."Source Batch Name" := '';
+            lReservationEntry."Creation Date" := WorkDate;
+            lReservationEntry."Created By" := USERID;
+            lReservationEntry."Planning Flexibility" := lReservationEntry."Planning Flexibility"::Unlimited;
+            lReservationEntry."Serial No." := pSerialNo;
+            lReservationEntry."Lot No." := pLotNo;
+            lReservationEntry."Variant Code" := pVariantCode;
+            lReservationEntry.INSERT;
+        end;
+    end;
+    //>>WDC.IM
 
     procedure createTracking()
     var
@@ -149,7 +336,7 @@ page 50021 "Carton to Post"
                         lCartTrackLines.SetRange("Carton No.", lCarton."No.");
                         if lCartTrackLines.FindFirst() then
                             repeat
-                                If (lCartTrackLines."order No." = '') and (lCartTrackLines."Item No." = lsalesLines."No.") THEN begin// CurrItemNo) then Begin
+                                If (lCartTrackLines."order No." = '') and (lCartTrackLines."Item No." = lsalesLines."No.") THEN begin
                                     If (lCartTrackLines."Variant Code" <> '') then BEGIN
                                         UpdateSalesLinewithvariant(CurrDocNo, lCartTrackLines."Order Line No.", lCartTrackLines."Item No.", lCartTrackLines."Variant Code");
                                         InsertItemSpecification(lCartTrackLines."Item No.", CurrLocation, lCartTrackLines."Serial No.", lCartTrackLines."Lot No.", lCartTrackLines."Variant Code", VariantLineNo);
@@ -167,8 +354,6 @@ page 50021 "Carton to Post"
                     until lCarton.Next() = 0;
                 Update_Qty_SalesLines(lsalesLines."Document No.", lsalesLines."Line No.");
             until lsalesLines.Next() = 0;
-
-
     END;
 
     procedure InsertSalesLinewithvariant(pItemNo: code[20]; pVariantCode: Code[10]; pQty: Decimal)
@@ -280,7 +465,7 @@ page 50021 "Carton to Post"
         LsalesLines.SetRange("No.", pItemNo);
         LsalesLines.SetRange("Variant Code", pVariantCode);
         if LsalesLines.FindFirst() then begin
-            if LsalesLines."Line No." = pRefLineNo Then begin
+            if LsalesLines."Line No." = VariantLineNo then begin //pRefLineNo Then begin //HD120224
                 LsalesLines.Validate(Quantity, LsalesLines.Quantity + 1);
                 // LsalesLines."Qty. to Ship" += 1;
                 LsalesLines."Qty. to Invoice" := 0;
@@ -341,5 +526,11 @@ page 50021 "Carton to Post"
         SelectedAll: Boolean;
         //QteToShip: Decimal;
         VariantLineNo: Integer;
-
+        ItemNo: Code[20];//WDC.IM
+        VariantCode: Code[10];//WDC.IM
+        NbArticle: Integer; //WDC.IM
+        SourceRefLineNo: Integer;//WDC.IM
+        SalesLineItemNo: Code[20];
+        SalesLineVariant: Code[10];
+        AvailabilitySerialNo: Boolean;
 }
