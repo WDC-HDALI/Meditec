@@ -1,5 +1,9 @@
 table 50005 "Exit Voucher Lines"
 {
+    //*************************************Documentation******************************
+    //WDC01     30.08.2024      WDC.IM      Add filter "Variant code"
+    //WDC02     04.09.2024      WDC.IM      Include MP 
+    //********************************************************************************
     Caption = 'Lignes bon sortie';
     DrillDownPageID = "Exit Voucher Lines";
     LookupPageID = "Exit Voucher Lines";
@@ -20,11 +24,17 @@ table 50005 "Exit Voucher Lines"
 
             Caption = 'No.';
             TableRelation = Item where("Gen. Prod. Posting Group" = filter('PDR|CONS'));
+            //TableRelation = Item where("Gen. Prod. Posting Group" = filter('PDR|CONS|MP'));//WDC02
             trigger OnValidate()
             var
                 lItem: Record Item;
+                text001: TextConst ENU = 'This item is not allowed to use in Exit Voucher', FRA = 'Cet Article N''est pas autorisé à utiliser dans Bon sortie';
             begin
                 if lItem.Get("No.") then begin
+                    //<<WDC02
+                    //If (lItem."Gen. Prod. Posting Group" = 'MP') and (lItem."Include In Exit Voucher" = false) then
+                    //  error(text001);
+                    //>>WDC02    
                     Description := lItem.Description;
                     Quantity := 1;
                     //"Location Code" := 'MAG-PDR';
@@ -88,14 +98,16 @@ table 50005 "Exit Voucher Lines"
             Caption = 'No. Lot';
             TableRelation = "Lot No. Information"."Lot No." where("Item No." = field("No."),
                                                                  "Location Filter" = field("Location Code"),
-                                                                 Inventory = filter(<> 0));
+                                                                 Inventory = filter(<> 0),
+                                                                 "Variant Code" = field("Variant Code"));//WDC01
         }
         field(13; Inventory; Decimal)
         {
 
             CalcFormula = Sum("Item Ledger Entry".Quantity WHERE("Item No." = FIELD("No."),
                                                                   "Lot No." = FIELD("Lot No."),
-                                                                  "Location Code" = FIELD("Location code")));
+                                                                  "Location Code" = FIELD("Location code"),
+                                                                  "Variant Code" = field("Variant Code")));//WDC01
             Caption = 'Stock';
             DecimalPlaces = 0 : 5;
             Editable = false;

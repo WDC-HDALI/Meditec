@@ -52,6 +52,8 @@ report 50019 "WDC PF Ticket"
             {
 
             }
+            column(SKU; SKU)
+            { }
 
             trigger OnAfterGetRecord()
             var
@@ -74,23 +76,29 @@ report 50019 "WDC PF Ticket"
 
                 Item.Get(SerialNoInformation."Item No.");
                 Description := Item.Description;
+                SKU := 'SKU: ' + Item.SKU;
+                //<<WDC01
+                //if Item."Customer Code" = 'C00001' then begin
 
-                if Item."Customer Code" = 'C00001' then
-                    if SerialNoInformation."Variant Code" = '' then begin
-                        ItemRef.Reset();
-                        ItemRef.SetRange(ItemRef."Item No.", Item."No.");
-                        if ItemRef.FindFirst() then
-                            FactoryCode := ItemRef."Reference No.";
-                    end
-                    else begin
-                        ItemRef.Reset();
-                        ItemRef.SetRange(ItemRef."Item No.", Item."No.");
-                        ItemRef.SetRange("Variant Code", SerialNoInformation."Variant Code");
-                        if ItemRef.FindFirst() then begin
-                            FactoryCode := ItemRef."Reference No.";
-                            RetailCode := ItemRef."Variant Code";
-                        end;
-                    end;
+                // if SerialNoInformation."Variant Code" = '' then begin
+                //     ItemRef.Reset();
+                //     ItemRef.SetRange(ItemRef."Item No.", Item."No.");
+                //     if ItemRef.FindFirst() then
+                //         FactoryCode := ItemRef."Reference No.";
+                // end
+                // else begin
+                //     ItemRef.Reset();
+                //     ItemRef.SetRange(ItemRef."Item No.", Item."No.");
+                //     ItemRef.SetRange("Variant Code", SerialNoInformation."Variant Code");
+                //     if ItemRef.FindFirst() then begin
+                //         FactoryCode := ItemRef."Reference No.";
+                //         RetailCode := ItemRef."Variant Code";
+                //     end;
+                // end;
+                FactoryCode := Item."Factory Code";
+                RetailCode := Item."Retail Code";
+                //end;
+                //>>WDC01
                 IF FactoryCode <> '' then Begin
                     BarecodeString1 := FactoryCode;
                     BracodesFontProvider.ValidateInput(BarecodeString1, BarcodeSymbolygy);
@@ -146,4 +154,5 @@ report 50019 "WDC PF Ticket"
         OFlance: Record "Production Order";
         modele: Text;
         combinaisonSN: text[500];
+        SKU: Code[30];//WDC01
 }

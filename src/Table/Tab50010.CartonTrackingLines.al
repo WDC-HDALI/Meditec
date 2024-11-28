@@ -18,6 +18,7 @@ table 50010 "Carton Tracking Lines"
             Caption = 'No. article';
             DataClassification = ToBeClassified;
             Editable = false;
+
         }
         field(3; "Ref Line No."; Integer)
         {
@@ -40,9 +41,11 @@ table 50010 "Carton Tracking Lines"
                                                          "Location Filter" = filter('MAG-PF'));
             trigger OnValidate()
             var
+                SerialNoInfo: Record "Serial No. Information";//WDC.IM
                 lItemLedgEnt: Record "Item Ledger Entry";
                 lItem: Record Item;
                 ltext001: Label 'N° serie ne doit pas être vide';
+                WDCSerialNoInformationList: page 50013;
             begin
                 if "Serial No." <> '' then begin
                     Rec."Item No." := '';
@@ -55,13 +58,41 @@ table 50010 "Carton Tracking Lines"
                     lItemLedgEnt.SetFilter("Location Code", 'MAG-PF');
                     lItemLedgEnt.SetRange(Open, TRUE);//WDC.IM
                     if lItemLedgEnt.FindFirst() then begin
-                        Quantity := 1;
-                        Rec."Lot No." := lItemLedgEnt."Lot No.";
-                        Rec."Variant Code" := lItemLedgEnt."Variant Code";
-                        Rec."Item No." := lItemLedgEnt."Item No.";
-                        lItem.Get(lItemLedgEnt."Item No.");
-                        Rec."Item Description" := lItem.Description;
+                        if lItemLedgEnt.Count > 1 then begin
+                            SerialNoInfo.Reset();
+                            SerialNoInfo.SetRange("Serial No.", "Serial No.");
+                            SerialNoInfo.SetFilter(Inventory, '<>%1', 0);
+                            SerialNoInfo.SetFilter("Assembled in Carton", '= %1', '');
+                            SerialNoInfo.SetFilter("Location Filter", '%1', 'MAG-PF');
+                            if SerialNoInfo.FindSet() then begin
+                                WDCSerialNoInformationList.SetTableView(SerialNoInfo);
+                                if WDCSerialNoInformationList.RunModal = Action::LookupOK then begin
+                                    WDCSerialNoInformationList.GetRecord(SerialNoInfo);
+                                    lItemLedgEnt.Reset;
+                                    lItemLedgEnt.SetCurrentKey("Item No.", "Entry Type", "Variant Code", "Drop Shipment", "Location Code", "Posting Date");
+                                    lItemLedgEnt.SetRange("Serial No.", SerialNoInfo."Serial No.");
+                                    lItemLedgEnt.SetFilter("Location Code", 'MAG-PF');
+                                    lItemLedgEnt.SetRange(Open, TRUE);
+                                    lItemLedgEnt.SetRange("Item No.", SerialNoInfo."Item No.");
+                                    if lItemLedgEnt.FindFirst() then
+                                        Rec."Lot No." := lItemLedgEnt."Lot No.";
+                                    Quantity := 1;
+                                    Rec."Variant Code" := SerialNoInfo."Variant Code";
+                                    Rec."Item No." := SerialNoInfo."Item No.";
+                                    lItem.Get(SerialNoInfo."Item No.");
+                                    Rec."Item Description" := lItem.Description;
+                                end;
+                            end;
+                        end else begin
+                            Quantity := 1;
+                            Rec."Lot No." := lItemLedgEnt."Lot No.";
+                            Rec."Variant Code" := lItemLedgEnt."Variant Code";
+                            Rec."Item No." := lItemLedgEnt."Item No.";
+                            lItem.Get(lItemLedgEnt."Item No.");
+                            Rec."Item Description" := lItem.Description;
+                        end;
                     end;
+
                     ControlItemRefCustomer;
                 end else
                     Error(ltext001);

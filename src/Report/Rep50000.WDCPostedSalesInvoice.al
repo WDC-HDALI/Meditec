@@ -1,5 +1,9 @@
 report 50000 "WDC Posted Sales Invoice"
 {
+    /**********************************Documentation*********************
+    //WDC01     WDC.IM      27.06.2024      Changer le calcul
+    //WDC02     WDC.IM      12.07.2024      Changer le calcul de nb carton
+    *********************************************************************/
     RDLCLayout = './src/Report/RDLC/StandardSalesInvoice.rdl';
     CaptionML = ENU = 'Sales Invoice', FRA = 'Facture vente';
     Description = 'Facture vente';
@@ -881,7 +885,7 @@ report 50000 "WDC Posted Sales Invoice"
                 trigger OnAfterGetRecord()
                 var
                     lItem: record Item;
-                    lShipmentNo: Code[20];
+                //lShipmentNo: Code[20];  //CMT by WDC02
                 begin
                     if Type = Type::"G/L Account" then
                         "No." := '';
@@ -927,9 +931,9 @@ report 50000 "WDC Posted Sales Invoice"
                     Emballage := false;//WDC.IM
                     if Line.Type = Line.type::Item then
                         if lItem.Get(Line."No.") then BEGIN
-                            if lShipmentNo <> "Shipment No." then begin
+                            if (ShipmentNo <> "Shipment No.") and ("Shipment No." <> '') then begin  //WDC02
                                 NbCartons += CalcNbrCartonMeditec("Shipment No.", "Shipment Line No.");
-                                lShipmentNo := "Shipment No.";
+                                ShipmentNo := "Shipment No.";    //WDC02
                             end;
                             if lItem."Packing Item" then
                                 Emballage := True;
@@ -1344,6 +1348,7 @@ report 50000 "WDC Posted Sales Invoice"
     end;
 
     var
+        ShipmentNo: Code[20];  //WDC02
         Emballage: Boolean;
         transport_cost: Boolean;
         ItemCateg: Record "Item Category";
@@ -1700,7 +1705,8 @@ report 50000 "WDC Posted Sales Invoice"
                 lTrackCartons.CalcFields("Entry No. doc");
                 lTrackCartons."Entry No. Filter" := lTrackCartons."Entry No. doc";
                 lTrackCartons.CalcFields("Shipment No.", "Shipment Line No.");
-                if ((lTrackCartons."Shipment No." = pshipmentNo) and (lTrackCartons."Shipment Line No." = pShipLineNo)) then begin
+                //if ((lTrackCartons."Shipment No." = pshipmentNo) and (lTrackCartons."Shipment Line No." = pShipLineNo)) then begin
+                if (lTrackCartons."Shipment No." = pshipmentNo) then begin
                     if lCartonNo <> lTrackCartons."Carton No." Then begin
                         lNbCarton += 1;
                         if lcarton.Get(lTrackCartons."Carton No.") then
