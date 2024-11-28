@@ -187,7 +187,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!Serial_No_.Value</Value>
+                                      <Value>=Fields!SKU.Value</Value>
                                       <Style>
                                         <FontSize>9pt</FontSize>
                                       </Style>
@@ -267,9 +267,9 @@
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>FactoryCode</rd:DefaultName>
-                              <Top>4.85281cm</Top>
+                              <Top>4.79cm</Top>
                               <Left>0.13228cm</Left>
-                              <Height>1.16091cm</Height>
+                              <Height>0.96739cm</Height>
                               <Width>6.15625cm</Width>
                               <ZIndex>5</ZIndex>
                               <Style>
@@ -314,7 +314,7 @@
                               <rd:DefaultName>Textbox1</rd:DefaultName>
                               <Top>4.34508cm</Top>
                               <Left>0.44685cm</Left>
-                              <Height>0.44125cm</Height>
+                              <Height>0.36662cm</Height>
                               <Width>4.50025cm</Width>
                               <ZIndex>7</ZIndex>
                               <Style>
@@ -345,9 +345,9 @@
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>Textbox2</rd:DefaultName>
-                              <Top>6.07722cm</Top>
+                              <Top>6.08428cm</Top>
                               <Left>0.12935cm</Left>
-                              <Height>0.46242cm</Height>
+                              <Height>0.4cm</Height>
                               <Width>2.71167cm</Width>
                               <ZIndex>8</ZIndex>
                               <Style>
@@ -380,9 +380,9 @@
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>RetailCodeBarreCode</rd:DefaultName>
-                              <Top>6.64547cm</Top>
+                              <Top>6.6cm</Top>
                               <Left>0.02352cm</Left>
-                              <Height>1.34084cm</Height>
+                              <Height>1cm</Height>
                               <Width>6.26502cm</Width>
                               <ZIndex>9</ZIndex>
                               <Style>
@@ -508,6 +508,74 @@
                                 </Border>
                               </Style>
                             </Line>
+                            <Textbox Name="Serial_No_3">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>=Fields!FactoryCode.Value</Value>
+                                      <Style>
+                                        <FontSize>6pt</FontSize>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Left</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Serial_No_1</rd:DefaultName>
+                              <Top>5.76166cm</Top>
+                              <Left>0.13228cm</Left>
+                              <Height>0.28734cm</Height>
+                              <Width>5.70351cm</Width>
+                              <ZIndex>13</ZIndex>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                            <Textbox Name="Serial_No_4">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>=Fields!RetailCode.Value</Value>
+                                      <Style>
+                                        <FontSize>6pt</FontSize>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Left</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Serial_No_1</rd:DefaultName>
+                              <Top>7.64253cm</Top>
+                              <Left>0.02352cm</Left>
+                              <Height>0.28734cm</Height>
+                              <Width>5.70351cm</Width>
+                              <ZIndex>14</ZIndex>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
                           </ReportItems>
                           <KeepTogether>true</KeepTogether>
                           <Style>
@@ -645,6 +713,9 @@ End Function
         </Field>
         <Field Name="combinaisonSN">
           <DataField>combinaisonSN</DataField>
+        </Field>
+        <Field Name="SKU">
+          <DataField>SKU</DataField>
         </Field>
       </Fields>
       <Query>

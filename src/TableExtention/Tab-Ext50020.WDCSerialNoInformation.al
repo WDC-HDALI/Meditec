@@ -26,9 +26,16 @@ tableextension 50020 "WDC Serial No. Information" extends "Serial No. Informatio
             CaptionML = ENU = 'Assem. in Carton', FRA = 'Assem. Carton';
             FieldClass = FlowField;
             Editable = false;
-            CalcFormula = lookup("Carton Tracking Lines"."Carton No." WHERE("Serial No." = FIELD("Serial No.")));
+            //CalcFormula = lookup("Carton Tracking Lines"."Carton No." WHERE("Serial No." = FIELD("Serial No.")));//CMT by WDC.IM
+            CalcFormula = lookup("Carton Tracking Lines"."Carton No." WHERE("Serial No." = FIELD("Serial No."), "Item No." = field("Item No.")));//WDC.IM
+        }
+        field(50003; DescriptionItem; Text[100])
+        {
+            CaptionML = ENU = 'Description', FRA = 'Déscription';
+            FieldClass = FlowField;
+            Editable = false;
+            CalcFormula = lookup(Item.Description where("No." = field("Item No.")));
         }
 
     }
-
 }

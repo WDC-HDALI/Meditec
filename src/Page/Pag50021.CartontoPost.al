@@ -174,14 +174,17 @@ page 50021 "Carton to Post"
                             lsalesLines.SetRange("No.", lCartTrackLines."Item No.");
                             lsalesLines.SetRange("Variant Code", lCartTrackLines."Variant Code");
                             if lsalesLines.FindSet() then begin
-                                if NbArticle < LsalesLines.Quantity Then
-                                    LsalesLines.Validate("Qty. to Ship", NbArticle)
-                                else begin
-                                    LsalesLines.Validate(Quantity, NbArticle);
-                                    LsalesLines.Validate("Qty. to Ship", NbArticle);
+                                If lsalesLines.Quantity > lsalesLines."Quantity Shipped" then begin
+                                    if NbArticle < LsalesLines.Quantity Then
+                                        LsalesLines.Validate("Qty. to Ship", NbArticle)
+                                    else begin
+                                        LsalesLines.Validate(Quantity, NbArticle);
+                                        LsalesLines.Validate("Qty. to Ship", NbArticle);
+                                    end;
+
+                                    LsalesLines."Qty. to Invoice" := 0;
+                                    LsalesLines.Modify(true);
                                 end;
-                                LsalesLines."Qty. to Invoice" := 0;
-                                LsalesLines.Modify(true);
                             end
                             else begin
                                 InsertSalesLine2(lCartTrackLines."Item No.", lCartTrackLines."Variant Code", NbArticle);

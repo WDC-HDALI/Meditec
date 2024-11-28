@@ -1,5 +1,8 @@
 page 50006 "Exit Voucher PDR"
 {
+    /****************************************************Documentation*******************************
+    WDC01       02.09.2024      WDC.IM      Add "Variant code"
+    *************************************************************************************************/
     Caption = 'Bon sortie ';
     PageType = Card;
     SourceTable = "Exit Voucher Header";
@@ -110,6 +113,9 @@ page 50006 "Exit Voucher PDR"
         NomFeuille := 'PDR';
         Init_ItemJNLLine;
         InitIndex;
+        lExitVoucherHeader.Reset(); //WDC.IM
+        lPostedExitVoucherHeader.Reset(); //WDC.IM
+        lPostedExitVoucherHeader.Init(); //WDC.IM
         lExitVoucherHeader.Get(pDocumentNo);
         lPostedExitVoucherHeader.TransferFields(lExitVoucherHeader);
         lPostDocNo := NoSeriesManagement.GetNextNo(WhseSetup."Posted Exit Voucher PDR Nos.", 0D, TRUE);
@@ -120,6 +126,7 @@ page 50006 "Exit Voucher PDR"
         lExitVoucherLines.SetRange("Document No.", pDocumentNo);
         if lExitVoucherLines.FindFirst() then
             repeat
+                lItem.Reset(); //WDC.IM
                 lItem.Get(lExitVoucherLines."No.");
                 lExitVoucherLines.TestField("Location Code");
                 lExitVoucherLines.TestField(Quantity);
@@ -135,6 +142,7 @@ page 50006 "Exit Voucher PDR"
                 lItemJnlLine.VALIDATE(Quantity, lExitVoucherLines.Quantity);
                 lItemJnlLine.VALIDATE("Unit of Measure Code", lItem."Base Unit of Measure");
                 lItemJnlLine.VALIDATE("Location Code", lExitVoucherLines."Location Code");
+                lItemJnlLine.Validate("Variant Code", lExitVoucherLines."Variant Code");//WDC01
                 lItemJnlLine.Insert(true);
                 IF (lExitVoucherLines."Lot No." = '') AND (lItem."Item Tracking Code" <> '') THEN
                     ERROR('article %1 sans lot', lItem."No.")
@@ -142,6 +150,7 @@ page 50006 "Exit Voucher PDR"
                     IF (lExitVoucherLines."Lot No." <> '') AND (lItem."Item Tracking Code" <> '') then begin
                         if (lItem."Item Tracking Code" <> 'PF') THEN BEGIN
                             Clear(lReservationEntry);
+                            lReservationEntry.Init();
                             lReservationEntry."Entry No." := lReservationEntry.GetLastEntryNo + 1;
                             lReservationEntry.Positive := false;
                             lReservationEntry."Item Tracking" := lReservationEntry."Item Tracking"::"Lot No.";
@@ -172,10 +181,11 @@ page 50006 "Exit Voucher PDR"
                 lPosExtVchrLines.TransferFields(lExitVoucherLines);
                 lPosExtVchrLines."Document No." := lPostDocNo;
                 lPosExtVchrLines.Insert;
-                ItemJnlPostBatch.Run(lItemJnlLine);
+                //ItemJnlPostBatch.Run(lItemJnlLine); //CMT by WDC.IM
                 Index := Index + 1000;
 
             until lExitVoucherLines.Next() = 0;
+        ItemJnlPostBatch.Run(lItemJnlLine);//WDC.IM
         lExitVoucherLines.DeleteAll();
         lExitVoucherHeader.Delete();
 
