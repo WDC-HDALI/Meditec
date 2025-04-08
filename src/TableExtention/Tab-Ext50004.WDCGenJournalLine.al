@@ -21,10 +21,8 @@ tableextension 50004 "WDC GenJournalLine" extends "Gen. Journal Line"
         GenJnlBatch: Record "Gen. Journal Batch";
     begin
         GenJnlBatch.GET("Journal Template Name", "Journal Batch Name");
-        if GenJnlBatch."Account No." <> '' then begin
-            "Account Type" := GenJnlBatch."Account Type";
-            "Account No." := GenJnlBatch."Account No.";
-        end;
+        "Account Type" := GenJnlBatch."Account Type";
+        "Account No." := GenJnlBatch."Account No.";
     end;
 
 
