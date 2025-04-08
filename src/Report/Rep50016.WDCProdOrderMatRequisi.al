@@ -50,6 +50,16 @@ report 50016 "WDC Prod. Order - Mat. Requis."
             column(CurrReportPageNoCapt; CurrReportPageNoCaptLbl)
             {
             }
+            //<<WDC.IM
+            column(ItemStage; Item."Item Stage")
+            {
+                IncludeCaption = true;
+            }
+            column(ItemMussel; item."Item Mussel")
+            {
+                IncludeCaption = true;
+            }
+            //>>WDC.IM
             dataitem("Prod. Order Component"; "Prod. Order Component")
             {
                 DataItemLink = Status = FIELD(Status), "Prod. Order No." = FIELD("No.");
@@ -153,6 +163,12 @@ report 50016 "WDC Prod. Order - Mat. Requis."
                 ProdOrderFilter := GetFilters();
                 No := 0;
             end;
+            //<<WDC.IM
+            trigger OnAfterGetRecord()
+            begin
+                Item.Get("Production Order"."Source No.");
+            end;
+            //>>WDC.IM
         }
     }
 
@@ -184,6 +200,7 @@ report 50016 "WDC Prod. Order - Mat. Requis."
         No: Integer;
         ItemLedgerEntry: Record "Item Ledger Entry"; //WDC.CHG
         QtyCons: Decimal;  //WDC.CHG
+        Item: Record Item;
 
 }
 

@@ -888,7 +888,7 @@ Fields!TransferFromAddr3.Value + Chr(177) +
 Fields!TransferFromAddr4.Value + Chr(177) +
 Fields!TransferFromAddr5.Value + Chr(177) +
 Fields!TransferFromAddr6.Value + Chr(177) +
-Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+Fields!Transfer_to_Code.Value)</Hidden>
+Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+Fields!Transfer_to_Code.Value + Chr(177)+Fields!OrdresTransfertNO.Value )</Hidden>
                                             </Visibility>
                                             <Style>
                                               <Border>
@@ -1125,6 +1125,7 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
             <PageBreak>
               <BreakLocation>End</BreakLocation>
             </PageBreak>
+            <Left>0.00001cm</Left>
             <Height>2.49415cm</Height>
             <Width>19.67425cm</Width>
             <Visibility>
@@ -1136,7 +1137,7 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.07938cm</Width>
+                  <Width>1.425cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1152,7 +1153,7 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>Signature</Value>
                                   <Style>
                                     <FontFamily>Segoe UI</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -1160,7 +1161,9 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox59</rd:DefaultName>
@@ -1168,6 +1171,11 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1205,6 +1213,11 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </TopBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1256,18 +1269,14 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
-                <TablixMember>
-                  <Visibility>
-                    <Hidden>true</Hidden>
-                  </Visibility>
-                </TablixMember>
+                <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
               <TablixMembers>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>1.61785cm</Size>
+                    <Size>1.6cm</Size>
                     <CellContents>
                       <Textbox Name="Textbox12">
                         <CanGrow>true</CanGrow>
@@ -1284,7 +1293,9 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                 </Style>
                               </TextRun>
                             </TextRuns>
-                            <Style />
+                            <Style>
+                              <TextAlign>Center</TextAlign>
+                            </Style>
                           </Paragraph>
                         </Paragraphs>
                         <rd:DefaultName>Textbox12</rd:DefaultName>
@@ -1308,7 +1319,7 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                   <TablixMembers>
                     <TablixMember>
                       <TablixHeader>
-                        <Size>4.02344cm</Size>
+                        <Size>3.6cm</Size>
                         <CellContents>
                           <Textbox Name="Textbox23">
                             <CanGrow>true</CanGrow>
@@ -1325,7 +1336,9 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
-                                <Style />
+                                <Style>
+                                  <TextAlign>Center</TextAlign>
+                                </Style>
                               </Paragraph>
                             </Paragraphs>
                             <rd:DefaultName>Textbox23</rd:DefaultName>
@@ -1349,16 +1362,16 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                       <TablixMembers>
                         <TablixMember>
                           <TablixHeader>
-                            <Size>1.93191cm</Size>
+                            <Size>1.7cm</Size>
                             <CellContents>
-                              <Textbox Name="Textbox3">
+                              <Textbox Name="Textbox6">
                                 <CanGrow>true</CanGrow>
                                 <KeepTogether>true</KeepTogether>
                                 <Paragraphs>
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value>=Parameters!Qty_TransLineCaption.Value</Value>
+                                        <Value>Code atelier</Value>
                                         <Style>
                                           <FontFamily>Segoe UI</FontFamily>
                                           <FontSize>8pt</FontSize>
@@ -1366,10 +1379,12 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
-                                    <Style />
+                                    <Style>
+                                      <TextAlign>Center</TextAlign>
+                                    </Style>
                                   </Paragraph>
                                 </Paragraphs>
-                                <rd:DefaultName>Textbox3</rd:DefaultName>
+                                <rd:DefaultName>Textbox6</rd:DefaultName>
                                 <Style>
                                   <Border>
                                     <Style>None</Style>
@@ -1390,16 +1405,16 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                           <TablixMembers>
                             <TablixMember>
                               <TablixHeader>
-                                <Size>1.83271cm</Size>
+                                <Size>1.7cm</Size>
                                 <CellContents>
-                                  <Textbox Name="Textbox43">
+                                  <Textbox Name="Textbox3">
                                     <CanGrow>true</CanGrow>
                                     <KeepTogether>true</KeepTogether>
                                     <Paragraphs>
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value EvaluationMode="Constant">Quantité lot totale</Value>
+                                            <Value>=Parameters!Qty_TransLineCaption.Value</Value>
                                             <Style>
                                               <FontFamily>Segoe UI</FontFamily>
                                               <FontSize>8pt</FontSize>
@@ -1407,10 +1422,12 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                             </Style>
                                           </TextRun>
                                         </TextRuns>
-                                        <Style />
+                                        <Style>
+                                          <TextAlign>Center</TextAlign>
+                                        </Style>
                                       </Paragraph>
                                     </Paragraphs>
-                                    <rd:DefaultName>Textbox43</rd:DefaultName>
+                                    <rd:DefaultName>Textbox3</rd:DefaultName>
                                     <Style>
                                       <Border>
                                         <Style>None</Style>
@@ -1431,16 +1448,16 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                               <TablixMembers>
                                 <TablixMember>
                                   <TablixHeader>
-                                    <Size>1.69456cm</Size>
+                                    <Size>1.8cm</Size>
                                     <CellContents>
-                                      <Textbox Name="Textbox26">
+                                      <Textbox Name="Textbox43">
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>=Parameters!UOM_TransLineCaption.Value</Value>
+                                                <Value EvaluationMode="Constant">Quantité lot totale</Value>
                                                 <Style>
                                                   <FontFamily>Segoe UI</FontFamily>
                                                   <FontSize>8pt</FontSize>
@@ -1448,10 +1465,12 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                                 </Style>
                                               </TextRun>
                                             </TextRuns>
-                                            <Style />
+                                            <Style>
+                                              <TextAlign>Center</TextAlign>
+                                            </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>Textbox26</rd:DefaultName>
+                                        <rd:DefaultName>Textbox43</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>None</Style>
@@ -1472,16 +1491,16 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                   <TablixMembers>
                                     <TablixMember>
                                       <TablixHeader>
-                                        <Size>2.5cm</Size>
+                                        <Size>1.65cm</Size>
                                         <CellContents>
-                                          <Textbox Name="Textbox50">
+                                          <Textbox Name="Textbox26">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>=Fields!LotNoCaption.Value</Value>
+                                                    <Value>=Parameters!UOM_TransLineCaption.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -1489,10 +1508,12 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
-                                                <Style />
+                                                <Style>
+                                                  <TextAlign>Center</TextAlign>
+                                                </Style>
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>Textbox50</rd:DefaultName>
+                                            <rd:DefaultName>Textbox26</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
@@ -1513,16 +1534,16 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                       <TablixMembers>
                                         <TablixMember>
                                           <TablixHeader>
-                                            <Size>2.1179cm</Size>
+                                            <Size>2cm</Size>
                                             <CellContents>
-                                              <Textbox Name="Textbox7">
+                                              <Textbox Name="Textbox50">
                                                 <CanGrow>true</CanGrow>
                                                 <KeepTogether>true</KeepTogether>
                                                 <Paragraphs>
                                                   <Paragraph>
                                                     <TextRuns>
                                                       <TextRun>
-                                                        <Value EvaluationMode="Constant">Quantité lot</Value>
+                                                        <Value EvaluationMode="Constant">N° lot</Value>
                                                         <Style>
                                                           <FontFamily>Segoe UI</FontFamily>
                                                           <FontSize>8pt</FontSize>
@@ -1530,10 +1551,12 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                                         </Style>
                                                       </TextRun>
                                                     </TextRuns>
-                                                    <Style />
+                                                    <Style>
+                                                      <TextAlign>Center</TextAlign>
+                                                    </Style>
                                                   </Paragraph>
                                                 </Paragraphs>
-                                                <rd:DefaultName>Textbox6</rd:DefaultName>
+                                                <rd:DefaultName>Textbox50</rd:DefaultName>
                                                 <Style>
                                                   <Border>
                                                     <Style>None</Style>
@@ -1554,16 +1577,16 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                           <TablixMembers>
                                             <TablixMember>
                                               <TablixHeader>
-                                                <Size>2.08196cm</Size>
+                                                <Size>1.8cm</Size>
                                                 <CellContents>
-                                                  <Textbox Name="Textbox65">
+                                                  <Textbox Name="Textbox7">
                                                     <CanGrow>true</CanGrow>
                                                     <KeepTogether>true</KeepTogether>
                                                     <Paragraphs>
                                                       <Paragraph>
                                                         <TextRuns>
                                                           <TextRun>
-                                                            <Value>=Replace(Parameters!Qty_TransLineShippedCaption.Value," " , Chr(10))</Value>
+                                                            <Value EvaluationMode="Constant">Quantité lot</Value>
                                                             <Style>
                                                               <FontFamily>Segoe UI</FontFamily>
                                                               <FontSize>8pt</FontSize>
@@ -1571,10 +1594,12 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                                             </Style>
                                                           </TextRun>
                                                         </TextRuns>
-                                                        <Style />
+                                                        <Style>
+                                                          <TextAlign>Center</TextAlign>
+                                                        </Style>
                                                       </Paragraph>
                                                     </Paragraphs>
-                                                    <rd:DefaultName>Textbox65</rd:DefaultName>
+                                                    <rd:DefaultName>Textbox6</rd:DefaultName>
                                                     <Style>
                                                       <Border>
                                                         <Style>None</Style>
@@ -1595,16 +1620,16 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                               <TablixMembers>
                                                 <TablixMember>
                                                   <TablixHeader>
-                                                    <Size>1.79455cm</Size>
+                                                    <Size>1.7cm</Size>
                                                     <CellContents>
-                                                      <Textbox Name="Textbox68">
+                                                      <Textbox Name="Textbox65">
                                                         <CanGrow>true</CanGrow>
                                                         <KeepTogether>true</KeepTogether>
                                                         <Paragraphs>
                                                           <Paragraph>
                                                             <TextRuns>
                                                               <TextRun>
-                                                                <Value>=Replace(Parameters!QtyReceived_TransLineCaption.Value," " , Chr(10))</Value>
+                                                                <Value>=Replace(Parameters!Qty_TransLineShippedCaption.Value," " , Chr(10))</Value>
                                                                 <Style>
                                                                   <FontFamily>Segoe UI</FontFamily>
                                                                   <FontSize>8pt</FontSize>
@@ -1612,10 +1637,12 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                                                 </Style>
                                                               </TextRun>
                                                             </TextRuns>
-                                                            <Style />
+                                                            <Style>
+                                                              <TextAlign>Center</TextAlign>
+                                                            </Style>
                                                           </Paragraph>
                                                         </Paragraphs>
-                                                        <rd:DefaultName>Textbox68</rd:DefaultName>
+                                                        <rd:DefaultName>Textbox65</rd:DefaultName>
                                                         <Style>
                                                           <Border>
                                                             <Style>None</Style>
@@ -1634,7 +1661,52 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                                     </CellContents>
                                                   </TablixHeader>
                                                   <TablixMembers>
-                                                    <TablixMember />
+                                                    <TablixMember>
+                                                      <TablixHeader>
+                                                        <Size>1.7cm</Size>
+                                                        <CellContents>
+                                                          <Textbox Name="Textbox68">
+                                                            <CanGrow>true</CanGrow>
+                                                            <KeepTogether>true</KeepTogether>
+                                                            <Paragraphs>
+                                                              <Paragraph>
+                                                                <TextRuns>
+                                                                  <TextRun>
+                                                                    <Value>=Replace(Parameters!QtyReceived_TransLineCaption.Value," " , Chr(10))</Value>
+                                                                    <Style>
+                                                                      <FontFamily>Segoe UI</FontFamily>
+                                                                      <FontSize>8pt</FontSize>
+                                                                      <FontWeight>Bold</FontWeight>
+                                                                    </Style>
+                                                                  </TextRun>
+                                                                </TextRuns>
+                                                                <Style>
+                                                                  <TextAlign>Center</TextAlign>
+                                                                </Style>
+                                                              </Paragraph>
+                                                            </Paragraphs>
+                                                            <rd:DefaultName>Textbox68</rd:DefaultName>
+                                                            <Style>
+                                                              <Border>
+                                                                <Style>None</Style>
+                                                              </Border>
+                                                              <BottomBorder>
+                                                                <Color>Black</Color>
+                                                                <Style>Solid</Style>
+                                                                <Width>1pt</Width>
+                                                              </BottomBorder>
+                                                              <PaddingLeft>2pt</PaddingLeft>
+                                                              <PaddingRight>2pt</PaddingRight>
+                                                              <PaddingTop>2pt</PaddingTop>
+                                                              <PaddingBottom>2pt</PaddingBottom>
+                                                            </Style>
+                                                          </Textbox>
+                                                        </CellContents>
+                                                      </TablixHeader>
+                                                      <TablixMembers>
+                                                        <TablixMember />
+                                                      </TablixMembers>
+                                                    </TablixMember>
                                                   </TablixMembers>
                                                 </TablixMember>
                                               </TablixMembers>
@@ -1666,7 +1738,7 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                     </SortExpression>
                   </SortExpressions>
                   <TablixHeader>
-                    <Size>1.61785cm</Size>
+                    <Size>1.6cm</Size>
                     <CellContents>
                       <Textbox Name="ItemNo_TransLine11">
                         <CanGrow>true</CanGrow>
@@ -1692,6 +1764,11 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                           <Border>
                             <Style>None</Style>
                           </Border>
+                          <TopBorder>
+                            <Color>Black</Color>
+                            <Style>Solid</Style>
+                            <Width>1pt</Width>
+                          </TopBorder>
                           <PaddingLeft>2pt</PaddingLeft>
                           <PaddingRight>2pt</PaddingRight>
                           <PaddingTop>2pt</PaddingTop>
@@ -1703,7 +1780,7 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                   <TablixMembers>
                     <TablixMember>
                       <TablixHeader>
-                        <Size>4.02344cm</Size>
+                        <Size>3.6cm</Size>
                         <CellContents>
                           <Textbox Name="Desc_TransLine1">
                             <CanGrow>true</CanGrow>
@@ -1729,6 +1806,11 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                               <Border>
                                 <Style>None</Style>
                               </Border>
+                              <TopBorder>
+                                <Color>Black</Color>
+                                <Style>Solid</Style>
+                                <Width>1pt</Width>
+                              </TopBorder>
                               <PaddingLeft>2pt</PaddingLeft>
                               <PaddingRight>2pt</PaddingRight>
                               <PaddingTop>2pt</PaddingTop>
@@ -1740,20 +1822,19 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                       <TablixMembers>
                         <TablixMember>
                           <TablixHeader>
-                            <Size>1.93191cm</Size>
+                            <Size>1.7cm</Size>
                             <CellContents>
-                              <Textbox Name="Textbox5">
+                              <Textbox Name="RoutinkLinkCode">
                                 <CanGrow>true</CanGrow>
                                 <KeepTogether>true</KeepTogether>
                                 <Paragraphs>
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value>=Fields!QtyTatal.Value</Value>
+                                        <Value>=Fields!RoutinkLinkCode.Value</Value>
                                         <Style>
                                           <FontFamily>Segoe UI</FontFamily>
                                           <FontSize>8pt</FontSize>
-                                          <Format>=Fields!Qty_TransLineFormat.Value</Format>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
@@ -1762,11 +1843,16 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                     </Style>
                                   </Paragraph>
                                 </Paragraphs>
-                                <rd:DefaultName>Textbox5</rd:DefaultName>
+                                <rd:DefaultName>RoutinkLinkCode</rd:DefaultName>
                                 <Style>
                                   <Border>
                                     <Style>None</Style>
                                   </Border>
+                                  <TopBorder>
+                                    <Color>Black</Color>
+                                    <Style>Solid</Style>
+                                    <Width>1pt</Width>
+                                  </TopBorder>
                                   <PaddingLeft>2pt</PaddingLeft>
                                   <PaddingRight>2pt</PaddingRight>
                                   <PaddingTop>2pt</PaddingTop>
@@ -1778,16 +1864,16 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                           <TablixMembers>
                             <TablixMember>
                               <TablixHeader>
-                                <Size>1.83271cm</Size>
+                                <Size>1.7cm</Size>
                                 <CellContents>
-                                  <Textbox Name="Quantity__Base_2">
+                                  <Textbox Name="Textbox5">
                                     <CanGrow>true</CanGrow>
                                     <KeepTogether>true</KeepTogether>
                                     <Paragraphs>
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value>=Sum(Fields!Quantity__Base_.Value) * (-1)</Value>
+                                            <Value>=Fields!QtyTatal.Value</Value>
                                             <Style>
                                               <FontFamily>Segoe UI</FontFamily>
                                               <FontSize>8pt</FontSize>
@@ -1800,12 +1886,16 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                         </Style>
                                       </Paragraph>
                                     </Paragraphs>
-                                    <rd:DefaultName>Quantity__Base_</rd:DefaultName>
+                                    <rd:DefaultName>Textbox5</rd:DefaultName>
                                     <Style>
                                       <Border>
                                         <Style>None</Style>
                                       </Border>
-                                      <VerticalAlign>Top</VerticalAlign>
+                                      <TopBorder>
+                                        <Color>Black</Color>
+                                        <Style>Solid</Style>
+                                        <Width>1pt</Width>
+                                      </TopBorder>
                                       <PaddingLeft>2pt</PaddingLeft>
                                       <PaddingRight>2pt</PaddingRight>
                                       <PaddingTop>2pt</PaddingTop>
@@ -1817,32 +1907,39 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                               <TablixMembers>
                                 <TablixMember>
                                   <TablixHeader>
-                                    <Size>1.69456cm</Size>
+                                    <Size>1.8cm</Size>
                                     <CellContents>
-                                      <Textbox Name="Textbox61">
+                                      <Textbox Name="Quantity__Base_2">
                                         <CanGrow>true</CanGrow>
                                         <KeepTogether>true</KeepTogether>
                                         <Paragraphs>
                                           <Paragraph>
                                             <TextRuns>
                                               <TextRun>
-                                                <Value>=Fields!UOM_TransLine.Value</Value>
+                                                <Value>=Sum(Fields!Quantity__Base_.Value) * (-1)</Value>
                                                 <Style>
                                                   <FontFamily>Segoe UI</FontFamily>
                                                   <FontSize>8pt</FontSize>
+                                                  <Format>=Fields!Qty_TransLineFormat.Value</Format>
                                                 </Style>
                                               </TextRun>
                                             </TextRuns>
                                             <Style>
-                                              <TextAlign>Left</TextAlign>
+                                              <TextAlign>Right</TextAlign>
                                             </Style>
                                           </Paragraph>
                                         </Paragraphs>
-                                        <rd:DefaultName>Textbox61</rd:DefaultName>
+                                        <rd:DefaultName>Quantity__Base_</rd:DefaultName>
                                         <Style>
                                           <Border>
                                             <Style>None</Style>
                                           </Border>
+                                          <TopBorder>
+                                            <Color>Black</Color>
+                                            <Style>Solid</Style>
+                                            <Width>1pt</Width>
+                                          </TopBorder>
+                                          <VerticalAlign>Top</VerticalAlign>
                                           <PaddingLeft>2pt</PaddingLeft>
                                           <PaddingRight>2pt</PaddingRight>
                                           <PaddingTop>2pt</PaddingTop>
@@ -1854,30 +1951,37 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                   <TablixMembers>
                                     <TablixMember>
                                       <TablixHeader>
-                                        <Size>2.5cm</Size>
+                                        <Size>1.65cm</Size>
                                         <CellContents>
-                                          <Textbox Name="Textbox51">
+                                          <Textbox Name="Textbox61">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
                                             <Paragraphs>
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value />
+                                                    <Value>=Fields!UOM_TransLine.Value</Value>
                                                     <Style>
                                                       <FontFamily>Segoe UI</FontFamily>
                                                       <FontSize>8pt</FontSize>
                                                     </Style>
                                                   </TextRun>
                                                 </TextRuns>
-                                                <Style />
+                                                <Style>
+                                                  <TextAlign>Left</TextAlign>
+                                                </Style>
                                               </Paragraph>
                                             </Paragraphs>
-                                            <rd:DefaultName>Textbox51</rd:DefaultName>
+                                            <rd:DefaultName>Textbox61</rd:DefaultName>
                                             <Style>
                                               <Border>
                                                 <Style>None</Style>
                                               </Border>
+                                              <TopBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </TopBorder>
                                               <PaddingLeft>2pt</PaddingLeft>
                                               <PaddingRight>2pt</PaddingRight>
                                               <PaddingTop>2pt</PaddingTop>
@@ -1889,9 +1993,9 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                       <TablixMembers>
                                         <TablixMember>
                                           <TablixHeader>
-                                            <Size>2.1179cm</Size>
+                                            <Size>2cm</Size>
                                             <CellContents>
-                                              <Textbox Name="Textbox54">
+                                              <Textbox Name="Textbox51">
                                                 <CanGrow>true</CanGrow>
                                                 <KeepTogether>true</KeepTogether>
                                                 <Paragraphs>
@@ -1908,11 +2012,16 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                                     <Style />
                                                   </Paragraph>
                                                 </Paragraphs>
-                                                <rd:DefaultName>Textbox54</rd:DefaultName>
+                                                <rd:DefaultName>Textbox51</rd:DefaultName>
                                                 <Style>
                                                   <Border>
                                                     <Style>None</Style>
                                                   </Border>
+                                                  <TopBorder>
+                                                    <Color>Black</Color>
+                                                    <Style>Solid</Style>
+                                                    <Width>1pt</Width>
+                                                  </TopBorder>
                                                   <PaddingLeft>2pt</PaddingLeft>
                                                   <PaddingRight>2pt</PaddingRight>
                                                   <PaddingTop>2pt</PaddingTop>
@@ -1924,9 +2033,9 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                           <TablixMembers>
                                             <TablixMember>
                                               <TablixHeader>
-                                                <Size>2.08196cm</Size>
+                                                <Size>1.8cm</Size>
                                                 <CellContents>
-                                                  <Textbox Name="Textbox66">
+                                                  <Textbox Name="Textbox54">
                                                     <CanGrow>true</CanGrow>
                                                     <KeepTogether>true</KeepTogether>
                                                     <Paragraphs>
@@ -1943,11 +2052,16 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                                         <Style />
                                                       </Paragraph>
                                                     </Paragraphs>
-                                                    <rd:DefaultName>Textbox66</rd:DefaultName>
+                                                    <rd:DefaultName>Textbox54</rd:DefaultName>
                                                     <Style>
                                                       <Border>
                                                         <Style>None</Style>
                                                       </Border>
+                                                      <TopBorder>
+                                                        <Color>Black</Color>
+                                                        <Style>Solid</Style>
+                                                        <Width>1pt</Width>
+                                                      </TopBorder>
                                                       <PaddingLeft>2pt</PaddingLeft>
                                                       <PaddingRight>2pt</PaddingRight>
                                                       <PaddingTop>2pt</PaddingTop>
@@ -1959,9 +2073,9 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                               <TablixMembers>
                                                 <TablixMember>
                                                   <TablixHeader>
-                                                    <Size>1.79455cm</Size>
+                                                    <Size>1.7cm</Size>
                                                     <CellContents>
-                                                      <Textbox Name="Textbox69">
+                                                      <Textbox Name="Textbox66">
                                                         <CanGrow>true</CanGrow>
                                                         <KeepTogether>true</KeepTogether>
                                                         <Paragraphs>
@@ -1978,11 +2092,16 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                                             <Style />
                                                           </Paragraph>
                                                         </Paragraphs>
-                                                        <rd:DefaultName>Textbox69</rd:DefaultName>
+                                                        <rd:DefaultName>Textbox66</rd:DefaultName>
                                                         <Style>
                                                           <Border>
                                                             <Style>None</Style>
                                                           </Border>
+                                                          <TopBorder>
+                                                            <Color>Black</Color>
+                                                            <Style>Solid</Style>
+                                                            <Width>1pt</Width>
+                                                          </TopBorder>
                                                           <PaddingLeft>2pt</PaddingLeft>
                                                           <PaddingRight>2pt</PaddingRight>
                                                           <PaddingTop>2pt</PaddingTop>
@@ -1992,85 +2111,87 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                                     </CellContents>
                                                   </TablixHeader>
                                                   <TablixMembers>
-                                                    <TablixMember />
+                                                    <TablixMember>
+                                                      <TablixHeader>
+                                                        <Size>1.7cm</Size>
+                                                        <CellContents>
+                                                          <Textbox Name="Textbox69">
+                                                            <CanGrow>true</CanGrow>
+                                                            <KeepTogether>true</KeepTogether>
+                                                            <Paragraphs>
+                                                              <Paragraph>
+                                                                <TextRuns>
+                                                                  <TextRun>
+                                                                    <Value />
+                                                                    <Style>
+                                                                      <FontFamily>Segoe UI</FontFamily>
+                                                                      <FontSize>8pt</FontSize>
+                                                                    </Style>
+                                                                  </TextRun>
+                                                                </TextRuns>
+                                                                <Style />
+                                                              </Paragraph>
+                                                            </Paragraphs>
+                                                            <rd:DefaultName>Textbox69</rd:DefaultName>
+                                                            <Style>
+                                                              <Border>
+                                                                <Style>None</Style>
+                                                              </Border>
+                                                              <TopBorder>
+                                                                <Color>Black</Color>
+                                                                <Style>Solid</Style>
+                                                                <Width>1pt</Width>
+                                                              </TopBorder>
+                                                              <PaddingLeft>2pt</PaddingLeft>
+                                                              <PaddingRight>2pt</PaddingRight>
+                                                              <PaddingTop>2pt</PaddingTop>
+                                                              <PaddingBottom>2pt</PaddingBottom>
+                                                            </Style>
+                                                          </Textbox>
+                                                        </CellContents>
+                                                      </TablixHeader>
+                                                      <TablixMembers>
+                                                        <TablixMember />
+                                                      </TablixMembers>
+                                                    </TablixMember>
                                                   </TablixMembers>
                                                 </TablixMember>
                                               </TablixMembers>
                                             </TablixMember>
                                           </TablixMembers>
                                         </TablixMember>
-                                      </TablixMembers>
-                                    </TablixMember>
-                                    <TablixMember>
-                                      <Group Name="Lot_No">
-                                        <GroupExpressions>
-                                          <GroupExpression>=Fields!Lot_No.Value</GroupExpression>
-                                        </GroupExpressions>
-                                      </Group>
-                                      <SortExpressions>
-                                        <SortExpression>
-                                          <Value>=Fields!Lot_No.Value</Value>
-                                        </SortExpression>
-                                      </SortExpressions>
-                                      <TablixHeader>
-                                        <Size>2.5cm</Size>
-                                        <CellContents>
-                                          <Textbox Name="Lot_No1">
-                                            <CanGrow>true</CanGrow>
-                                            <KeepTogether>true</KeepTogether>
-                                            <Paragraphs>
-                                              <Paragraph>
-                                                <TextRuns>
-                                                  <TextRun>
-                                                    <Value>=Fields!Lot_No.Value</Value>
-                                                    <Style>
-                                                      <FontFamily>Segoe UI</FontFamily>
-                                                      <FontSize>8pt</FontSize>
-                                                    </Style>
-                                                  </TextRun>
-                                                </TextRuns>
-                                                <Style />
-                                              </Paragraph>
-                                            </Paragraphs>
-                                            <rd:DefaultName>Lot_No1</rd:DefaultName>
-                                            <Style>
-                                              <Border>
-                                                <Style>None</Style>
-                                              </Border>
-                                              <PaddingLeft>2pt</PaddingLeft>
-                                              <PaddingRight>2pt</PaddingRight>
-                                              <PaddingTop>2pt</PaddingTop>
-                                              <PaddingBottom>2pt</PaddingBottom>
-                                            </Style>
-                                          </Textbox>
-                                        </CellContents>
-                                      </TablixHeader>
-                                      <TablixMembers>
                                         <TablixMember>
+                                          <Group Name="Lot_No">
+                                            <GroupExpressions>
+                                              <GroupExpression>=Fields!Lot_No.Value</GroupExpression>
+                                            </GroupExpressions>
+                                          </Group>
+                                          <SortExpressions>
+                                            <SortExpression>
+                                              <Value>=Fields!Lot_No.Value</Value>
+                                            </SortExpression>
+                                          </SortExpressions>
                                           <TablixHeader>
-                                            <Size>2.1179cm</Size>
+                                            <Size>2cm</Size>
                                             <CellContents>
-                                              <Textbox Name="Quantity__Base_3">
+                                              <Textbox Name="Lot_No1">
                                                 <CanGrow>true</CanGrow>
                                                 <KeepTogether>true</KeepTogether>
                                                 <Paragraphs>
                                                   <Paragraph>
                                                     <TextRuns>
                                                       <TextRun>
-                                                        <Value>=Sum(Fields!Quantity__Base_.Value) * (-1)</Value>
+                                                        <Value>=Fields!Lot_No.Value</Value>
                                                         <Style>
                                                           <FontFamily>Segoe UI</FontFamily>
                                                           <FontSize>8pt</FontSize>
-                                                          <Format>=Fields!Qty_TransLineFormat.Value</Format>
                                                         </Style>
                                                       </TextRun>
                                                     </TextRuns>
-                                                    <Style>
-                                                      <TextAlign>Right</TextAlign>
-                                                    </Style>
+                                                    <Style />
                                                   </Paragraph>
                                                 </Paragraphs>
-                                                <rd:DefaultName>Quantity__Base_</rd:DefaultName>
+                                                <rd:DefaultName>Lot_No1</rd:DefaultName>
                                                 <Style>
                                                   <Border>
                                                     <Style>None</Style>
@@ -2086,20 +2207,20 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                           <TablixMembers>
                                             <TablixMember>
                                               <TablixHeader>
-                                                <Size>2.08196cm</Size>
+                                                <Size>1.8cm</Size>
                                                 <CellContents>
-                                                  <Textbox Name="Textbox67">
+                                                  <Textbox Name="Quantity__Base_3">
                                                     <CanGrow>true</CanGrow>
                                                     <KeepTogether>true</KeepTogether>
                                                     <Paragraphs>
                                                       <Paragraph>
                                                         <TextRuns>
                                                           <TextRun>
-                                                            <Value>=Code.BlankZero(Fields!Qty_TransLineShipped.Value)</Value>
+                                                            <Value>=Sum(Fields!Quantity__Base_.Value) * (-1)</Value>
                                                             <Style>
                                                               <FontFamily>Segoe UI</FontFamily>
                                                               <FontSize>8pt</FontSize>
-                                                              <Format>=Fields!Qty_TransLineShippedFormat.Value</Format>
+                                                              <Format>=Fields!Qty_TransLineFormat.Value</Format>
                                                             </Style>
                                                           </TextRun>
                                                         </TextRuns>
@@ -2108,7 +2229,7 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                                         </Style>
                                                       </Paragraph>
                                                     </Paragraphs>
-                                                    <rd:DefaultName>Textbox67</rd:DefaultName>
+                                                    <rd:DefaultName>Quantity__Base_</rd:DefaultName>
                                                     <Style>
                                                       <Border>
                                                         <Style>None</Style>
@@ -2124,20 +2245,20 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                               <TablixMembers>
                                                 <TablixMember>
                                                   <TablixHeader>
-                                                    <Size>1.79455cm</Size>
+                                                    <Size>1.7cm</Size>
                                                     <CellContents>
-                                                      <Textbox Name="Textbox70">
+                                                      <Textbox Name="Textbox67">
                                                         <CanGrow>true</CanGrow>
                                                         <KeepTogether>true</KeepTogether>
                                                         <Paragraphs>
                                                           <Paragraph>
                                                             <TextRuns>
                                                               <TextRun>
-                                                                <Value>=Code.BlankZero(Fields!QtyReceived_TransLine.Value)</Value>
+                                                                <Value>=Code.BlankZero(Fields!Qty_TransLineShipped.Value)</Value>
                                                                 <Style>
                                                                   <FontFamily>Segoe UI</FontFamily>
                                                                   <FontSize>8pt</FontSize>
-                                                                  <Format>=Fields!QtyReceived_TransLineFormat.Value</Format>
+                                                                  <Format>=Fields!Qty_TransLineShippedFormat.Value</Format>
                                                                 </Style>
                                                               </TextRun>
                                                             </TextRuns>
@@ -2146,7 +2267,7 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                                             </Style>
                                                           </Paragraph>
                                                         </Paragraphs>
-                                                        <rd:DefaultName>Textbox70</rd:DefaultName>
+                                                        <rd:DefaultName>Textbox67</rd:DefaultName>
                                                         <Style>
                                                           <Border>
                                                             <Style>None</Style>
@@ -2161,18 +2282,61 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                                                   </TablixHeader>
                                                   <TablixMembers>
                                                     <TablixMember>
-                                                      <Group Name="Details1" />
+                                                      <TablixHeader>
+                                                        <Size>1.7cm</Size>
+                                                        <CellContents>
+                                                          <Textbox Name="Textbox70">
+                                                            <CanGrow>true</CanGrow>
+                                                            <KeepTogether>true</KeepTogether>
+                                                            <Paragraphs>
+                                                              <Paragraph>
+                                                                <TextRuns>
+                                                                  <TextRun>
+                                                                    <Value>=Code.BlankZero(Fields!QtyReceived_TransLine.Value)</Value>
+                                                                    <Style>
+                                                                      <FontFamily>Segoe UI</FontFamily>
+                                                                      <FontSize>8pt</FontSize>
+                                                                      <Format>=Fields!QtyReceived_TransLineFormat.Value</Format>
+                                                                    </Style>
+                                                                  </TextRun>
+                                                                </TextRuns>
+                                                                <Style>
+                                                                  <TextAlign>Right</TextAlign>
+                                                                </Style>
+                                                              </Paragraph>
+                                                            </Paragraphs>
+                                                            <rd:DefaultName>Textbox70</rd:DefaultName>
+                                                            <Style>
+                                                              <Border>
+                                                                <Style>None</Style>
+                                                              </Border>
+                                                              <PaddingLeft>2pt</PaddingLeft>
+                                                              <PaddingRight>2pt</PaddingRight>
+                                                              <PaddingTop>2pt</PaddingTop>
+                                                              <PaddingBottom>2pt</PaddingBottom>
+                                                            </Style>
+                                                          </Textbox>
+                                                        </CellContents>
+                                                      </TablixHeader>
+                                                      <TablixMembers>
+                                                        <TablixMember>
+                                                          <Group Name="Details1" />
+                                                          <Visibility>
+                                                            <Hidden>=isNothing(Fields!Lot_No.Value)</Hidden>
+                                                          </Visibility>
+                                                        </TablixMember>
+                                                      </TablixMembers>
                                                     </TablixMember>
                                                   </TablixMembers>
                                                 </TablixMember>
                                               </TablixMembers>
                                             </TablixMember>
                                           </TablixMembers>
+                                          <Visibility>
+                                            <Hidden>=isNothing(Fields!Lot_No.Value)</Hidden>
+                                          </Visibility>
                                         </TablixMember>
                                       </TablixMembers>
-                                      <Visibility>
-                                        <Hidden>=isNothing(Fields!Lot_No.Value)</Hidden>
-                                      </Visibility>
                                     </TablixMember>
                                   </TablixMembers>
                                 </TablixMember>
@@ -2191,23 +2355,30 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
             </TablixRowHierarchy>
             <RepeatColumnHeaders>true</RepeatColumnHeaders>
             <RepeatRowHeaders>true</RepeatRowHeaders>
+            <FixedColumnHeaders>true</FixedColumnHeaders>
             <KeepTogether>true</KeepTogether>
             <DataSetName>DataSet_Result</DataSetName>
             <Top>2.54672cm</Top>
+            <Left>0.00001cm</Left>
             <Height>1.70377cm</Height>
-            <Width>19.67426cm</Width>
+            <Width>20.675cm</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
               </Border>
+              <BottomBorder>
+                <Color>Black</Color>
+                <Style>Solid</Style>
+                <Width>1pt</Width>
+              </BottomBorder>
             </Style>
           </Tablix>
         </ReportItems>
         <Height>4.25049cm</Height>
         <Style />
       </Body>
-      <Width>19.69487cm</Width>
+      <Width>20.67501cm</Width>
       <Page>
         <PageHeader>
           <Height>5.26802cm</Height>
@@ -2230,7 +2401,8 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>102.7pt</Top>
+              <Top>93.7pt</Top>
+              <Left>0.00001cm</Left>
               <Height>11pt</Height>
               <Width>3.4675cm</Width>
               <Style>
@@ -2253,7 +2425,7 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>90.7pt</Top>
+              <Top>81.7pt</Top>
               <Left>1.39294in</Left>
               <Height>11pt</Height>
               <Width>3.4675cm</Width>
@@ -2278,7 +2450,7 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>102.7pt</Top>
+              <Top>93.7pt</Top>
               <Left>1.39294in</Left>
               <Height>11pt</Height>
               <Width>3.4675cm</Width>
@@ -2307,6 +2479,7 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                 </Paragraph>
               </Paragraphs>
               <Top>2.7pt</Top>
+              <Left>0.00001cm</Left>
               <Height>20pt</Height>
               <Width>6.37005cm</Width>
               <ZIndex>3</ZIndex>
@@ -2331,7 +2504,8 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>90.7pt</Top>
+              <Top>81.7pt</Top>
+              <Left>0.00001cm</Left>
               <Height>11pt</Height>
               <Width>3.4675cm</Width>
               <ZIndex>4</ZIndex>
@@ -2359,7 +2533,7 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>126.7pt</Top>
+              <Top>117.7pt</Top>
               <Left>1.39294in</Left>
               <Height>11pt</Height>
               <Width>3.4675cm</Width>
@@ -2388,7 +2562,8 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>126.7pt</Top>
+              <Top>117.7pt</Top>
+              <Left>0.00001cm</Left>
               <Height>11pt</Height>
               <Width>3.4675cm</Width>
               <ZIndex>6</ZIndex>
@@ -2447,7 +2622,7 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>114.7pt</Top>
+              <Top>105.7pt</Top>
               <Left>1.39361in</Left>
               <Height>11pt</Height>
               <Width>3.4675cm</Width>
@@ -2476,8 +2651,8 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                   <Style />
                 </Paragraph>
               </Paragraphs>
-              <Top>114.7pt</Top>
-              <Left>0.0017cm</Left>
+              <Top>105.7pt</Top>
+              <Left>0.00171cm</Left>
               <Height>11pt</Height>
               <Width>3.4675cm</Width>
               <ZIndex>9</ZIndex>
@@ -2494,7 +2669,7 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
               <MIMEType>image/png</MIMEType>
               <Sizing>FitProportional</Sizing>
               <Top>0.09525cm</Top>
-              <Left>13.27782cm</Left>
+              <Left>13.27783cm</Left>
               <Height>2.80916cm</Height>
               <Width>6.41705cm</Width>
               <ZIndex>10</ZIndex>
@@ -2523,7 +2698,7 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                 </Paragraph>
               </Paragraphs>
               <Top>128pt</Top>
-              <Left>13.27782cm</Left>
+              <Left>13.27783cm</Left>
               <Height>11pt</Height>
               <Width>6.36997cm</Width>
               <ZIndex>11</ZIndex>
@@ -2535,6 +2710,65 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
                 <VerticalAlign>Middle</VerticalAlign>
               </Style>
             </Textbox>
+            <Textbox Name="ShptMethodCaption3">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value EvaluationMode="Constant">Les N° OF:</Value>
+                      <Style>
+                        <FontFamily>Segoe UI</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <Top>128pt</Top>
+              <Height>11pt</Height>
+              <Width>3.4675cm</Width>
+              <ZIndex>12</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <VerticalAlign>Middle</VerticalAlign>
+              </Style>
+            </Textbox>
+            <Textbox Name="ShptMethodvalue3">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Fields!OrdresTransfertNO.Value</Value>
+                      <Style>
+                        <FontFamily>Segoe UI</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <Top>128pt</Top>
+              <Left>1.39294in</Left>
+              <Height>11pt</Height>
+              <Width>9.1825cm</Width>
+              <ZIndex>13</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <VerticalAlign>Middle</VerticalAlign>
+              </Style>
+            </Textbox>
           </ReportItems>
           <Style />
         </PageHeader>
@@ -2542,7 +2776,7 @@ Fields!ShptMethodDesc.Value+ Chr(177)+Fields!Transfer_from_Code.Value+ Chr(177)+
         <PageWidth>21cm</PageWidth>
         <InteractiveHeight>11in</InteractiveHeight>
         <InteractiveWidth>8.5in</InteractiveWidth>
-        <LeftMargin>0.5cm</LeftMargin>
+        <LeftMargin>0.2cm</LeftMargin>
         <TopMargin>1.02306cm</TopMargin>
         <BottomMargin>1.48166cm</BottomMargin>
         <ColumnSpacing>1.27cm</ColumnSpacing>
@@ -2914,6 +3148,9 @@ End Function</Code>
         <Field Name="Picture">
           <DataField>Picture</DataField>
         </Field>
+        <Field Name="OrdresTransfertNO">
+          <DataField>OrdresTransfertNO</DataField>
+        </Field>
         <Field Name="CodeAtelier">
           <DataField>CodeAtelier</DataField>
         </Field>
@@ -2928,6 +3165,9 @@ End Function</Code>
         </Field>
         <Field Name="QtyTatalFormat">
           <DataField>QtyTatalFormat</DataField>
+        </Field>
+        <Field Name="RoutinkLinkCode">
+          <DataField>RoutinkLinkCode</DataField>
         </Field>
         <Field Name="Lot_No">
           <DataField>Lot_No</DataField>
