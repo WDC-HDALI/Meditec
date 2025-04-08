@@ -73,7 +73,6 @@ report 50015 WDCTransferOrderByProd
                     //Vérification
                     Item.CalcFields(Inventory, "Qty. on Component Lines");
                     StockProd := Item.Inventory;
-
                     lTransfertLine.Reset();
                     lTransfertLine.SetRange("Item No.", Item."No.");
                     lTransfertLine.SetRange("Routing Link Code", TempProdOrderComp."Routing Link Code");
@@ -81,28 +80,23 @@ report 50015 WDCTransferOrderByProd
                         repeat
                             StockProd += lTransfertLine.Quantity;
                         until (lTransfertLine.Next() = 0);
-                    //lRestNeedQty := lNeededQty - item.Inventory; // CMT by WDC.IM
-                    lAvailableQty := StockProd - (item."Qty. on Component Lines" - lNeededQty); //WDC.IM
-                    //if lRestNeedQty > 0 then begin
-                    //If lAvailableQty < 0 then begin
-                    TempProdOrderComp.reset();
-                    //lRestNeedQty := item.Inventory; // CMT by WDC.IM
+                    lAvailableQty := StockProd - (item."Qty. on Component Lines" - lNeededQty);
+                    If lAvailableQty < lNeededQty then begin
+                        TempProdOrderComp.reset();
+                        if TempProdOrderComp.FindSet() then
+                            repeat
+                                //Vérification si le composant de cet O.F existe sur un autre ordre de transfer
+                                if not CheckCompInTransfOrder(TempProdOrderComp) then begin
+                                    //Création d'un ordre de transfer
+                                    if TransferNo = '' then
+                                        CreateTransferHeader();
+                                    //CreateTransferOrder(TempProdOrderComp, TempProdOrderComp.Quantity);
 
-                    if TempProdOrderComp.FindSet() then
-                        repeat
-                            //Vérification si le composant de cet O.F existe sur un autre ordre de transfer
-                            if not CheckCompInTransfOrder(TempProdOrderComp) then begin
-                                //Création d'un ordre de transfer
-                                if TransferNo = '' then
-                                    CreateTransferHeader();
-                                //CreateTransferOrder(TempProdOrderComp, TempProdOrderComp.Quantity);
+                                    CreateTransferOrder(TempProdOrderComp, lAvailableQty);
+                                end;
+                            until TempProdOrderComp.Next() = 0;
 
-                                //CreateTransferOrder(TempProdOrderComp, lRestNeedQty);//CMT By WDC.IM
-                                CreateTransferOrder(TempProdOrderComp, lAvailableQty);// WDC.IM
-                            end;
-                        until TempProdOrderComp.Next() = 0;
-
-                    //end;
+                    end;
                     TempProdOrderComp.DeleteAll();
                     InsertTempProdOrderCompt("Prod. Order Component");
                 end;
@@ -184,7 +178,6 @@ report 50015 WDCTransferOrderByProd
         //Calculer la quantité totale de ce composant pour tout les O.F
         if not TempProdOrderComp.FindSet() then
             exit;
-
         repeat
             lNeededQty += TempProdOrderComp.Quantity;
         until TempProdOrderComp.Next() = 0;
@@ -213,27 +206,23 @@ report 50015 WDCTransferOrderByProd
                 StockProd += lTransfertLine.Quantity;
             until (lTransfertLine.Next() = 0);
 
-        //lRestNeedQty := lNeededQty - item.Inventory;// CMT by WDC.IM
-        lAvailableQty := StockProd - (Item."Qty. on Component Lines" - lNeededQty);//WDC.IM
-        //if lRestNeedQty > 0 then begin //CMT By WDC.IM
-        //if lAvailableQty < 0 then begin
-        TempProdOrderComp.reset();
-        //lRestNeedQty := item.Inventory;// CMT by WDC.IM
-        if TempProdOrderComp.FindSet() then
-            repeat
-                //Vérification si le composant de cet O.F existe sur un autre ordre de transfer
-                if not CheckCompInTransfOrder(TempProdOrderComp) then begin
-                    //Création d'un ordre de transfer
-                    if TransferNo = '' then
-                        CreateTransferHeader();
-                    //CreateTransferOrder(TempProdOrderComp, TempProdOrderComp.Quantity);
+        lAvailableQty := StockProd - (Item."Qty. on Component Lines" - lNeededQty);
+        If lAvailableQty < lNeededQty then begin
+            TempProdOrderComp.reset();
+            if TempProdOrderComp.FindSet() then
+                repeat
+                    //Vérification si le composant de cet O.F existe sur un autre ordre de transfer
+                    if not CheckCompInTransfOrder(TempProdOrderComp) then begin
+                        //Création d'un ordre de transfer
+                        if TransferNo = '' then
+                            CreateTransferHeader();
+                        //CreateTransferOrder(TempProdOrderComp, TempProdOrderComp.Quantity);
 
-                    //CreateTransferOrder(TempProdOrderComp, lRestNeedQty);//CMT By WDC.IM
-                    CreateTransferOrder(TempProdOrderComp, lAvailableQty);
-                end;
-            until TempProdOrderComp.Next() = 0;
+                        CreateTransferOrder(TempProdOrderComp, lAvailableQty);
+                    end;
+                until TempProdOrderComp.Next() = 0;
 
-        //end;
+        end;
     end;
 
     var
@@ -271,17 +260,13 @@ report 50015 WDCTransferOrderByProd
         TransferHeader.Insert(true);
 
         if LocationCodeDepart = '' then
-            //TransferHeader.Validate("Transfer-from Code", 'MAG-MP')
             TransferHeader."Transfer-from Code" := 'MAG-MP'
         else
-            //TransferHeader.Validate("Transfer-from Code", LocationCodeDepart);
             TransferHeader."Transfer-from Code" := LocationCodeDepart;
 
         if LocationCodeDest = '' then
-            //TransferHeader.Validate("Transfer-from Code", 'MAG-PROD')
             TransferHeader."Transfer-to Code" := 'MAG-PROD'
         else
-            //TransferHeader.Validate("Transfer-to Code", LocationCodeDest);
             TransferHeader."Transfer-to Code" := LocationCodeDest;
 
         TransferHeader.Validate("In-Transit Code", 'TRANSIT');
@@ -291,7 +276,7 @@ report 50015 WDCTransferOrderByProd
         TransferNo := TransferHeader."No.";
     end;
 
-    local procedure CreateTransferOrder(pProdOrderComponent: Record "Prod. Order Component"; var pRestNeededQty: Decimal)
+    local procedure CreateTransferOrder(pProdOrderComponent: Record "Prod. Order Component"; var pAvailableQty: Decimal)
     var
         TransferLine: record "Transfer Line";
         lItemUnitofMeasure: Record "Item Unit of Measure";
@@ -300,44 +285,20 @@ report 50015 WDCTransferOrderByProd
 
     begin
         //<<WDC.IM
-        // if pRestNeededQty >= pProdOrderComponent.Quantity then begin
-        //     pRestNeededQty -= pProdOrderComponent.Quantity;
-        //     if pRestNeededQty < 0 then
-        //         pRestNeededQty := 0;
-        //     exit;
-        // end else begin
-        //     Clear(TransferLine);
-        //     LineNo += 1000;
-
-        //     TransferLine."Document No." := TransferNo;
-        //     TransferLine."Line No." := LineNo;
-        //     TransferLine.Validate("Item No.", pProdOrderComponent."Item No.");
-        //     TransferLine.validate(Quantity, pProdOrderComponent.Quantity - pRestNeededQty);
-        //     pRestNeededQty -= pProdOrderComponent.Quantity;
-        //     if pRestNeededQty < 0 then
-        //         pRestNeededQty := 0;
-        //     TransferLine."Prod. Order No." := pProdOrderComponent."Prod. Order No.";
-        //     TransferLine."Prod. Order Line" := pProdOrderComponent."Prod. Order Line No.";
-
-        //     TransferLine."Routing Link Code" := pProdOrderComponent."Routing Link Code";
-
-        //     TransferLine.Insert();
-        // end;
-
         lQuantity := pProdOrderComponent.Quantity;
         lItem.Get(pProdOrderComponent."Item No.");
         If lItem."Base Unit of Measure" <> pProdOrderComponent."Unit of Measure Code" then begin
             lItemUnitofMeasure.Get(pProdOrderComponent."Item No.", pProdOrderComponent."Unit of Measure Code");
             lQuantity := pProdOrderComponent.Quantity * lItemUnitofMeasure."Qty. per Unit of Measure";
         end;
-        If pRestNeededQty < 0 then begin
+
+        If (pAvailableQty < 0) then begin
             Clear(TransferLine);
             LineNo += 1000;
 
             TransferLine."Document No." := TransferNo;
             TransferLine."Line No." := LineNo;
             TransferLine.Validate("Item No.", pProdOrderComponent."Item No.");
-            //TransferLine.validate(Quantity, pProdOrderComponent.Quantity);
             TransferLine.validate(Quantity, lQuantity);
             TransferLine."Prod. Order No." := pProdOrderComponent."Prod. Order No.";
             TransferLine."Prod. Order Line" := pProdOrderComponent."Prod. Order Line No.";
@@ -347,28 +308,11 @@ report 50015 WDCTransferOrderByProd
             TransferLine.Insert();
         end
         else begin
-            if pRestNeededQty = 0 then
+            if pAvailableQty >= lQuantity then begin
+                pAvailableQty -= lQuantity;
+                if pAvailableQty < 0 then
+                    pAvailableQty := 0;
                 exit;
-            //if pRestNeededQty >= pProdOrderComponent.Quantity then begin
-            if pRestNeededQty >= lQuantity then begin
-                Clear(TransferLine);
-                LineNo += 1000;
-
-                TransferLine."Document No." := TransferNo;
-                TransferLine."Line No." := LineNo;
-                TransferLine.Validate("Item No.", pProdOrderComponent."Item No.");
-                //TransferLine.validate(Quantity, pProdOrderComponent.Quantity);
-                TransferLine.validate(Quantity, lQuantity);
-                //pRestNeededQty -= pProdOrderComponent.Quantity;
-                pRestNeededQty -= lQuantity;
-                if pRestNeededQty < 0 then
-                    pRestNeededQty := 0;
-                TransferLine."Prod. Order No." := pProdOrderComponent."Prod. Order No.";
-                TransferLine."Prod. Order Line" := pProdOrderComponent."Prod. Order Line No.";
-
-                TransferLine."Routing Link Code" := pProdOrderComponent."Routing Link Code";
-
-                TransferLine.Insert();
             end
             else begin
                 Clear(TransferLine);
@@ -377,8 +321,8 @@ report 50015 WDCTransferOrderByProd
                 TransferLine."Document No." := TransferNo;
                 TransferLine."Line No." := LineNo;
                 TransferLine.Validate("Item No.", pProdOrderComponent."Item No.");
-                //TransferLine.validate(Quantity, pProdOrderComponent.Quantity - pRestNeededQty);
-                TransferLine.validate(Quantity, lQuantity - pRestNeededQty);
+                TransferLine.validate(Quantity, lQuantity - pAvailableQty);
+                pAvailableQty := 0;
                 TransferLine."Prod. Order No." := pProdOrderComponent."Prod. Order No.";
                 TransferLine."Prod. Order Line" := pProdOrderComponent."Prod. Order Line No.";
 

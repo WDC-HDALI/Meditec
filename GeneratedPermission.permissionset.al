@@ -11,7 +11,6 @@ permissionset 50000 "GeneratedPermission"
         report "WDC G/L Trial Balance" = X,
         report "WDC Grand Livre sur Excel" = X,
         report "WDC Posted Sales Invoice" = X,
-        report "WDC Posted Whse Shipment" = X,
         report "WDC Vendor Det Trial Bal FR" = X,
         report "WDC Vendor Trial Balance FR" = X,
         codeunit "DateFilter-Calc WDC" = X,
@@ -69,5 +68,12 @@ permissionset 50000 "GeneratedPermission"
         page "Update Destination Carton" = X,
         tabledata "Item Model" = RIMD,
         table "Item Model" = X,
-        page "Model List" = X;
+        page "Model List" = X,
+        report "WDC Packing List" = X,
+        report "WDC Posted Sales Shipment" = X,
+        report WDCDeleteLines = X,
+        page "WDC Delete Package Line" = X,
+        page "WDC Enter Customized SN" = X,
+        page "WDC Production Declaration" = X,
+        page WDCSerialNoInformationList = X;
 }

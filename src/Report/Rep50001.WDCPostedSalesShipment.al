@@ -1,18 +1,17 @@
-report 50001 "WDC Posted Whse Shipment"
+report 50001 "WDC Posted Sales Shipment"
 {
     Caption = 'Bon Livraison';
-    RDLCLayout = './src/Report/RDLC/PostWhseShipment.rdl';
+    RDLCLayout = './src/Report/RDLC/PostSalesShipment.rdl';
     Description = 'Bon Livraison';
 
     DefaultLayout = RDLC;
     EnableHyperlinks = true;
     Permissions = TableData "Sales Shipment Buffer" = rimd;
     PreviewMode = PrintLayout;
-    WordMergeDataItem = WarehouseShipmentHeader;
+    WordMergeDataItem = SalesShipmentHeader;
     dataset
     {
-        //dataitem(SalesShipmentHeader; "Sales Shipment Header")
-        dataitem(WarehouseShipmentHeader; "Posted Whse. Shipment Header")
+        dataitem(SalesShipmentHeader; "Sales Shipment Header")
         {
             RequestFilterFields = "No.";
             column(Posting_Date; "Posting Date")
@@ -186,7 +185,7 @@ report 50001 "WDC Posted Whse Shipment"
             column(BillToContactPhoneNo; BillToContact."Phone No.")
             {
             }
-            column(BillToContactMobilePhoneNo; BillToContact."Mobile Phone No.")
+            column(BillToContactMobilePhoneNo; BillToContact."Phone No.")
             {
             }
             column(BillToContactFaxNo; BillToContact."Fax No.")
@@ -289,64 +288,62 @@ report 50001 "WDC Posted Whse Shipment"
             column(CompanyVATRegistrationNo_Lbl; CompanyInfo.GetVATRegistrationNumberLbl)
             {
             }
-            column(CompanyLegalOffice; CompanyInfo.GetLegalOffice)
-            {
-            }
-            column(CompanyLegalOffice_Lbl; CompanyInfo.GetLegalOfficeLbl)
-            {
-            }
-            column(CompanyCustomGiro; CompanyInfo.GetCustomGiro)
-            {
-            }
-            column(CompanyCustomGiro_Lbl; CompanyInfo.GetCustomGiroLbl)
-            {
-            }
+            // column(CompanyLegalOffice; CompanyInfo.GetLegalOffice)
+            // {
+            // }
+            // column(CompanyLegalOffice_Lbl; CompanyInfo.GetLegalOfficeLbl)
+            // {
+            // }
+            // column(CompanyCustomGiro; CompanyInfo.GetCustomGiro)
+            // {
+            // }
+            // column(CompanyCustomGiro_Lbl; CompanyInfo.GetCustomGiroLbl)
+            // {
+            // }
             column(CompanyLegalStatement; SalesHeader.GetLegalStatement)
             {
             }
             column(DisplayAdditionalFeeNote; DisplayAdditionalFeeNote)
             {
             }
-            dataitem(WarehouseShipmentLine; "Posted Whse. Shipment Line")
+            dataitem(SalesShipmentLine; "Sales Shipment Line")
             {
-                DataItemLink = "No." = FIELD("No.");
-                DataItemLinkReference = WarehouseShipmentHeader;
-                DataItemTableView = SORTING("No.", "Line No.");
-                column(ItemNo; WarehouseShipmentLine."Item No.")
+                DataItemLink = "Document No." = FIELD("No.");
+                DataItemLinkReference = SalesShipmentHeader;
+                DataItemTableView = SORTING("Document No.", "Line No.") where(Quantity = filter(<> 0));
+                column(ItemNo; SalesShipmentLine."No.")
                 {
                 }
-                column(Description; WarehouseShipmentLine.Description)
+                column(Description; SalesShipmentLine.Description)
                 {
                 }
                 column(Type; Item.Type)
                 {
                 }
-                column(Quantity; WarehouseShipmentLine.Quantity)
+                column(Quantity; SalesShipmentLine.Quantity)
                 {
                 }
-                column(GrossWeight; Item."Gross Weight" * WarehouseShipmentLine.Quantity)
+                column(GrossWeight; Item."Gross Weight" * SalesShipmentLine.Quantity)
                 {
                 }
-                column(Net_Weight; Item."Net Weight" * WarehouseShipmentLine.Quantity)
+                column(Net_Weight; Item."Net Weight" * SalesShipmentLine.Quantity)
+                {
+                }
+                column(Variant_Code; "Variant Code")
                 {
                 }
                 trigger OnAfterGetRecord()
                 var
                 begin
-                    SalesHeader.get(SalesHeader."Document Type"::Order, WarehouseShipmentLine."Source No."); //WDC SH
-                    Item.GetItemNo(WarehouseShipmentLine."Item No.");
+                    SalesHeader.get(SalesHeader."Document Type"::Order, SalesShipmentLine."Order No."); //WDC SH
+                    Item.Get(SalesShipmentLine."No.");
                     if not Cust.Get(SalesHeader."Bill-to Customer No.") then
                         Clear(Cust);
                     if SellToContact.Get(SalesHeader."Sell-to Contact No.") then;
                     if BillToContact.Get(SalesHeader."Bill-to Contact No.") then;
-
                 end;
             }
-
-
-
         }
-
     }
 
     trigger OnInitReport()
@@ -374,35 +371,8 @@ report 50001 "WDC Posted Whse Shipment"
 
     trigger OnPreReport()
     begin
-
         CompanyLogoPosition := SalesSetup."Logo Position on Documents";
     end;
-
-    var
-        TvaNotNull: Boolean;
-
-        NumeroDescription: integer;//WDC 1809
-        LineToAdd: Integer;
-        NumeroWorkDescription: integer;
-        //WDC 1809        PhoneNo: Text[30];//WDC 1809
-        PhoneNo: Text[30];//WDC 1809
-        FaxNo: Text[30]; //WDC 1809
-        SalesHeader: Record "Sales Header"; //WDC SH
-        Item: Record Item;
-        //WDC SH        CompanyInfoBankAccNoLbl: Label 'Account No.';
-        CompanyInfoBankNameLbl: Label 'Bank';
-        CompanyInfoGiroNoLbl: Label 'Giro No.';
-        CompanyInfoPhoneNoLbl: Label 'Phone No.';
-        GLSetup: Record "General Ledger Setup";
-
-        CompanyInfo: Record "Company Information";
-        SalesSetup: Record "Sales & Receivables Setup";
-        Cust: Record Customer;
-
-        SellToContact: Record Contact;
-        BillToContact: Record Contact;
-        CompanyLogoPosition: Integer;
-        DisplayAdditionalFeeNote: Boolean;
 
     procedure GetSellToCustomerFaxNo(): Text
     var
@@ -412,6 +382,26 @@ report 50001 "WDC Posted Whse Shipment"
             exit(Customer."Fax No.");
     end;
 
-
+    var
+        TvaNotNull: Boolean;
+        NumeroDescription: integer;//WDC 1809
+        LineToAdd: Integer;
+        NumeroWorkDescription: integer;
+        //WDC 1809        PhoneNo: Text[30];//WDC 1809
+        PhoneNo: Text[30];//WDC 1809
+        FaxNo: Text[30]; //WDC 1809
+        SalesHeader: Record "Sales Header"; //WDC SH
+        Item: Record Item;
+        CompanyInfoBankNameLbl: Label 'Bank';
+        CompanyInfoGiroNoLbl: Label 'Giro No.';
+        CompanyInfoPhoneNoLbl: Label 'Phone No.';
+        GLSetup: Record "General Ledger Setup";
+        CompanyInfo: Record "Company Information";
+        SalesSetup: Record "Sales & Receivables Setup";
+        Cust: Record Customer;
+        SellToContact: Record Contact;
+        BillToContact: Record Contact;
+        CompanyLogoPosition: Integer;
+        DisplayAdditionalFeeNote: Boolean;
 }
 

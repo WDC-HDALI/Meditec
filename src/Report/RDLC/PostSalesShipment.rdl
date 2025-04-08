@@ -19,7 +19,7 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>18.70862cm</Width>
+                  <Width>18.74164cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -86,19 +86,22 @@
                               <TablixBody>
                                 <TablixColumns>
                                   <TablixColumn>
-                                    <Width>3.72218cm</Width>
+                                    <Width>3.64622cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>5.97831cm</Width>
+                                    <Width>5.93779cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>2.97831cm</Width>
+                                    <Width>2.20358cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>2.97831cm</Width>
+                                    <Width>2.49056cm</Width>
                                   </TablixColumn>
                                   <TablixColumn>
-                                    <Width>2.97831cm</Width>
+                                    <Width>2.02581cm</Width>
+                                  </TablixColumn>
+                                  <TablixColumn>
+                                    <Width>2.36448cm</Width>
                                   </TablixColumn>
                                 </TablixColumns>
                                 <TablixRows>
@@ -266,6 +269,59 @@
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
+                                          <Textbox Name="Textbox2">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>Code variante</Value>
+                                                    <Style>
+                                                      <FontWeight>Bold</FontWeight>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <TextAlign>Center</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>Textbox2</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Style>Solid</Style>
+                                              </Border>
+                                              <TopBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </TopBorder>
+                                              <BottomBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </BottomBorder>
+                                              <LeftBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </LeftBorder>
+                                              <RightBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </RightBorder>
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
                                           <Textbox Name="Textbox4">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
@@ -326,7 +382,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value>Pois</Value>
+                                                    <Value EvaluationMode="Constant">Poids</Value>
                                                     <Style>
                                                       <FontWeight>Bold</FontWeight>
                                                     </Style>
@@ -524,6 +580,55 @@
                                       </TablixCell>
                                       <TablixCell>
                                         <CellContents>
+                                          <Textbox Name="Textbox5">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>=Fields!Variant_Code.Value</Value>
+                                                    <Style />
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style />
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>Textbox5</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Style>Solid</Style>
+                                              </Border>
+                                              <TopBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </TopBorder>
+                                              <BottomBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </BottomBorder>
+                                              <LeftBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </LeftBorder>
+                                              <RightBorder>
+                                                <Color>Black</Color>
+                                                <Style>Solid</Style>
+                                                <Width>1pt</Width>
+                                              </RightBorder>
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
                                           <Textbox Name="Quantity_Line2">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
@@ -661,6 +766,37 @@
                                       <TablixCell />
                                       <TablixCell>
                                         <CellContents>
+                                          <Textbox Name="Textbox9">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value />
+                                                    <Style>
+                                                      <FontWeight>Bold</FontWeight>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style />
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>Textbox9</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Style>None</Style>
+                                              </Border>
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixCell>
+                                      <TablixCell>
+                                        <CellContents>
                                           <Textbox Name="Textbox12">
                                             <CanGrow>true</CanGrow>
                                             <KeepTogether>true</KeepTogether>
@@ -703,6 +839,7 @@
                                   <TablixMember />
                                   <TablixMember />
                                   <TablixMember />
+                                  <TablixMember />
                                 </TablixMembers>
                               </TablixColumnHierarchy>
                               <TablixRowHierarchy>
@@ -722,7 +859,7 @@
                               <Top>0.01119cm</Top>
                               <Left>0.0732cm</Left>
                               <Height>1.8cm</Height>
-                              <Width>18.63542cm</Width>
+                              <Width>18.66844cm</Width>
                               <ZIndex>1</ZIndex>
                               <Style>
                                 <Border>
@@ -775,7 +912,7 @@
             <Top>0.28304cm</Top>
             <Left>0.19966cm</Left>
             <Height>1.81119cm</Height>
-            <Width>18.70862cm</Width>
+            <Width>18.74164cm</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -783,7 +920,7 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>2.65161cm</Height>
+        <Height>2.37644cm</Height>
         <Style />
       </Body>
       <Width>18.9413cm</Width>
@@ -852,7 +989,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>="VAT# " &amp; Code.GetData(20,1)</Value>
+                              <Value>=iif(Code.GetData(20,1)="","","VAT# " &amp; Code.GetData(20,1))</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
@@ -886,7 +1023,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Code.GetData(4,1) &amp; " " &amp; Code.GetData(5,1) &amp; ", " &amp; Code.GetData(6,1)</Value>
+                              <Value>=iif(Code.GetData(6,1)="",Code.GetData(4,1) &amp; " " &amp; Code.GetData(5,1),Code.GetData(4,1) &amp; " " &amp; Code.GetData(5,1) &amp; ", " &amp; Code.GetData(6,1))</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
@@ -954,7 +1091,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value EvaluationMode="Constant">EORI#</Value>
+                              <Value EvaluationMode="Constant" />
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
@@ -1034,7 +1171,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>="VAT# " &amp; Code.GetData(20,1)</Value>
+                              <Value>=iif(Code.GetData(20,1)="","","VAT# " &amp; Code.GetData(20,1))</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
@@ -1068,7 +1205,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Code.GetData(9,1) &amp; " " &amp; Code.GetData(10,1) &amp; ", " &amp; Code.GetData(11,1)</Value>
+                              <Value>=iif(Code.GetData(11,1)="",Code.GetData(9,1) &amp; " " &amp; Code.GetData(10,1),Code.GetData(9,1) &amp; " " &amp; Code.GetData(10,1) &amp; ", " &amp; Code.GetData(11,1))</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
@@ -1136,7 +1273,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value EvaluationMode="Constant">EORI#</Value>
+                              <Value EvaluationMode="Constant" />
                               <Style>
                                 <FontSize>9pt</FontSize>
                               </Style>
@@ -1172,7 +1309,7 @@
                             <TextRun>
                               <Value>MEDITEC NMC SARL</Value>
                               <Style>
-                                <FontSize>22pt</FontSize>
+                                <FontSize>28pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
@@ -1185,7 +1322,7 @@
                       <rd:DefaultName>Textbox45</rd:DefaultName>
                       <Top>0.18659cm</Top>
                       <Left>0.13456cm</Left>
-                      <Height>0.93619cm</Height>
+                      <Height>1.52533cm</Height>
                       <Width>11.05624cm</Width>
                       <ZIndex>11</ZIndex>
                       <Style>
@@ -1379,41 +1516,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <Textbox Name="Textbox30">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>="Bon Livraison N° :  " &amp; Code.GetData(1,1)</Value>
-                              <Style>
-                                <FontSize>13pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Center</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox28</rd:DefaultName>
-                      <Top>1.19334cm</Top>
-                      <Left>0.13456cm</Left>
-                      <Height>0.6cm</Height>
-                      <Width>11.05624cm</Width>
-                      <ZIndex>18</ZIndex>
-                      <Style>
-                        <Border>
-                          <Style>None</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
                   </ReportItems>
                   <KeepTogether>true</KeepTogether>
                   <Left>7.42188cm</Left>
@@ -1593,7 +1695,7 @@
                     <Paragraph>
                       <TextRuns>
                         <TextRun>
-                          <Value>=First(Fields!CompanyEMail.Value, "DataSet_Result")</Value>
+                          <Value>=iif(First(Fields!CompanyEMail.Value, "DataSet_Result")&lt;&gt;"",First(Fields!CompanyEMail.Value, "DataSet_Result"),First(Fields!CompanyHomePage.Value, "DataSet_Result"))</Value>
                           <Style />
                         </TextRun>
                       </TextRuns>
@@ -1696,28 +1798,30 @@
                 </Border>
               </Style>
             </Rectangle>
-            <Textbox Name="Textbox28">
+            <Textbox Name="Textbox29">
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>="Page :  " &amp;Globals!PageNumber &amp; "/" &amp; Globals!TotalPages</Value>
+                      <Value>="DU : "&amp; First(Fields!Posting_Date.Value, "DataSet_Result")</Value>
                       <Style>
-                        <FontSize>8pt</FontSize>
+                        <FontSize>13pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
                   </TextRuns>
-                  <Style />
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox28</rd:DefaultName>
-              <Top>7.61153cm</Top>
-              <Left>0.24553cm</Left>
-              <Height>0.44125cm</Height>
-              <Width>3.74951cm</Width>
+              <Top>7.45278cm</Top>
+              <Left>8.83505cm</Left>
+              <Height>0.6cm</Height>
+              <Width>3.9421cm</Width>
               <ZIndex>1</ZIndex>
               <Style>
                 <Border>
@@ -1729,28 +1833,30 @@
                 <PaddingBottom>2pt</PaddingBottom>
               </Style>
             </Textbox>
-            <Textbox Name="Textbox29">
+            <Textbox Name="Textbox30">
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>Date comptabilisation :</Value>
+                      <Value>="Bon Livraison N° :  " &amp; Code.GetData(1,1)</Value>
                       <Style>
-                        <FontSize>8pt</FontSize>
+                        <FontSize>13pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                       </Style>
                     </TextRun>
                   </TextRuns>
-                  <Style />
+                  <Style>
+                    <TextAlign>Left</TextAlign>
+                  </Style>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox28</rd:DefaultName>
-              <Top>7.61153cm</Top>
-              <Left>12.90776cm</Left>
-              <Height>0.44125cm</Height>
-              <Width>3.28593cm</Width>
+              <Top>7.45278cm</Top>
+              <Left>0.19966cm</Left>
+              <Height>0.6cm</Height>
+              <Width>7.48769cm</Width>
               <ZIndex>2</ZIndex>
               <Style>
                 <Border>
@@ -1762,18 +1868,17 @@
                 <PaddingBottom>2pt</PaddingBottom>
               </Style>
             </Textbox>
-            <Textbox Name="Textbox31">
+            <Textbox Name="Textbox28">
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>=First(Fields!Posting_Date.Value, "DataSet_Result")</Value>
+                      <Value>="Page :  " &amp;Globals!PageNumber &amp; "/" &amp; Globals!OverallTotalPages</Value>
                       <Style>
                         <FontSize>8pt</FontSize>
                         <FontWeight>Bold</FontWeight>
-                        <Format>dd/MM/yyyy</Format>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -1783,10 +1888,10 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox28</rd:DefaultName>
-              <Top>7.61153cm</Top>
-              <Left>16.28265cm</Left>
+              <Top>7.45278cm</Top>
+              <Left>15.92997cm</Left>
               <Height>0.44125cm</Height>
-              <Width>2.6275cm</Width>
+              <Width>2.93537cm</Width>
               <ZIndex>3</ZIndex>
               <Style>
                 <Border>
@@ -2255,18 +2360,6 @@ End Function
         <Field Name="CompanyVATRegistrationNo_Lbl">
           <DataField>CompanyVATRegistrationNo_Lbl</DataField>
         </Field>
-        <Field Name="CompanyLegalOffice">
-          <DataField>CompanyLegalOffice</DataField>
-        </Field>
-        <Field Name="CompanyLegalOffice_Lbl">
-          <DataField>CompanyLegalOffice_Lbl</DataField>
-        </Field>
-        <Field Name="CompanyCustomGiro">
-          <DataField>CompanyCustomGiro</DataField>
-        </Field>
-        <Field Name="CompanyCustomGiro_Lbl">
-          <DataField>CompanyCustomGiro_Lbl</DataField>
-        </Field>
         <Field Name="CompanyLegalStatement">
           <DataField>CompanyLegalStatement</DataField>
         </Field>
@@ -2299,6 +2392,9 @@ End Function
         </Field>
         <Field Name="Net_WeightFormat">
           <DataField>Net_WeightFormat</DataField>
+        </Field>
+        <Field Name="Variant_Code">
+          <DataField>Variant_Code</DataField>
         </Field>
       </Fields>
       <Query>

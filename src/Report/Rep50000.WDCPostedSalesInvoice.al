@@ -818,7 +818,10 @@ report 50000 "WDC Posted Sales Invoice"
                 {
                 }
 
-
+                //<<WDC.IM
+                column(Variant_Code; "Variant Code")
+                { }
+                //>>WDC.IM
                 column(Net_Weight; "Net Weight")
                 {
                 }
@@ -1124,7 +1127,8 @@ report 50000 "WDC Posted Sales Invoice"
                         CurrReport.Skip();
                     if not VATClause.Get("VAT Clause Code") then
                         CurrReport.Skip();
-                    VATClause.GetDescription(Header);
+                    // VATClause.GetDescription(Header); //CMT By WDC.IM
+                    VATClause.GetDescriptionText(Header); //WDC.IM
                 end;
 
                 trigger OnPreDataItem()
@@ -1139,19 +1143,21 @@ report 50000 "WDC Posted Sales Invoice"
             trigger OnAfterGetRecord()
             var
                 CurrencyExchangeRate: Record "Currency Exchange Rate";
-                EnvInfoProxy: Codeunit "Env. Info Proxy";
+                //EnvInfoProxy: Codeunit "Env. Info Proxy";
                 lItem: Record Item;
 
             begin
                 if BankAccount.get(Header."Company Bank Account Code") then;
                 CalcValueMeditecAfterDevCarton();
-                if EnvInfoProxy.IsInvoicing then begin
-                    "Language Code" := Language.GetUserLanguageCode;
-                    CurrReport.Language := Language.GetLanguageIdOrDefault("Language Code");
-                end;
+                //<<WDC.IM
+                // if EnvInfoProxy.IsInvoicing then begin
+                //     "Language Code" := Language.GetUserLanguageCode;
+                //     CurrReport.Language := Language.GetLanguageIdOrDefault("Language Code");
+                // end;
 
-                if not EnvInfoProxy.IsInvoicing then
-                    CurrReport.Language := Language.GetLanguageIdOrDefault("Language Code");
+                //if not EnvInfoProxy.IsInvoicing then
+                //>>WDC.IM
+                CurrReport.Language := Language.GetLanguageIdOrDefault("Language Code");
 
                 if not IsReportInPreviewMode then
                     CODEUNIT.Run(CODEUNIT::"Sales Inv.-Printed", Header);
@@ -1500,7 +1506,8 @@ report 50000 "WDC Posted Sales Invoice"
 
     local procedure InitLogInteraction()
     begin
-        LogInteraction := SegManagement.FindInteractTmplCode(4) <> '';
+        //LogInteraction := SegManagement.FindInteractTmplCode(4) <> ''; //CMT By WDC.IM
+        LogInteraction := SegManagement.FindInteractionTemplateCode(Enum::"Interaction Log Entry Document Type"::"Sales Inv.") <> ''; //WDC.IM
     end;
 
 
@@ -1615,16 +1622,18 @@ report 50000 "WDC Posted Sales Invoice"
 
     local procedure ShowVATClause(VATClauseCode: Code[20]): Boolean
     var
-        EnvInfoProxy: Codeunit "Env. Info Proxy";
+    //EnvInfoProxy: Codeunit "Env. Info Proxy";
     begin
         if VATClauseCode = '' then
             exit(false);
-        if EnvInfoProxy.IsInvoicing then begin
-            if not VATClause.Get(VATClauseCode) then
-                exit(false);
-            if VATClause.Description = '' then
-                exit(false);
-        end;
+        //<<WDC.IM
+        // if EnvInfoProxy.IsInvoicing then begin
+        //     if not VATClause.Get(VATClauseCode) then
+        //         exit(false);
+        //     if VATClause.Description = '' then
+        //         exit(false);
+        // end;
+        //>>WDC.IM
         exit(true);
     end;
 

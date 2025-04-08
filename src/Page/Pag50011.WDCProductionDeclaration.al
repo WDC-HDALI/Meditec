@@ -21,7 +21,7 @@ page 50011 "WDC Production Declaration"
                     var
 
                         lCustomer: Record Customer;
-                        ResEntry: Record 337;
+                        ResEntry: Record "Reservation Entry";
                     begin
                         ProductionOrder.SetCurrentKey(Status, "No.");
                         ProductionOrder.Get(ProductionOrder.Status::Released, OFNO);
@@ -119,13 +119,20 @@ page 50011 "WDC Production Declaration"
                     Qty: Decimal;
                     lItem: record item;
                     lItemUnitofMeasure: record "Item Unit of Measure";
+                    SerialNOInfo: Record "Serial No. Information";
                 begin
                     If OFNO = '' then
                         Error(Text001);
                     If SN = '' then
                         Error(text002);
                     If StrLen(SN) < 12 then
-                        Error(text003);
+                        Error(text003)
+                    else begin
+                        SerialNOInfo.Reset();
+                        SerialNOInfo.SetRange("Serial No.", SN);
+                        if SerialNOInfo.FindSet() then
+                            Error(Text004);
+                    end;
                     ModeleFeuille := 'Sortie';
                     NomFeuille := 'PRODPF';
                     Init_ItemJNLLine;
@@ -370,4 +377,5 @@ page 50011 "WDC Production Declaration"
         text001: Label 'Veuiller entrez la numéro d''OF';
         Text002: Label 'Veuillez entrer un numéro de série';
         text003: Label 'N° série doit avoir au minimum 12 caractères';
+        Text004: Label 'Le N° série existe déjà';
 }

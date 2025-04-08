@@ -143,16 +143,19 @@ Cstr(Fields!DocumentExt.Value) + Chr(177)  +
                                         <Width>2.44cm</Width>
                                       </TablixColumn>
                                       <TablixColumn>
-                                        <Width>8.3cm</Width>
+                                        <Width>6.43067cm</Width>
+                                      </TablixColumn>
+                                      <TablixColumn>
+                                        <Width>2.5cm</Width>
                                       </TablixColumn>
                                       <TablixColumn>
                                         <Width>2.06584cm</Width>
                                       </TablixColumn>
                                       <TablixColumn>
-                                        <Width>2.76584cm</Width>
+                                        <Width>2.49168cm</Width>
                                       </TablixColumn>
                                       <TablixColumn>
-                                        <Width>3.12934cm</Width>
+                                        <Width>2.75337cm</Width>
                                       </TablixColumn>
                                     </TablixColumns>
                                     <TablixRows>
@@ -229,6 +232,55 @@ Cstr(Fields!DocumentExt.Value) + Chr(177)  +
                                                   </Paragraph>
                                                 </Paragraphs>
                                                 <rd:DefaultName>Textbox5</rd:DefaultName>
+                                                <Style>
+                                                  <Border>
+                                                    <Style>None</Style>
+                                                  </Border>
+                                                  <TopBorder>
+                                                    <Color>Black</Color>
+                                                    <Style>Solid</Style>
+                                                    <Width>1pt</Width>
+                                                  </TopBorder>
+                                                  <BottomBorder>
+                                                    <Color>Black</Color>
+                                                    <Style>Solid</Style>
+                                                    <Width>1pt</Width>
+                                                  </BottomBorder>
+                                                  <LeftBorder>
+                                                    <Color>Black</Color>
+                                                    <Style>Solid</Style>
+                                                    <Width>1pt</Width>
+                                                  </LeftBorder>
+                                                  <VerticalAlign>Middle</VerticalAlign>
+                                                  <PaddingLeft>2pt</PaddingLeft>
+                                                  <PaddingRight>2pt</PaddingRight>
+                                                  <PaddingTop>2pt</PaddingTop>
+                                                  <PaddingBottom>2pt</PaddingBottom>
+                                                </Style>
+                                              </Textbox>
+                                            </CellContents>
+                                          </TablixCell>
+                                          <TablixCell>
+                                            <CellContents>
+                                              <Textbox Name="Textbox10">
+                                                <CanGrow>true</CanGrow>
+                                                <KeepTogether>true</KeepTogether>
+                                                <Paragraphs>
+                                                  <Paragraph>
+                                                    <TextRuns>
+                                                      <TextRun>
+                                                        <Value>Code variante</Value>
+                                                        <Style>
+                                                          <FontWeight>Bold</FontWeight>
+                                                        </Style>
+                                                      </TextRun>
+                                                    </TextRuns>
+                                                    <Style>
+                                                      <TextAlign>Left</TextAlign>
+                                                    </Style>
+                                                  </Paragraph>
+                                                </Paragraphs>
+                                                <rd:DefaultName>Textbox10</rd:DefaultName>
                                                 <Style>
                                                   <Border>
                                                     <Style>None</Style>
@@ -494,6 +546,45 @@ Cstr(Fields!DocumentExt.Value) + Chr(177)  +
                                           </TablixCell>
                                           <TablixCell>
                                             <CellContents>
+                                              <Textbox Name="Textbox12">
+                                                <CanGrow>true</CanGrow>
+                                                <KeepTogether>true</KeepTogether>
+                                                <Paragraphs>
+                                                  <Paragraph>
+                                                    <TextRuns>
+                                                      <TextRun>
+                                                        <Value />
+                                                        <Style>
+                                                          <FontSize>9pt</FontSize>
+                                                        </Style>
+                                                      </TextRun>
+                                                    </TextRuns>
+                                                    <Style>
+                                                      <TextAlign>Left</TextAlign>
+                                                    </Style>
+                                                  </Paragraph>
+                                                </Paragraphs>
+                                                <rd:DefaultName>Textbox12</rd:DefaultName>
+                                                <Style>
+                                                  <Border>
+                                                    <Style>None</Style>
+                                                  </Border>
+                                                  <LeftBorder>
+                                                    <Color>Black</Color>
+                                                    <Style>Solid</Style>
+                                                    <Width>1pt</Width>
+                                                  </LeftBorder>
+                                                  <VerticalAlign>Middle</VerticalAlign>
+                                                  <PaddingLeft>2pt</PaddingLeft>
+                                                  <PaddingRight>2pt</PaddingRight>
+                                                  <PaddingTop>2pt</PaddingTop>
+                                                  <PaddingBottom>2pt</PaddingBottom>
+                                                </Style>
+                                              </Textbox>
+                                            </CellContents>
+                                          </TablixCell>
+                                          <TablixCell>
+                                            <CellContents>
                                               <Textbox Name="Textbox16">
                                                 <CanGrow>true</CanGrow>
                                                 <KeepTogether>true</KeepTogether>
@@ -708,6 +799,50 @@ Cstr(Fields!DocumentExt.Value) + Chr(177)  +
                                           </TablixCell>
                                           <TablixCell>
                                             <CellContents>
+                                              <Textbox Name="Textbox13">
+                                                <CanGrow>true</CanGrow>
+                                                <KeepTogether>true</KeepTogether>
+                                                <Paragraphs>
+                                                  <Paragraph>
+                                                    <TextRuns>
+                                                      <TextRun>
+                                                        <Value>=Fields!Variant_Code.Value</Value>
+                                                        <Style>
+                                                          <FontSize>9pt</FontSize>
+                                                        </Style>
+                                                      </TextRun>
+                                                    </TextRuns>
+                                                    <Style>
+                                                      <TextAlign>Left</TextAlign>
+                                                    </Style>
+                                                  </Paragraph>
+                                                </Paragraphs>
+                                                <rd:DefaultName>Textbox13</rd:DefaultName>
+                                                <Style>
+                                                  <Border>
+                                                    <Style>None</Style>
+                                                  </Border>
+                                                  <BottomBorder>
+                                                    <Color>Black</Color>
+                                                    <Style>Solid</Style>
+                                                    <Width>1pt</Width>
+                                                  </BottomBorder>
+                                                  <LeftBorder>
+                                                    <Color>Black</Color>
+                                                    <Style>Solid</Style>
+                                                    <Width>1pt</Width>
+                                                  </LeftBorder>
+                                                  <VerticalAlign>Middle</VerticalAlign>
+                                                  <PaddingLeft>2pt</PaddingLeft>
+                                                  <PaddingRight>2pt</PaddingRight>
+                                                  <PaddingTop>2pt</PaddingTop>
+                                                  <PaddingBottom>2pt</PaddingBottom>
+                                                </Style>
+                                              </Textbox>
+                                            </CellContents>
+                                          </TablixCell>
+                                          <TablixCell>
+                                            <CellContents>
                                               <Textbox Name="Quantity_Line7">
                                                 <CanGrow>true</CanGrow>
                                                 <KeepTogether>true</KeepTogether>
@@ -848,6 +983,7 @@ Cstr(Fields!DocumentExt.Value) + Chr(177)  +
                                       <TablixMember />
                                       <TablixMember />
                                       <TablixMember />
+                                      <TablixMember />
                                     </TablixMembers>
                                   </TablixColumnHierarchy>
                                   <TablixRowHierarchy>
@@ -933,7 +1069,7 @@ Cstr(Fields!DocumentExt.Value) + Chr(177)  +
                                   </SortExpressions>
                                   <Left>0.04632cm</Left>
                                   <Height>1.42214cm</Height>
-                                  <Width>18.70102cm</Width>
+                                  <Width>18.68156cm</Width>
                                   <ZIndex>1</ZIndex>
                                   <Style>
                                     <Border>
@@ -4507,6 +4643,9 @@ End Function
         </Field>
         <Field Name="PricePer_Lbl">
           <DataField>PricePer_Lbl</DataField>
+        </Field>
+        <Field Name="Variant_Code">
+          <DataField>Variant_Code</DataField>
         </Field>
         <Field Name="Net_Weight">
           <DataField>Net_Weight</DataField>
