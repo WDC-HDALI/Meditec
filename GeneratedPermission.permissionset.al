@@ -69,5 +69,12 @@ permissionset 50000 "GeneratedPermission"
         page "Update Destination Carton" = X,
         tabledata "Item Model" = RIMD,
         table "Item Model" = X,
-        page "Model List" = X;
+        page "Model List" = X,
+        report "WDC Packing List" = X,
+        report "WDC Posted Sales Shipment" = X,
+        report WDCDeleteLines = X,
+        page "WDC Delete Package Line" = X,
+        page "WDC Enter Customized SN" = X,
+        page "WDC Production Declaration" = X,
+        page WDCSerialNoInformationList = X;
 }
