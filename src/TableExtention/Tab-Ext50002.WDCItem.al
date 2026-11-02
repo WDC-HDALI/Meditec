@@ -1,5 +1,9 @@
 tableextension 50002 "WDC Item" extends Item
 {
+    /*******************************Documentation*************************************************
+    WDC02     WDC.IM      10/10/2024      Include MP In Exit Voucher
+    WDC03     WDC.IM      31/10/2024      Add Fields
+    **********************************************************************************************/
     DrillDownPageID = "Item Lookup"; //WDC01.CHG
     LookupPageID = "Item Lookup"; //WDC01.CHG
     fields
@@ -73,7 +77,68 @@ tableextension 50002 "WDC Item" extends Item
             CaptionML = FRA = 'Frais Transport', ENU = 'Transport cost';
             DataClassification = ToBeClassified;
         }
+        //<<WDC02
+        field(50007; "Include In Exit Voucher"; Boolean)
+        {
+            CaptionML = FRA = 'Inclure bon sorti', ENU = 'Include In Exit Voucher';
+            DataClassification = ToBeClassified;
+            // trigger OnValidate()
+            // var
+            //     ApprovalEntry: Record "Approval Entry";
+            // begin
+            //     if "Include In Exit Voucher" = true then begin
+            //         ApprovalEntry.Reset();
+            //         ApprovalEntry.SetRange("Table ID", 27);
+            //         ApprovalEntry.Setrange("Record ID to Approve", Rec.RecordId);
+            //         if ApprovalEntry.FindLast() then begin
+            //             if ApprovalEntry.Status = ApprovalEntry.Status::Open then
+            //                 Error('Demande d''approbation pour inclure cet article dans bon sortie est encour')
+            //             else if ApprovalEntry.Status = ApprovalEntry.Status::Approved then
+            //                 Error('Cet article est déja approuvé');
+            //         end
+            //         else begin
+            //             Message('Demande d''approbation pour inclure cet article dans bon sortie est envoyer');
+            //         end;
+            //     end;
+            //     // else begin
+            //     //     ApprovalEntry.Reset();
+            //     //     ApprovalEntry.SetRange("Table ID", 27);
+            //     //     ApprovalEntry.Setrange("Record ID to Approve", Rec.RecordId);
+            //     //     if ApprovalEntry.FindLast() then begin
+            //     //         if ApprovalEntry.Status = ApprovalEntry.Status::Open then
+            //     //             Error('Demande d''approbation pour exlure cet article du bon sorti est encour')
+            //     //         else if ApprovalEntry.Status = ApprovalEntry.Status::Approved then
+            //     //             Message('Demande d''approbation pour exlure cet article du bon sorti est envoyer');
+            //     //     end
+            //     //     else begin
 
+            //     //     end;
+            //     // end;
+            // end;
+        }
+        /*field(50008; "Demand Approve"; Enum "WDCItemDemandApprove")
+        {
+            DataClassification = ToBeClassified;
+            CaptionML = FRA = 'Inclure bon sorti', ENU = 'Include In Exit Voucher';
+        }*/
+        //>>WDC02
+        //<<WDC03
+        field(50009; SKU; Text[20])
+        {
+            DataClassification = ToBeClassified;
+            CaptionML = ENU = 'SKU', FRA = 'SKU';
+        }
+        field(50010; "Factory Code"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            CaptionML = ENU = 'Factory Code', FRA = 'Factory Code';
+        }
+        field(50011; "Retail Code"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            CaptionML = ENU = 'Retail Code', FRA = 'Retail Code';
+        }
+        //>>WDC03
         modify("Item Category Code")
         {
             trigger OnAfterValidate()

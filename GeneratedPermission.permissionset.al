@@ -11,7 +11,7 @@ permissionset 50000 "GeneratedPermission"
         report "WDC G/L Trial Balance" = X,
         report "WDC Grand Livre sur Excel" = X,
         report "WDC Posted Sales Invoice" = X,
-        report "WDC Posted Whse Shipment" = X,
+        report "WDC Posted Sales Shipment" = X,
         report "WDC Vendor Det Trial Bal FR" = X,
         report "WDC Vendor Trial Balance FR" = X,
         codeunit "DateFilter-Calc WDC" = X,

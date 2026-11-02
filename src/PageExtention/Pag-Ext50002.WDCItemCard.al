@@ -1,5 +1,9 @@
 pageextension 50002 "WDC Item Card" extends "Item Card"
 {
+    /*******************************Documentation*************************************************
+    //WDC02     WDC.IM      10/10/2024      Include MP In Exit Voucher
+    //WDC03     WDC.IM      31/10/2024      Add Fields
+    **********************************************************************************************/
     layout
     {
         addbefore(Blocked)
@@ -44,7 +48,29 @@ pageextension 50002 "WDC Item Card" extends "Item Card"
             {
                 ApplicationArea = all;
             }
+            //<<WDC02
+            //field("Include In Exit Voucher"; Rec."Include In Exit Voucher")
+            // {
+            //     ApplicationArea = all;
+            // }
+            //>>WDC02
         }
-
+        //<<WDC03
+        addafter(GTIN)
+        {
+            field(SKU; Rec.SKU)
+            {
+                ApplicationArea = all;
+            }
+            field("Factory Code"; Rec."Factory Code")
+            {
+                ApplicationArea = all;
+            }
+            field("Retail Code"; Rec."Retail Code")
+            {
+                ApplicationArea = all;
+            }
+        }
+        //>>WDC03
     }
 }

@@ -121,10 +121,10 @@ report 50009 "WDC Bank Acc Trial Balance"
             trigger OnAfterGetRecord()
             begin
                 BankAccount2 := "Bank Account";
-                with BankAccount2 do begin
-                    SetRange("Date Filter", 0D, PreviousEndDate);
-                    CalcFields("Debit Amount (LCY)", "Credit Amount (LCY)");
-                end;
+                //with BankAccount2 do begin
+                BankAccount2.SetRange("Date Filter", 0D, PreviousEndDate);
+                BankAccount2.CalcFields("Debit Amount (LCY)", "Credit Amount (LCY)");
+                //end;
                 if not PrintBanksWithoutBalance and
                    (BankAccount2."Debit Amount (LCY)" = 0) and
                    ("Debit Amount (LCY)" = 0) and

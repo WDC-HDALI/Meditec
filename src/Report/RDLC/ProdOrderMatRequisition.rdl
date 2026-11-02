@@ -778,7 +778,7 @@
                                             <rd:DefaultName>Textbox87</rd:DefaultName>
                                             <Visibility>
                                               <Hidden>=Code.SetData(Cstr(Fields!ProdOrderMaterialRqstnCapt.Value)+Chr(177)+Cstr(Fields!CompanyName.Value)+Chr(177)+Cstr(Fields!Status_ProdOrder.Value)+Chr(177)+Cstr(Fields!No_ProdOrder.Value)+Chr(177)+Cstr(Fields!Desc_ProdOrder.Value)+Chr(177)+
-Cstr(Fields!SourceNo_ProdOrder.Value)+Chr(177)+Cstr(Fields!Qty_ProdOrder.Value),1)</Hidden>
+Cstr(Fields!SourceNo_ProdOrder.Value)+Chr(177)+Cstr(Fields!Qty_ProdOrder.Value) +Chr(177)+Cstr(Fields!ItemStage.Value) +Chr(177)+Cstr(Fields!ItemMussel.Value),1)</Hidden>
                                             </Visibility>
                                             <Style>
                                               <Border>
@@ -3069,7 +3069,7 @@ Cstr(Fields!SourceNo_ProdOrder.Value)+Chr(177)+Cstr(Fields!Qty_ProdOrder.Value),
               </Paragraphs>
               <rd:DefaultName>Textbox82</rd:DefaultName>
               <Top>2.89122cm</Top>
-              <Left>5.6633cm</Left>
+              <Left>5.62802cm</Left>
               <Height>0.49417cm</Height>
               <Width>1.74153cm</Width>
               <ZIndex>9</ZIndex>
@@ -3185,6 +3185,142 @@ Cstr(Fields!SourceNo_ProdOrder.Value)+Chr(177)+Cstr(Fields!Qty_ProdOrder.Value),
                 <PaddingBottom>2pt</PaddingBottom>
               </Style>
             </Textbox>
+            <Textbox Name="Textbox2">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value EvaluationMode="Constant">Etage article:</Value>
+                      <Style>
+                        <FontFamily>Segoe UI</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox2</rd:DefaultName>
+              <Top>2.89122cm</Top>
+              <Left>11.46115cm</Left>
+              <Height>0.49417cm</Height>
+              <Width>2.09713cm</Width>
+              <ZIndex>13</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox4">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Moule article:</Value>
+                      <Style>
+                        <FontFamily>Segoe UI</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox2</rd:DefaultName>
+              <Top>3.54413cm</Top>
+              <Left>11.46115cm</Left>
+              <Height>0.49417cm</Height>
+              <Width>2.09713cm</Width>
+              <ZIndex>14</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox16">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Code.GetData(8,1)</Value>
+                      <Style>
+                        <FontFamily>Segoe UI</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox2</rd:DefaultName>
+              <Top>2.89122cm</Top>
+              <Left>13.59356cm</Left>
+              <Height>0.49417cm</Height>
+              <Width>3.79329cm</Width>
+              <ZIndex>15</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="Textbox19">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>=Code.GetData(9,1)</Value>
+                      <Style>
+                        <FontFamily>Segoe UI</FontFamily>
+                        <FontSize>8pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox2</rd:DefaultName>
+              <Top>3.54413cm</Top>
+              <Left>13.59356cm</Left>
+              <Height>0.49417cm</Height>
+              <Width>3.79329cm</Width>
+              <ZIndex>16</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
           </ReportItems>
           <Style>
             <Border>
@@ -3232,6 +3368,24 @@ Cstr(Fields!SourceNo_ProdOrder.Value)+Chr(177)+Cstr(Fields!Qty_ProdOrder.Value),
         </Values>
       </DefaultValue>
       <Prompt>Qty_ProdOrderCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ItemStageCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>ItemStageCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ItemStageCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ItemMusselCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>ItemMusselCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ItemMusselCaption</Prompt>
     </ReportParameter>
     <ReportParameter Name="ItemNo_ProdOrderCompCaption">
       <DataType>String</DataType>
@@ -3300,7 +3454,7 @@ Cstr(Fields!SourceNo_ProdOrder.Value)+Chr(177)+Cstr(Fields!Qty_ProdOrder.Value),
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>1</NumberOfColumns>
-      <NumberOfRows>10</NumberOfRows>
+      <NumberOfRows>12</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -3320,36 +3474,46 @@ Cstr(Fields!SourceNo_ProdOrder.Value)+Chr(177)+Cstr(Fields!Qty_ProdOrder.Value),
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>3</RowIndex>
-          <ParameterName>ItemNo_ProdOrderCompCaption</ParameterName>
+          <ParameterName>ItemStageCaption</ParameterName>
         </CellDefinition>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>4</RowIndex>
-          <ParameterName>Desc_ProdOrderCompCaption</ParameterName>
+          <ParameterName>ItemMusselCaption</ParameterName>
         </CellDefinition>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>5</RowIndex>
-          <ParameterName>Qtyper_ProdOrderCompCaption</ParameterName>
+          <ParameterName>ItemNo_ProdOrderCompCaption</ParameterName>
         </CellDefinition>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>6</RowIndex>
-          <ParameterName>UOMCode_ProdOrderCompCaption</ParameterName>
+          <ParameterName>Desc_ProdOrderCompCaption</ParameterName>
         </CellDefinition>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>7</RowIndex>
-          <ParameterName>RemainingQty_ProdOrderCompCaption</ParameterName>
+          <ParameterName>Qtyper_ProdOrderCompCaption</ParameterName>
         </CellDefinition>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>8</RowIndex>
-          <ParameterName>Scrap_ProdOrderCompCaption</ParameterName>
+          <ParameterName>UOMCode_ProdOrderCompCaption</ParameterName>
         </CellDefinition>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>9</RowIndex>
+          <ParameterName>RemainingQty_ProdOrderCompCaption</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>10</RowIndex>
+          <ParameterName>Scrap_ProdOrderCompCaption</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>11</RowIndex>
           <ParameterName>LocationCode_ProdOrderCompCaption</ParameterName>
         </CellDefinition>
       </CellDefinitions>
@@ -3475,6 +3639,12 @@ End Function
         </Field>
         <Field Name="CurrReportPageNoCapt">
           <DataField>CurrReportPageNoCapt</DataField>
+        </Field>
+        <Field Name="ItemStage">
+          <DataField>ItemStage</DataField>
+        </Field>
+        <Field Name="ItemMussel">
+          <DataField>ItemMussel</DataField>
         </Field>
         <Field Name="ItemNo_ProdOrderComp">
           <DataField>ItemNo_ProdOrderComp</DataField>

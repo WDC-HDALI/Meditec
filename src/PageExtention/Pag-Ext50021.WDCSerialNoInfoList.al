@@ -14,7 +14,14 @@ pageextension 50021 "WDC Serial No. Info List" extends "Serial No. Information L
                 ApplicationArea = all;
 
             }
-
+            field(DescriptionItem; Rec.DescriptionItem)
+            {
+                ApplicationArea = All;
+            }
+        }
+        modify(Description)
+        {
+            visible = false;
         }
     }
     actions

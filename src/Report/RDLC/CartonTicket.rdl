@@ -389,9 +389,9 @@
                     <Paragraph>
                       <TextRuns>
                         <TextRun>
-                          <Value>="QTY:" &amp; system.Environment.NewLine &amp; Fields!Quantity.Value</Value>
+                          <Value>="QTY: " &amp; Fields!Quantity.Value</Value>
                           <Style>
-                            <FontSize>6pt</FontSize>
+                            <FontSize>7pt</FontSize>
                             <FontWeight>Bold</FontWeight>
                             <Color>White</Color>
                           </Style>
@@ -425,9 +425,9 @@
                     <Paragraph>
                       <TextRuns>
                         <TextRun>
-                          <Value>="BOX NUMBER :" &amp; system.Environment.NewLine &amp; Fields!Carton_No_.Value</Value>
+                          <Value>="BOX NUMBER : " &amp; Fields!Carton_No_.Value</Value>
                           <Style>
-                            <FontSize>6pt</FontSize>
+                            <FontSize>7pt</FontSize>
                             <FontWeight>Bold</FontWeight>
                             <Color>White</Color>
                           </Style>

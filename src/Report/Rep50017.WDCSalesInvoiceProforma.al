@@ -2,6 +2,7 @@ report 50017 "WDC Sales Invoice Proforma"
 {
     /**********************************Documentation*********************
     //WDC01     WDC.IM      27.06.2024      Changer le calcul
+    //WDC02     WDC.IM      12.07.2024      Changer le calcul de nb carton
     *********************************************************************/
     RDLCLayout = './src/Report/RDLC/SalesInvoiceProforma.rdl';
     CaptionML = ENU = 'Sales Invoice Proforma', FRA = 'Facture vente proforma';
@@ -114,7 +115,7 @@ report 50017 "WDC Sales Invoice Proforma"
             column(CompanyAddress8; CompanyAddr[8])
             {
             }
-            column(CompanyHomePage; CompanyInfo."Home Page")
+            column(CompanyHomePage; CompanyInfo."Home Page 2")
             {
             }
             column(CompanyEMail; CompanyInfo."E-Mail")
@@ -190,16 +191,28 @@ report 50017 "WDC Sales Invoice Proforma"
             column(CompanyVATRegistrationNo_Lbl; CompanyInfo.GetVATRegistrationNumberLbl)
             {
             }
-            column(CompanyLegalOffice; CompanyInfo.GetLegalOffice)
+            // column(CompanyLegalOffice; CompanyInfo.GetLegalOffice)
+            // {
+            // }
+            // column(CompanyLegalOffice_Lbl; CompanyInfo.GetLegalOfficeLbl)
+            // {
+            // }
+            // column(CompanyCustomGiro; CompanyInfo.GetCustomGiro)
+            // {
+            // }
+            // column(CompanyCustomGiro_Lbl; CompanyInfo.GetCustomGiroLbl)
+            // {
+            // }
+            column(CompanyLegalOffice; GetLegalOffice)
             {
             }
-            column(CompanyLegalOffice_Lbl; CompanyInfo.GetLegalOfficeLbl)
+            column(CompanyLegalOffice_Lbl; GetLegalOffice)
             {
             }
-            column(CompanyCustomGiro; CompanyInfo.GetCustomGiro)
+            column(CompanyCustomGiro; GetLegalOffice)
             {
             }
-            column(CompanyCustomGiro_Lbl; CompanyInfo.GetCustomGiroLbl)
+            column(CompanyCustomGiro_Lbl; GetLegalOffice)
             {
             }
             column(CompanyLegalStatement; GetLegalStatement)
@@ -473,12 +486,12 @@ report 50017 "WDC Sales Invoice Proforma"
             column(VATRegistrationNo_Lbl; GetCustomerVATRegistrationNumberLbl)
             {
             }
-            column(GlobalLocationNumber; GetCustomerGlobalLocationNumber)
+            /*column(GlobalLocationNumber; GetCustomerGlobalLocationNumber)
             {
             }
             column(GlobalLocationNumber_Lbl; GetCustomerGlobalLocationNumberLbl)
             {
-            }
+            }*/
             column(SellToFaxNo; GetSellToCustomerFaxNo)
             {
             }
@@ -587,10 +600,16 @@ report 50017 "WDC Sales Invoice Proforma"
             column(VATClause_Lbl; VATClause.TableCaption)
             {
             }
-            column(PackageTrackingNo; "Package Tracking No.")
+            // column(PackageTrackingNo; "Package Tracking No.")
+            // {
+            // }
+            // column(PackageTrackingNo_Lbl; FieldCaption("Package Tracking No."))
+            // {
+            // }
+            column(PackageTrackingNo; PackageTrackingNo)
             {
             }
-            column(PackageTrackingNo_Lbl; FieldCaption("Package Tracking No."))
+            column(PackageTrackingNo_Lbl; PackageTrackingNo)
             {
             }
             column(ShippingAgentCode; "Shipping Agent Code")
@@ -887,7 +906,7 @@ report 50017 "WDC Sales Invoice Proforma"
                 trigger OnAfterGetRecord()
                 var
                     lItem: record Item;
-                    lShipmentNo: Code[20];
+                //lShipmentNo: Code[20]; //CMT by WDC02
                 begin
                     if Type = Type::"G/L Account" then
                         "No." := '';
@@ -933,9 +952,9 @@ report 50017 "WDC Sales Invoice Proforma"
                     Emballage := false;//WDC.IM
                     if Line.Type = Line.type::Item then
                         if lItem.Get(Line."No.") then begin
-                            if lShipmentNo <> "Shipment No." then begin
+                            if (ShipmentNo <> "Shipment No.") and ("Shipment No." <> '') then begin  //WDC02
                                 NbCartons += CalcNbrCartonMeditec("Shipment No.", "Shipment Line No.");
-                                lShipmentNo := "Shipment No.";
+                                ShipmentNo := "Shipment No.";  //WDC02
                             end;
                             if lItem."Packing Item" then
                                 Emballage := True;
@@ -1123,7 +1142,8 @@ report 50017 "WDC Sales Invoice Proforma"
                         CurrReport.Skip();
                     if not VATClause.Get("VAT Clause Code") then
                         CurrReport.Skip();
-                    VATClause.GetDescription(Header);
+                    // VATClause.GetDescription(Header); //CMT By WDC.IM
+                    VATClause.GetDescriptionText(Header);//WDC.IM
                 end;
 
                 trigger OnPreDataItem()
@@ -1139,22 +1159,24 @@ report 50017 "WDC Sales Invoice Proforma"
             var
                 CurrencyExchangeRate: Record "Currency Exchange Rate";
                 PaymentServiceSetup: Record "Payment Service Setup";
-                EnvInfoProxy: Codeunit "Env. Info Proxy";
+                // EnvInfoProxy: Codeunit "Env. Info Proxy";
                 lItem: record item;
             begin
 
                 if BankAccount.get(Header."Company Bank Account Code") then;
                 CalcValueMeditecAfterDevCarton;
-                if EnvInfoProxy.IsInvoicing then begin
-                    "Language Code" := Language.GetUserLanguageCode;
-                    CurrReport.Language := Language.GetLanguageIdOrDefault("Language Code");
-                end;
+                //WDC.IM
+                // if EnvInfoProxy.IsInvoicing then begin
+                //     "Language Code" := Language.GetUserLanguageCode;
+                //     CurrReport.Language := Language.GetLanguageIdOrDefault("Language Code");
+                // end;
 
-                if not EnvInfoProxy.IsInvoicing then
-                    CurrReport.Language := Language.GetLanguageIdOrDefault("Language Code");
+                // if not EnvInfoProxy.IsInvoicing then
+                //>>WDC.IM
+                CurrReport.Language := Language1.GetLanguageIdOrDefault("Language Code");
 
-                if not IsReportInPreviewMode then
-                    CODEUNIT.Run(CODEUNIT::"Sales Inv.-Printed", Header);
+                //if not IsReportInPreviewMode then
+                //    CODEUNIT.Run(CODEUNIT::"Sales Inv.-Printed", Header);
 
                 CalcFields("Work Description");
                 ShowWorkDescription := "Work Description".HasValue;
@@ -1339,6 +1361,7 @@ report 50017 "WDC Sales Invoice Proforma"
     end;
 
     var
+        ShipmentNo: Code[20];//WDC02
         ItemCateg: record "Item Category";
         Emballage: Boolean;
         transport_cost: Boolean;
@@ -1426,7 +1449,7 @@ report 50017 "WDC Sales Invoice Proforma"
         TempLineFeeNoteOnReportHist: Record "Line Fee Note on Report Hist." temporary;
         SellToContact: Record Contact;
         BillToContact: Record Contact;
-        Language: Codeunit Language;
+        Language1: Codeunit Language;
         FormatAddr: Codeunit "Format Address";
         FormatDocument: Codeunit "Format Document";
         SegManagement: Codeunit SegManagement;
@@ -1503,10 +1526,13 @@ report 50017 "WDC Sales Invoice Proforma"
         QtyLbl: Label 'Qty', Comment = 'Short form of Quantity';
         PriceLbl: Label 'Price';
         PricePerLbl: Label 'Price per';
+        GetLegalOffice: Text;
+        PackageTrackingNo: Text;
 
     local procedure InitLogInteraction()
     begin
-        LogInteraction := SegManagement.FindInteractTmplCode(4) <> '';
+        //LogInteraction := SegManagement.FindInteractTmplCode(4) <> ''; // CMT By WDC.IM
+        LogInteraction := SegManagement.FindInteractionTemplateCode(Enum::"Interaction Log Entry Document Type"::"Sales Inv.") <> '';//WDC.IM
     end;
 
 
@@ -1562,7 +1588,7 @@ report 50017 "WDC Sales Invoice Proforma"
                 TempLineFeeNoteOnReportHist.Insert();
             until LineFeeNoteOnReportHist.Next() = 0;
         end else begin
-            LineFeeNoteOnReportHist.SetRange("Language Code", Language.GetUserLanguageCode);
+            LineFeeNoteOnReportHist.SetRange("Language Code", Language1.GetUserLanguageCode);
             if LineFeeNoteOnReportHist.FindSet then
                 repeat
                     TempLineFeeNoteOnReportHist.Init();
@@ -1598,13 +1624,13 @@ report 50017 "WDC Sales Invoice Proforma"
 
     local procedure FormatDocumentFields(SalesHeader: Record "Sales Header")
     begin
-        with SalesHeader do begin
-            FormatDocument.SetTotalLabels(GetCurrencySymbol, TotalText, TotalInclVATText, TotalExclVATText);
-            FormatDocument.SetSalesPerson(SalespersonPurchaser, "Salesperson Code", SalesPersonText);
-            FormatDocument.SetPaymentTerms(PaymentTerms, "Payment Terms Code", "Language Code");
-            FormatDocument.SetPaymentMethod(PaymentMethod, "Payment Method Code", "Language Code");
-            FormatDocument.SetShipmentMethod(ShipmentMethod, "Shipment Method Code", "Language Code");
-        end;
+        //with SalesHeader do begin
+        FormatDocument.SetTotalLabels(SalesHeader.GetCurrencySymbol, TotalText, TotalInclVATText, TotalExclVATText);
+        FormatDocument.SetSalesPerson(SalespersonPurchaser, SalesHeader."Salesperson Code", SalesPersonText);
+        FormatDocument.SetPaymentTerms(PaymentTerms, SalesHeader."Payment Terms Code", SalesHeader."Language Code");
+        FormatDocument.SetPaymentMethod(PaymentMethod, SalesHeader."Payment Method Code", SalesHeader."Language Code");
+        FormatDocument.SetShipmentMethod(ShipmentMethod, SalesHeader."Shipment Method Code", SalesHeader."Language Code");
+        //end;
     end;
 
     local procedure GetJobTaskDescription(JobNo: Code[20]; JobTaskNo: Code[20]): Text[100]
@@ -1620,16 +1646,18 @@ report 50017 "WDC Sales Invoice Proforma"
 
     local procedure ShowVATClause(VATClauseCode: Code[20]): Boolean
     var
-        EnvInfoProxy: Codeunit "Env. Info Proxy";
+    // EnvInfoProxy: Codeunit "Env. Info Proxy";
     begin
         if VATClauseCode = '' then
             exit(false);
-        if EnvInfoProxy.IsInvoicing then begin
-            if not VATClause.Get(VATClauseCode) then
-                exit(false);
-            if VATClause.Description = '' then
-                exit(false);
-        end;
+        //WDC.IM
+        // if EnvInfoProxy.IsInvoicing then begin
+        //     if not VATClause.Get(VATClauseCode) then
+        //         exit(false);
+        //     if VATClause.Description = '' then
+        //         exit(false);
+        // end;
+        //>>WDC.IM
         exit(true);
     end;
 
@@ -1708,7 +1736,8 @@ report 50017 "WDC Sales Invoice Proforma"
                 lTrackCartons.CalcFields("Entry No. doc");
                 lTrackCartons."Entry No. Filter" := lTrackCartons."Entry No. doc";
                 lTrackCartons.CalcFields("Shipment No.", "Shipment Line No.");
-                if ((lTrackCartons."Shipment No." = pshipmentNo) and (lTrackCartons."Shipment Line No." = pShipLineNo)) then begin
+                //if ((lTrackCartons."Shipment No." = pshipmentNo) and (lTrackCartons."Shipment Line No." = pShipLineNo)) then begin
+                if (lTrackCartons."Shipment No." = pshipmentNo) then begin
                     if lCartonNo <> lTrackCartons."Carton No." Then begin
                         lNbCarton += 1;
                         if lcarton.Get(lTrackCartons."Carton No.") then

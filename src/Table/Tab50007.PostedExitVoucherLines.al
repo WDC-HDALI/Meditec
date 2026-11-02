@@ -1,5 +1,8 @@
 table 50007 "Posted Exit Voucher Lines"
 {
+    //*************************************Documentation******************************
+    //WDC01     04.09.2024      WDC.IM      Include MP 
+    //********************************************************************************
     Caption = 'Lignes bon sortie';
     DrillDownPageID = "Posted Exit Voucher Lines";
     LookupPageID = "Posted Exit Voucher Lines";
@@ -19,12 +22,18 @@ table 50007 "Posted Exit Voucher Lines"
         {
 
             Caption = 'No.';
+            //TableRelation = Item where("Gen. Prod. Posting Group" = filter('PDR|CONS|MP'));//WDC01
             TableRelation = Item where("Gen. Prod. Posting Group" = filter('PDR|CONS'));
             trigger OnValidate()
             var
                 lItem: Record Item;
+                text001: TextConst ENU = 'This item is not allowed to use in Exit Voucher', FRA = 'Cet Article N''est pas autorisé à utiliser dans Bon sortie';
             begin
                 if lItem.Get("No.") then begin
+                    //<<WDC01
+                    //If (lItem."Gen. Prod. Posting Group" = 'MP') and (lItem."Include In Exit Voucher" = false) then
+                    //  error(text001);
+                    //>>WDC01  
                     Description := lItem.Description;
                 end;
             end;

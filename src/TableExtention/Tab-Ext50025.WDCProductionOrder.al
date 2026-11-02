@@ -13,6 +13,4 @@ tableextension 50025 "WDC Production Order" extends "Production Order"
 
         }
     }
-    var
-        ItemModel: Record "Item Model";
 }

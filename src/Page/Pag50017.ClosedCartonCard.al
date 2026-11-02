@@ -159,8 +159,10 @@ page 50017 "Closed Carton Card"
                 lItemLedgerEntry.SetRange("Item No.", lCartonstrack."Item No.");
                 lItemLedgerEntry.SetRange("Document Type", lItemLedgerEntry."Document Type"::"Sales Shipment");
                 lItemLedgerEntry.SetRange("Document No.", lCartonstrack."Shipment No.");
-                if lItemLedgerEntry.FindSet() then
-                    Error(ltext001);
+                if lItemLedgerEntry.FindLast() then begin
+                    if not (lItemLedgerEntry.Open) then
+                        Error(ltext001);
+                end;
             //>>WDC.IM
             until lCartonstrack.Next() = 0;
     end;

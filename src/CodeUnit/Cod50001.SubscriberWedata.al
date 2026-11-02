@@ -247,20 +247,28 @@ codeunit 50001 "Subscriber Wedata"
     var
         ProdOrder: Record "Production Order";
         ProductionBOMLine: Record "Production BOM Line";
+        lItem: Record Item;
+        lQuantity: Decimal;
+        lItemUnitOfMeasure: Record "Item Unit of Measure";
     begin
-        if ProdOrder.Get(ProdOrderLine.Status, ProdOrderLine."Prod. Order No.") then
-            if ProdOrder.DeclProd = true then begin
-                ItemJournalLine."Journal Template Name" := 'Sortie';
-                ItemJournalLine."Journal Batch Name" := 'PRODPF';
-                ProductionBOMLine.Reset();
-                ProductionBOMLine.SetRange(Type, ProductionBOMLine.Type::Item);
-                ProductionBOMLine.SetRange("Production BOM No.", ProdOrderLine."Item No.");
-                ProductionBOMLine.SetRange("Routing Link Code", ProdOrderComp."Routing Link Code");
-                ProductionBOMLine.SetRange("No.", ProdOrderComp."Item No.");
-                if ProductionBOMLine.FindSet() then
-                    if ItemJournalLine.Quantity <> 0 then
-                        ItemJournalLine.Validate(Quantity, ProductionBOMLine."Quantity per");
-            end;
+        If ItemJournalLine."Flushing Method" = ItemJournalLine."Flushing Method"::Manual then begin
+            if ProdOrder.Get(ProdOrderLine.Status, ProdOrderLine."Prod. Order No.") then
+                if ProdOrder.DeclProd = true then begin
+                    ItemJournalLine."Journal Template Name" := 'CONSOMMATI';
+                    ItemJournalLine."Journal Batch Name" := 'CONSOPF';
+                    lQuantity := ProdOrderComp."Quantity per";
+                    litem.Get(ProdOrderComp."Item No.");
+                    If lItem."Base Unit of Measure" <> ProdOrderComp."Unit of Measure Code" then begin
+                        lItemUnitofMeasure.Get(ProdOrderComp."Item No.", ProdOrderComp."Unit of Measure Code");
+                        lQuantity := round(ProdOrderComp."Quantity per" * lItemUnitofMeasure."Qty. per Unit of Measure", lItem."Rounding Precision", '=');
+                    end;
+                    if ItemJournalLine.Quantity <> 0 then begin
+                        ItemJournalLine.Quantity := lQuantity;//wdc.SH
+                        ItemJournalLine."Quantity (Base)" := lQuantity;
+                        ItemJournalLine."Invoiced Qty. (Base)" := lQuantity;
+                    end;
+                end;
+        end;
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Production Journal Mgt", 'OnBeforeInsertOutputJnlLine', '', FALSE, FALSE)]
@@ -275,6 +283,8 @@ codeunit 50001 "Subscriber Wedata"
                 ItemJournalLine.Validate("Output Quantity", 1);
             end;
     end;
+
+
     //>> WDC.IM
 
     //<<WDC.IM Il faut insérer tous les articles du carton dans la commande
@@ -310,5 +320,6 @@ codeunit 50001 "Subscriber Wedata"
         end;
     end;
     //>>WDC.IM
+
 }
 

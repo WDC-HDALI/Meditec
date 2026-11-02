@@ -55,19 +55,19 @@ page 50014 "Carton Tracking Lines"
         // ControlItemRefCustomer
     end;
 
-    procedure ControlItemRefCustomer()
-    var
-        lItemRef: record "Item Reference";
-        ltext001: Label 'Cet article n''est pas à ce client.\ Veuillez vérifier!!';
-    begin
-        lItemRef.Reset();
-        lItemRef.SetRange("Item No.", Rec."Item No.");
-        lItemRef.SetRange("Reference Type", lItemRef."Reference Type"::Customer);
-        lItemRef.SetRange("Reference No.", Rec."Customer No.");
-        if not lItemRef.FindFirst() then
-            Error(ltext001);
+    // procedure ControlItemRefCustomer()
+    // var
+    //     lItemRef: record "Item Reference";
+    //     ltext001: Label 'Cet article n''est pas à ce client.\ Veuillez vérifier!!';
+    // begin
+    //     lItemRef.Reset();
+    //     lItemRef.SetRange("Item No.", Rec."Item No.");
+    //     lItemRef.SetRange("Reference Type", lItemRef."Reference Type"::Customer);
+    //     lItemRef.SetRange("Reference No.", Rec."Customer No.");
+    //     if not lItemRef.FindFirst() then
+    //         Error(ltext001);
 
-    end;
+    // end;
 
     Procedure ControlSNnumber()
     begin

@@ -1,5 +1,8 @@
 report 50020 "WDC Carton Ticket"
 {
+    /*******************************Documentation*************************************************
+    //WDC01     WDC.IM      10/10/2024      Annuler Filtrage
+    **********************************************************************************************/
     Caption = 'Ticket Carton';
     DefaultLayout = RDLC;
     RDLCLayout = './src/Report/RDLC/CartonTicket.rdl';
@@ -93,13 +96,14 @@ report 50020 "WDC Carton Ticket"
                         TotalQty += CartonTrackLine.Quantity;
                     until CartonTrackLine.Next() = 0;
             end;
+            //<<WDC01
+            // trigger OnPreDataItem()
+            // begin
+            //     Carton.Reset();
+            //     Carton.SetFilter("No.", cartonfilter);
 
-            trigger OnPreDataItem()
-            begin
-                Carton.Reset();
-                Carton.SetFilter("No.", cartonfilter);
-
-            end;
+            // end;
+            //>>WDC01
         }
 
     }
@@ -112,17 +116,18 @@ report 50020 "WDC Carton Ticket"
         layout
         {
             area(content)
-            {
-                group(Options)
-                {
-                    Caption = 'Options';
-                    field(cartonfilter; cartonfilter)
-                    {
-                        ApplicationArea = Basic, Suite;
-                        TableRelation = "Carton Tracking Lines";
-                    }
+            {   //<<WDC01
+                // group(Options)
+                // {
+                //     Caption = 'Options';
+                //     field(cartonfilter; cartonfilter)
+                //     {
+                //         ApplicationArea = Basic, Suite;
+                //         TableRelation = "Carton Tracking Lines";
+                //     }
 
-                }
+                // }
+                //>>WDC01
             }
         }
     }

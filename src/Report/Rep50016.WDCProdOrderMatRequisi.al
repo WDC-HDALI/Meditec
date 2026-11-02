@@ -50,6 +50,16 @@ report 50016 "WDC Prod. Order - Mat. Requis."
             column(CurrReportPageNoCapt; CurrReportPageNoCaptLbl)
             {
             }
+            //<<WDC.IM
+            column(ItemStage; Item."Item Stage")
+            {
+                IncludeCaption = true;
+            }
+            column(ItemMussel; item."Item Mussel")
+            {
+                IncludeCaption = true;
+            }
+            //>>WDC.IM
             dataitem("Prod. Order Component"; "Prod. Order Component")
             {
                 DataItemLink = Status = FIELD(Status), "Prod. Order No." = FIELD("No.");
@@ -100,29 +110,29 @@ report 50016 "WDC Prod. Order - Mat. Requis."
                 }
                 trigger OnAfterGetRecord()
                 begin
-                    with ReservationEntry do begin
-                        SetCurrentKey("Source ID", "Source Ref. No.", "Source Type", "Source Subtype");
+                    //with ReservationEntry do begin
+                    ReservationEntry.SetCurrentKey("Source ID", "Source Ref. No.", "Source Type", "Source Subtype");
 
-                        SetRange("Source Type", DATABASE::"Prod. Order Component");
-                        SetRange("Source ID", "Production Order"."No.");
-                        SetRange("Source Ref. No.", "Line No.");
-                        SetRange("Source Subtype", Status);
-                        SetRange("Source Batch Name", '');
-                        SetRange("Source Prod. Order Line", "Prod. Order Line No.");
+                    ReservationEntry.SetRange("Source Type", DATABASE::"Prod. Order Component");
+                    ReservationEntry.SetRange("Source ID", "Production Order"."No.");
+                    ReservationEntry.SetRange("Source Ref. No.", "Line No.");
+                    ReservationEntry.SetRange("Source Subtype", Status);
+                    ReservationEntry.SetRange("Source Batch Name", '');
+                    ReservationEntry.SetRange("Source Prod. Order Line", "Prod. Order Line No.");
 
-                        if FindSet() then begin
-                            RemainingQtyReserved := 0;
-                            repeat
-                                if ReservationEntry2.Get("Entry No.", not Positive) then
-                                    if (ReservationEntry2."Source Type" = DATABASE::"Prod. Order Line") and
-                                       (ReservationEntry2."Source ID" = "Prod. Order Component"."Prod. Order No.")
-                                    then
-                                        RemainingQtyReserved += ReservationEntry2."Quantity (Base)";
-                            until Next() = 0;
-                            if "Prod. Order Component"."Remaining Qty. (Base)" = RemainingQtyReserved then
-                                CurrReport.Skip();
-                        end;
+                    if ReservationEntry.FindSet() then begin
+                        RemainingQtyReserved := 0;
+                        repeat
+                            if ReservationEntry2.Get(ReservationEntry."Entry No.", not ReservationEntry.Positive) then
+                                if (ReservationEntry2."Source Type" = DATABASE::"Prod. Order Line") and
+                                   (ReservationEntry2."Source ID" = "Prod. Order Component"."Prod. Order No.")
+                                then
+                                    RemainingQtyReserved += ReservationEntry2."Quantity (Base)";
+                        until ReservationEntry.Next() = 0;
+                        if "Prod. Order Component"."Remaining Qty. (Base)" = RemainingQtyReserved then
+                            CurrReport.Skip();
                     end;
+                    //end;
                     ComponentQty := "Prod. Order Component"."Quantity per" * "Production Order".Quantity;   //WDC.SH
                     No += 1;
                     ////////////
@@ -153,6 +163,12 @@ report 50016 "WDC Prod. Order - Mat. Requis."
                 ProdOrderFilter := GetFilters();
                 No := 0;
             end;
+            //<<WDC.IM
+            trigger OnAfterGetRecord()
+            begin
+                Item.Get("Production Order"."Source No.");
+            end;
+            //>>WDC.IM
         }
     }
 
@@ -184,6 +200,7 @@ report 50016 "WDC Prod. Order - Mat. Requis."
         No: Integer;
         ItemLedgerEntry: Record "Item Ledger Entry"; //WDC.CHG
         QtyCons: Decimal;  //WDC.CHG
+        Item: Record Item;
 
 }
 

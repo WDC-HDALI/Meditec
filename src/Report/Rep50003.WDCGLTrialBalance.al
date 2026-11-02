@@ -141,14 +141,14 @@ report 50003 "WDC G/L Trial Balance"
             trigger OnAfterGetRecord()
             begin
                 GLAccount2.Copy("G/L Account");
-                with GLAccount2 do
-                    if "Income/Balance" = 0 then begin
-                        SetRange("Date Filter", PreviousStartDate, PreviousEndDate);
-                        CalcFields("Debit Amount", "Credit Amount");
-                    end else begin
-                        SetRange("Date Filter", 0D, PreviousEndDate);
-                        CalcFields("Debit Amount", "Credit Amount");
-                    end;
+                //with GLAccount2 do
+                if GLAccount2."Income/Balance" = 0 then begin
+                    SetRange("Date Filter", PreviousStartDate, PreviousEndDate);
+                    GLAccount2.CalcFields("Debit Amount", "Credit Amount");
+                end else begin
+                    SetRange("Date Filter", 0D, PreviousEndDate);
+                    GLAccount2.CalcFields("Debit Amount", "Credit Amount");
+                end;
                 if not ImprNonMvt and
                    (GLAccount2."Debit Amount" = 0) and
                    ("Debit Amount" = 0) and
@@ -166,11 +166,11 @@ report 50003 "WDC G/L Trial Balance"
                     "Credit Amount" := 0;
                 end;
 
-                TLAccountType := "G/L Account"."Account Type";
+                TLAccountType := "G/L Account"."Account Type".AsInteger();
                 //>>DELTA 02 SN (24/09/2016) - Calcul Compte Bilan + Compte Gestion
 
                 // Calcul Compte Bilan
-                IF (GLAccount2."Account Type" = 0) AND (GLAccount2."Income/Balance" = 1)
+                IF (GLAccount2."Account Type".AsInteger() = 0) AND (GLAccount2."Income/Balance" = 1)
                 THEN BEGIN
                     IF (GLAccount2."Debit Amount" + "Debit Amount" - GLAccount2."Credit Amount" - "Credit Amount") > 0 THEN
                         TotBilanDebit := GLAccount2."Debit Amount" + "Debit Amount" - GLAccount2."Credit Amount" - "Credit Amount"
@@ -207,7 +207,7 @@ report 50003 "WDC G/L Trial Balance"
 
                 //Calcul Compte Gestion
 
-                IF ("G/L Account"."Account Type" = 0) AND ("G/L Account"."Income/Balance" = 0)
+                IF ("G/L Account"."Account Type".AsInteger() = 0) AND ("G/L Account"."Income/Balance" = 0)
                 THEN BEGIN
                     IF ("Debit Amount" - "Credit Amount") > 0 THEN
                         TotGestionDebit := GLAccount2."Debit Amount" + "Debit Amount" - GLAccount2."Credit Amount" - "Credit Amount"

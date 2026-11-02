@@ -85,6 +85,6 @@ table 50004 "Exit Voucher Header"
 
     var
         WhseSetup: Record "Warehouse Setup";
-        NoSeriesManagement: Codeunit 396;
+        NoSeriesManagement: Codeunit "No. Series";
 }
 

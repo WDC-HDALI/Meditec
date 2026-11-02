@@ -22,36 +22,36 @@ tableextension 50011 "Accounting Period Ext" extends "Accounting Period"
 
     procedure UpdateGLSetup(PeriodEndDate: Date)
     begin
-        with GLSetup do begin //FIXME:
-            Get;
-            CalcFields("Posting Allowed From");
-            if "Allow Posting From" <= PeriodEndDate then begin
-                "Allow Posting From" := "Posting Allowed From";
-                Modify;
-            end;
-            if ("Allow Posting To" <= PeriodEndDate) and ("Allow Posting To" <> 0D) then begin
-                "Allow Posting To" := CalcDate('<+1M-1D>', "Posting Allowed From");
-                Modify;
-            end;
+        //with GLSetup do begin //FIXME:
+        GLSetup.Get;
+        GLSetup.CalcFields("Posting Allowed From");
+        if GLSetup."Allow Posting From" <= PeriodEndDate then begin
+            GLSetup."Allow Posting From" := GLSetup."Posting Allowed From";
+            GLSetup.Modify;
         end;
+        if (GLSetup."Allow Posting To" <= PeriodEndDate) and (GLSetup."Allow Posting To" <> 0D) then begin
+            GLSetup."Allow Posting To" := CalcDate('<+1M-1D>', GLSetup."Posting Allowed From");
+            GLSetup.Modify;
+        end;
+        //end;
     end;
 
 
     procedure UpdateUserSetup(PeriodEndDate: Date)
     begin
-        with UserSetup do begin //FIXME:
-            if FindFirst then
-                repeat
-                    if "Allow Posting From" <= PeriodEndDate then begin
-                        "Allow Posting From" := GLSetup."Posting Allowed From";
-                        Modify;
-                    end;
-                    if ("Allow Posting To" <= PeriodEndDate) and ("Allow Posting To" <> 0D) then begin
-                        "Allow Posting To" := CalcDate('<+1M-1D>', GLSetup."Posting Allowed From");
-                        Modify;
-                    end;
-                until Next = 0;
-        end
+        //with UserSetup do begin //FIXME:
+        if FindFirst then
+            repeat
+                if UserSetup."Allow Posting From" <= PeriodEndDate then begin
+                    UserSetup."Allow Posting From" := GLSetup."Posting Allowed From";
+                    UserSetup.Modify;
+                end;
+                if (UserSetup."Allow Posting To" <= PeriodEndDate) and (UserSetup."Allow Posting To" <> 0D) then begin
+                    UserSetup."Allow Posting To" := CalcDate('<+1M-1D>', GLSetup."Posting Allowed From");
+                    UserSetup.Modify;
+                end;
+            until Next = 0;
+        //end
     end;
 
     var
