@@ -9,32 +9,32 @@ table 50010 "Carton Tracking Lines"
     {
         field(1; "Carton No."; Code[20])
         {
-            Caption = 'No. Carton';
+            CaptionML = FRA = 'N° Carton', ENU = 'Boxe No.';
             DataClassification = ToBeClassified;
             Editable = false;
         }
         field(2; "Item No."; Code[20])
         {
-            Caption = 'No. article';
+            CaptionML = FRA = 'N° article', ENU = 'Item No.';
             DataClassification = ToBeClassified;
             Editable = false;
 
         }
         field(3; "Ref Line No."; Integer)
         {
-            Caption = 'Ref Line No.';
+            CaptionML = ENU = 'Ref Line No.', FRA = 'N° ligne ref';
             DataClassification = ToBeClassified;
             Editable = false;
         }
         field(4; "Line No."; Integer)
         {
-            Caption = 'Line No.';
+            CaptionML = ENU = 'Line No.', FRA = 'N° ligne';
             DataClassification = ToBeClassified;
             Editable = false;
         }
         field(5; "Serial No."; Code[50])
         {
-            Caption = 'No. de série';
+            CaptionML = FRA = 'N° de série', ENU = 'Serial No.';
             DataClassification = ToBeClassified;
             TableRelation = "Serial No. Information"."Serial No." where(Inventory = filter(<> 0),
                                                          "Assembled in Carton" = filter(''),
@@ -101,7 +101,7 @@ table 50010 "Carton Tracking Lines"
         }
         field(6; "Lot No."; Code[50])
         {
-            Caption = 'No. de lot';
+            CaptionML = FRA = 'No. de lot', ENU = 'Batch No.';
             DataClassification = ToBeClassified;
             Editable = false;//WDC.IM
             TableRelation = "Lot No. Information" where("Item No." = field("Item No."),
@@ -110,13 +110,13 @@ table 50010 "Carton Tracking Lines"
         }
         field(7; Quantity; Decimal)
         {
-            Caption = 'Quantité';
+            CaptionML = FRA = 'Quantité', ENU = 'Quantity';
             DataClassification = ToBeClassified;
             Editable = false;
         }
         field(8; "Order No."; Code[20])
         {
-            Caption = 'N° Commande';
+            CaptionML = FRA = 'N° Commande', ENU = 'Order No.';
             DataClassification = ToBeClassified;
             Editable = false;
         }
@@ -132,7 +132,7 @@ table 50010 "Carton Tracking Lines"
         }
         field(11; "Shipment No."; Code[20])
         {
-            Caption = 'N° Expédition';
+            CaptionML = FRA = 'N° Expédition', ENU = 'Shipment No.';
             FieldClass = FlowField;
             Editable = false;
             CalcFormula = lookup("Item Ledger Entry"."Document No." WHERE("Entry No." = field("Entry No. Filter")));//WDC.IM
@@ -141,7 +141,7 @@ table 50010 "Carton Tracking Lines"
         //>>WDC.IM
         field(12; "Customer No."; Code[20])
         {
-            Caption = 'No. client';
+            CaptionML = FRA = 'N° client', ENU = 'Customer No.';
             DataClassification = ToBeClassified;
             TableRelation = Customer;
             Editable = false;
@@ -156,20 +156,20 @@ table 50010 "Carton Tracking Lines"
         }
         field(13; "Customer Name"; Text[100])
         {
-            Caption = 'Nom client';
+            CaptionML = FRA = 'Nom client', ENU = 'Customer Name';
             DataClassification = ToBeClassified;
             Editable = false;
         }
 
         field(14; "Variant Code"; Code[10])
         {
-            Caption = 'Variant Code';
+            CaptionML = ENU = 'Variant Code', FRA = 'Code variant';
             TableRelation = "Item Variant".Code WHERE("Item No." = FIELD("Item No."));
             Editable = false;
         }
         field(15; "Shipment Line No."; Integer)
         {
-            Caption = 'Ligne Expédition';
+            CaptionML = FRA = 'Ligne Expédition', ENU = 'Shipment Line';
             FieldClass = FlowField;
             Editable = false;
             CalcFormula = lookup("Item Ledger Entry"."Document Line No." WHERE("Entry No." = field("Entry No. Filter"))); //WDC.IM
@@ -177,13 +177,13 @@ table 50010 "Carton Tracking Lines"
         }
         field(16; "Order Line No."; Integer)
         {
-            Caption = 'No. ligne commande ';
+            CaptionML = FRA = 'N° ligne commande', ENU = 'Order Line No.';
             DataClassification = ToBeClassified;
             Editable = false;
         }
         field(17; "Ship to code"; Code[20])
         {
-            Caption = 'Code destinataire';
+            CaptionML = FRA = 'Code destinataire', ENU = 'Ship to code';
             DataClassification = ToBeClassified;
             TableRelation = "Ship-to Address".Code where("Customer No." = field("Customer No."));
             trigger OnValidate()
@@ -201,12 +201,12 @@ table 50010 "Carton Tracking Lines"
         field(18; "Ship to name"; Text[100])
         {
             DataClassification = ToBeClassified;
-            Caption = 'Nom destinataire';
+            CaptionML = FRA = 'Nom destinataire', ENU = 'Ship to name';
             Editable = false;
         }
         field(19; "Item Description"; Text[100])
         {
-            Caption = 'Description article';
+            CaptionML = FRA = 'Description article', ENU = 'Item Description';
             DataClassification = ToBeClassified;
             Editable = false;
         }

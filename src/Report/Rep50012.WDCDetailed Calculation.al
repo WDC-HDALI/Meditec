@@ -133,18 +133,18 @@ report 50012 "Detailed Calculation2"
 
                 trigger OnAfterGetRecord()
                 var
-                    UnitCostCalculation: Option Time,Unit;
+                    UnitCostCalculation: Enum "Unit Cost Calculation Type";
                 begin
                     ProdUnitCost := "Unit Cost per";
 
-                    CostCalcMgt.RoutingCostPerUnit(
+                    CostCalcMgt.CalcRoutingCostPerUnit(
                       Type,
                       "No.",
                       DirectUnitCost,
                       IndirectCostPct,
                       OverheadRate, ProdUnitCost, UnitCostCalculation);
                     CostTime :=
-                      CostCalcMgt.CalcCostTime(
+                      CostCalcMgt.CalculateCostTime(
                         CostCalcMgt.CalcQtyAdjdForBOMScrap(Item."Lot Size", Item."Scrap %"),
                         "Setup Time", "Setup Time Unit of Meas. Code",
                         "Run Time", "Run Time Unit of Meas. Code", "Lot Size",

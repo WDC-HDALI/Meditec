@@ -1,5 +1,8 @@
 report 50001 "WDC Posted Sales Shipment"
 {
+    /**********************************Documentation*********************
+    //WDC01     WDC.IM      14.01.2026      Ajout SKU et EAN
+    *********************************************************************/
     Caption = 'Bon Livraison';
     RDLCLayout = './src/Report/RDLC/PostSalesShipment.rdl';
     Description = 'Bon Livraison';
@@ -212,7 +215,7 @@ report 50001 "WDC Posted Sales Shipment"
             column(CompanySIRET; companyinfo."Registration No.")  //WDC
             {
             }
-            column(CompanyHomePage; CompanyInfo."Home Page")
+            column(CompanyHomePage; CompanyInfo."Home Page 2")
             {
             }
             column(CompanyEMail; CompanyInfo."E-Mail")
@@ -332,15 +335,35 @@ report 50001 "WDC Posted Sales Shipment"
                 column(Variant_Code; "Variant Code")
                 {
                 }
+                column(SKU; SKU)
+                {
+                }
+                column(EANCode; EANCode)
+                {
+                }
                 trigger OnAfterGetRecord()
                 var
+                    LItemVariant: record "Item Variant";
                 begin
+                    Clear(SKU);  //WDC01
+                    Clear(EANCode); //WDC01
                     SalesHeader.get(SalesHeader."Document Type"::Order, SalesShipmentLine."Order No."); //WDC SH
                     Item.Get(SalesShipmentLine."No.");
                     if not Cust.Get(SalesHeader."Bill-to Customer No.") then
                         Clear(Cust);
                     if SellToContact.Get(SalesHeader."Sell-to Contact No.") then;
                     if BillToContact.Get(SalesHeader."Bill-to Contact No.") then;
+                    //<<WDC01
+                    if SalesShipmentLine."Variant Code" = '' then begin
+                        SKU := Item."SKU";
+                        EANCode := Item."Retail Code";
+                    end else begin
+                        if LItemVariant.Get(SalesShipmentLine."No.", SalesShipmentLine."Variant Code") then begin
+                            SKU := LItemVariant."SKU";
+                            EANCode := LItemVariant."Retail Code";
+                        end;
+                    end;
+                    //>>WDC01
                 end;
             }
         }
@@ -403,5 +426,7 @@ report 50001 "WDC Posted Sales Shipment"
         BillToContact: Record Contact;
         CompanyLogoPosition: Integer;
         DisplayAdditionalFeeNote: Boolean;
+        SKU: Text[20];
+        EANCode: Code[20];
 }
 

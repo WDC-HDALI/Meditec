@@ -38,7 +38,7 @@ report 50010 "WDC Grand Livre sur Excel"
             column(STRSUBSTNO_Text004_PreviousStartDate_; STRSUBSTNO(Text004, PreviousStartDate))
             {
             }
-            column(STRSUBSTNO_Text005_CurrReport_PAGENO_; STRSUBSTNO(Text005, CurrReport.PAGENO))
+            column(STRSUBSTNO_Text005_CurrReport_PAGENO_; STRSUBSTNO(Text005, CurrReportPAGENO))
             {
             }
             column(PageCaption; STRSUBSTNO(Text005, ' '))
@@ -346,21 +346,21 @@ report 50010 "WDC Grand Livre sur Excel"
                 begin
                     SETRANGE("Period Type", TotalBy);
                     SETRANGE("Period Start", StartDate, CLOSINGDATE(EndDate));
-                    CurrReport.CREATETOTALS("G/L Entry"."Debit Amount", "G/L Entry"."Credit Amount");
+                    //CurrReport.CREATETOTALS("G/L Entry"."Debit Amount", "G/L Entry"."Credit Amount");
                 end;
             }
 
             trigger OnAfterGetRecord()
             begin
                 GLAccount2.COPY("G/L Account");
-                WITH GLAccount2 DO BEGIN
-                    IF "Income/Balance" = 0 THEN
-                        SETRANGE("Date Filter", PreviousStartDate, PreviousEndDate)
-                    ELSE
-                        SETRANGE("Date Filter", 0D, PreviousEndDate);
-                    CALCFIELDS("Debit Amount", "Credit Amount");
-                    Solde := "Debit Amount" - "Credit Amount";
-                END;
+                //WITH GLAccount2 DO BEGIN
+                IF GLAccount2."Income/Balance" = 0 THEN
+                    GLAccount2.SETRANGE("Date Filter", PreviousStartDate, PreviousEndDate)
+                ELSE
+                    GLAccount2.SETRANGE("Date Filter", 0D, PreviousEndDate);
+                GLAccount2.CALCFIELDS("Debit Amount", "Credit Amount");
+                Solde := GLAccount2."Debit Amount" - GLAccount2."Credit Amount";
+                //END;
                 IF "Income/Balance" = 0 THEN
                     SETRANGE("Date Filter", StartDate, EndDate)
                 ELSE
@@ -371,7 +371,7 @@ report 50010 "WDC Grand Livre sur Excel"
 
 
                 ShowBodyGLAccount :=
-                  ((GLAccount2."Debit Amount" = "Debit Amount") AND (GLAccount2."Credit Amount" = "Credit Amount")) OR ("Account Type" <> 0);
+                  ((GLAccount2."Debit Amount" = "Debit Amount") AND (GLAccount2."Credit Amount" = "Credit Amount")) OR ("Account Type".AsInteger() <> 0);
             end;
 
             trigger OnPreDataItem()
@@ -426,9 +426,9 @@ report 50010 "WDC Grand Livre sur Excel"
                 IF NOT Period.FINDFIRST THEN
                     ERROR(Text011, EndDate, Period.GETFILTER("Period Type"));
 
-                CurrReport.CREATETOTALS(GLAccount2."Debit Amount", GLAccount2."Credit Amount",
-                  "Debit Amount", "Credit Amount",
-                  "G/L Entry"."Debit Amount", "G/L Entry"."Credit Amount");
+                // CurrReport.CREATETOTALS(GLAccount2."Debit Amount", GLAccount2."Credit Amount",
+                //   "Debit Amount", "Credit Amount",
+                //   "G/L Entry"."Debit Amount", "G/L Entry"."Credit Amount");
                 // FR0003.begin
                 FiscalYearStatusText := STRSUBSTNO(Text012, FYFiscalClose.CheckFiscalYearStatus(GETFILTER("Date Filter")));
                 // FR0003.end
@@ -582,5 +582,6 @@ report 50010 "WDC Grand Livre sur Excel"
         FiltreCodeJournal: Text[250];
         FiltreLettre: Text[100];
         FiltreCompte: Text[250];
+        CurrReportPAGENO: Text;
 }
 

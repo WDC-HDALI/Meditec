@@ -1,6 +1,6 @@
 page 50012 "Carton Card"
 {
-    Caption = 'Carton';
+    CaptionML = FRA = 'Carton', ENU = 'Boxe';
     PageType = Card;
     SourceTable = Carton;
 
@@ -10,22 +10,19 @@ page 50012 "Carton Card"
         {
             group(General)
             {
-                Caption = 'General';
+                CaptionML = ENU = 'General', FRA = 'Général';
 
                 field("No."; Rec."No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the No. field.';
                 }
                 field("Customer No."; Rec."Customer No.")
                 {
                     ApplicationArea = All;
-
                 }
                 field("Customer Name"; Rec."Customer Name")
                 {
                     ApplicationArea = All;
-
                 }
 
                 field("Ship to code"; Rec."Ship to code")
@@ -36,7 +33,6 @@ page 50012 "Carton Card"
                 field("Ship to name"; Rec."Ship to name")
                 {
                     ApplicationArea = All;
-
                 }
                 field(Status; Rec.Status)
                 {
@@ -45,33 +41,27 @@ page 50012 "Carton Card"
                 field("Assembly Date"; Rec."Assembly Date")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Date assemblage field.';
                 }
                 field("Item Carton No."; Rec."Item Carton No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the No. article Carton field.';
                 }
                 field("Lot No."; Rec."Lot No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the No. Serie field.';
                 }
                 field("Item Description"; Rec."Item Description")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Description article field.';
                 }
                 field("Serial No."; Rec."Serial No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the No. Serie field.';
                 }
 
                 field(SystemCreatedAt; Rec.SystemCreatedAt)
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the SystemCreatedAt field.';
                 }
 
             }

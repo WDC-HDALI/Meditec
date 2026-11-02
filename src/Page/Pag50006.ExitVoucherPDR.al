@@ -105,7 +105,7 @@ page 50006 "Exit Voucher PDR"
         lPagePostedExitVoucher: page "Posted Exit Voucher PDR";
         lPostDocNo: Code[20];
         WhseSetup: Record "Warehouse Setup";
-        NoSeriesManagement: Codeunit 396;
+        NoSeriesManagement: Codeunit "No. Series";
         lReservationEntry: Record 337;
     begin
         WhseSetup.get;

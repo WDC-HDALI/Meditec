@@ -115,7 +115,7 @@ report 50017 "WDC Sales Invoice Proforma"
             column(CompanyAddress8; CompanyAddr[8])
             {
             }
-            column(CompanyHomePage; CompanyInfo."Home Page")
+            column(CompanyHomePage; CompanyInfo."Home Page 2")
             {
             }
             column(CompanyEMail; CompanyInfo."E-Mail")
@@ -191,16 +191,28 @@ report 50017 "WDC Sales Invoice Proforma"
             column(CompanyVATRegistrationNo_Lbl; CompanyInfo.GetVATRegistrationNumberLbl)
             {
             }
-            column(CompanyLegalOffice; CompanyInfo.GetLegalOffice)
+            // column(CompanyLegalOffice; CompanyInfo.GetLegalOffice)
+            // {
+            // }
+            // column(CompanyLegalOffice_Lbl; CompanyInfo.GetLegalOfficeLbl)
+            // {
+            // }
+            // column(CompanyCustomGiro; CompanyInfo.GetCustomGiro)
+            // {
+            // }
+            // column(CompanyCustomGiro_Lbl; CompanyInfo.GetCustomGiroLbl)
+            // {
+            // }
+            column(CompanyLegalOffice; GetLegalOffice)
             {
             }
-            column(CompanyLegalOffice_Lbl; CompanyInfo.GetLegalOfficeLbl)
+            column(CompanyLegalOffice_Lbl; GetLegalOffice)
             {
             }
-            column(CompanyCustomGiro; CompanyInfo.GetCustomGiro)
+            column(CompanyCustomGiro; GetLegalOffice)
             {
             }
-            column(CompanyCustomGiro_Lbl; CompanyInfo.GetCustomGiroLbl)
+            column(CompanyCustomGiro_Lbl; GetLegalOffice)
             {
             }
             column(CompanyLegalStatement; GetLegalStatement)
@@ -474,12 +486,12 @@ report 50017 "WDC Sales Invoice Proforma"
             column(VATRegistrationNo_Lbl; GetCustomerVATRegistrationNumberLbl)
             {
             }
-            column(GlobalLocationNumber; GetCustomerGlobalLocationNumber)
+            /*column(GlobalLocationNumber; GetCustomerGlobalLocationNumber)
             {
             }
             column(GlobalLocationNumber_Lbl; GetCustomerGlobalLocationNumberLbl)
             {
-            }
+            }*/
             column(SellToFaxNo; GetSellToCustomerFaxNo)
             {
             }
@@ -588,10 +600,16 @@ report 50017 "WDC Sales Invoice Proforma"
             column(VATClause_Lbl; VATClause.TableCaption)
             {
             }
-            column(PackageTrackingNo; "Package Tracking No.")
+            // column(PackageTrackingNo; "Package Tracking No.")
+            // {
+            // }
+            // column(PackageTrackingNo_Lbl; FieldCaption("Package Tracking No."))
+            // {
+            // }
+            column(PackageTrackingNo; PackageTrackingNo)
             {
             }
-            column(PackageTrackingNo_Lbl; FieldCaption("Package Tracking No."))
+            column(PackageTrackingNo_Lbl; PackageTrackingNo)
             {
             }
             column(ShippingAgentCode; "Shipping Agent Code")
@@ -1155,10 +1173,10 @@ report 50017 "WDC Sales Invoice Proforma"
 
                 // if not EnvInfoProxy.IsInvoicing then
                 //>>WDC.IM
-                CurrReport.Language := Language.GetLanguageIdOrDefault("Language Code");
+                CurrReport.Language := Language1.GetLanguageIdOrDefault("Language Code");
 
-                if not IsReportInPreviewMode then
-                    CODEUNIT.Run(CODEUNIT::"Sales Inv.-Printed", Header);
+                //if not IsReportInPreviewMode then
+                //    CODEUNIT.Run(CODEUNIT::"Sales Inv.-Printed", Header);
 
                 CalcFields("Work Description");
                 ShowWorkDescription := "Work Description".HasValue;
@@ -1431,7 +1449,7 @@ report 50017 "WDC Sales Invoice Proforma"
         TempLineFeeNoteOnReportHist: Record "Line Fee Note on Report Hist." temporary;
         SellToContact: Record Contact;
         BillToContact: Record Contact;
-        Language: Codeunit Language;
+        Language1: Codeunit Language;
         FormatAddr: Codeunit "Format Address";
         FormatDocument: Codeunit "Format Document";
         SegManagement: Codeunit SegManagement;
@@ -1508,6 +1526,8 @@ report 50017 "WDC Sales Invoice Proforma"
         QtyLbl: Label 'Qty', Comment = 'Short form of Quantity';
         PriceLbl: Label 'Price';
         PricePerLbl: Label 'Price per';
+        GetLegalOffice: Text;
+        PackageTrackingNo: Text;
 
     local procedure InitLogInteraction()
     begin
@@ -1568,7 +1588,7 @@ report 50017 "WDC Sales Invoice Proforma"
                 TempLineFeeNoteOnReportHist.Insert();
             until LineFeeNoteOnReportHist.Next() = 0;
         end else begin
-            LineFeeNoteOnReportHist.SetRange("Language Code", Language.GetUserLanguageCode);
+            LineFeeNoteOnReportHist.SetRange("Language Code", Language1.GetUserLanguageCode);
             if LineFeeNoteOnReportHist.FindSet then
                 repeat
                     TempLineFeeNoteOnReportHist.Init();
@@ -1604,13 +1624,13 @@ report 50017 "WDC Sales Invoice Proforma"
 
     local procedure FormatDocumentFields(SalesHeader: Record "Sales Header")
     begin
-        with SalesHeader do begin
-            FormatDocument.SetTotalLabels(GetCurrencySymbol, TotalText, TotalInclVATText, TotalExclVATText);
-            FormatDocument.SetSalesPerson(SalespersonPurchaser, "Salesperson Code", SalesPersonText);
-            FormatDocument.SetPaymentTerms(PaymentTerms, "Payment Terms Code", "Language Code");
-            FormatDocument.SetPaymentMethod(PaymentMethod, "Payment Method Code", "Language Code");
-            FormatDocument.SetShipmentMethod(ShipmentMethod, "Shipment Method Code", "Language Code");
-        end;
+        //with SalesHeader do begin
+        FormatDocument.SetTotalLabels(SalesHeader.GetCurrencySymbol, TotalText, TotalInclVATText, TotalExclVATText);
+        FormatDocument.SetSalesPerson(SalespersonPurchaser, SalesHeader."Salesperson Code", SalesPersonText);
+        FormatDocument.SetPaymentTerms(PaymentTerms, SalesHeader."Payment Terms Code", SalesHeader."Language Code");
+        FormatDocument.SetPaymentMethod(PaymentMethod, SalesHeader."Payment Method Code", SalesHeader."Language Code");
+        FormatDocument.SetShipmentMethod(ShipmentMethod, SalesHeader."Shipment Method Code", SalesHeader."Language Code");
+        //end;
     end;
 
     local procedure GetJobTaskDescription(JobNo: Code[20]; JobTaskNo: Code[20]): Text[100]

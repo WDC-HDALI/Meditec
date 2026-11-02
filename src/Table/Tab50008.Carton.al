@@ -1,6 +1,6 @@
 table 50008 Carton
 {
-    Caption = 'Carton';
+    CaptionML = ENU = 'Boxe', FRA = 'Carton';
     DataClassification = ToBeClassified;
     // LookupPageId = "Carton List";
     //DrillDownPageId = "Carton List";
@@ -12,12 +12,12 @@ table 50008 Carton
     {
         field(1; "No."; Code[20])
         {
-            Caption = 'No.';
+            CaptionML = ENU = 'No.', FRA = 'N°';
             DataClassification = ToBeClassified;
         }
         field(2; "Item Carton No."; Code[20])
         {
-            Caption = 'No. article carton';
+            CaptionML = ENU = 'Item Boxe No.', FRA = 'N° article carton';
             DataClassification = ToBeClassified;
             TableRelation = Item where("Packaging Type" = const(Carton));
             trigger OnValidate()
@@ -50,48 +50,47 @@ table 50008 Carton
         }
         field(3; "Item Description"; Text[100])
         {
-            Caption = 'Description article';
+            CaptionML = FRA = 'Description article', ENU = 'Item Description';
             DataClassification = ToBeClassified;
             Editable = false;
         }
         field(4; "Serial No."; Text[50])
         {
-            Caption = 'No. Serie carton';
+            CaptionML = FRA = 'N° serie carton', ENU = 'Boxe Serial No.';
             DataClassification = ToBeClassified;
         }
         field(5; "Assembly Date"; Date)
         {
-            Caption = 'Date assemblage';
+            CaptionML = FRA = 'Date assemblage', ENU = 'Assembly';
             DataClassification = ToBeClassified;
         }
         field(6; Status; Enum "WDC Carton Status")
         {
-            Caption = 'Statut';
+            CaptionML = ENU = 'Statut', FRA = 'Statut';
             DataClassification = ToBeClassified;
             Editable = false;
         }
         field(7; Shipped; Boolean)
         {
-            Caption = 'Expédié';
+            CaptionML = FRA = 'Expédié', ENU = 'Shipped';
             DataClassification = ToBeClassified;
             Editable = false;
         }
         field(8; "Customer No."; Code[20])
         {
-            Caption = 'No. client';
+            CaptionML = FRA = 'N° client', ENU = 'Customer No.';
             DataClassification = ToBeClassified;
             TableRelation = Customer;
             trigger OnValidate()
             var
                 lCustomer: Record Customer;
                 lCartTrackLines: Record "Carton Tracking Lines";
-                ltext001: Label 'Les lignes carton seront supprimés\ voulez-vous continuez?';
-
-
+                ltext001: TextConst FRA = 'Les lignes carton seront supprimés\ voulez-vous continuez?',
+                                    ENU = 'The boxe lines will be removed; do you want to continue?';
             begin
                 lCartTrackLines.Reset();
                 lCartTrackLines.SetRange("Carton No.", "No.");
-                if lCartTrackLines.FindFirst() Then //begin
+                if lCartTrackLines.FindFirst() Then
                     if Not Confirm(lText001) Then
                         Error('Cliquer F5 pour actualiser')
                     ELSE
@@ -109,18 +108,19 @@ table 50008 Carton
         }
         field(9; "Customer Name"; Text[100])
         {
-            Caption = 'Nom client';
+            CaptionML = FRA = 'Nom client', ENU = 'Customer Name';
             DataClassification = ToBeClassified;
             Editable = false;
         }
         field(10; "Item No. Filter"; Code[20])
         {
-            Caption = 'Filtre No.article';
+            CaptionML = FRA = 'Filtre N° article', ENU = 'Item No. Filter';
             DataClassification = ToBeClassified;
             Editable = false;
         }
         field(11; "Qty Item"; Decimal)
         {
+            CaptionML = FRA = 'Quantité article', ENU = 'Item Qty';
             FieldClass = FlowField;
             CalcFormula = sum("Carton Tracking Lines".Quantity where("Item No." = field("Item No. Filter"),
             "Carton No." = field("No.")));
@@ -128,22 +128,21 @@ table 50008 Carton
         }
         field(12; "Lot No."; Code[50])
         {
-            Caption = 'No. Lot';
+            CaptionML = FRA = 'N° Lot', ENU = 'Lot No.';
             DataClassification = ToBeClassified;
             TableRelation = "Lot No. Information"."Lot No." where("Item No." = field("Item Carton No."),
                                                          Inventory = filter(<> 0),
-                                                         "Location Filter" = filter('MAG-MC'));                                             //WDC.SH
-
+                                                         "Location Filter" = filter('MAG-MC'));
         }
         field(13; Selected; Boolean)
         {
-            Caption = 'Sélectionné';
+            CaptionML = FRA = 'Sélectionné', ENU = 'Selected';
             DataClassification = ToBeClassified;
 
         }
         field(14; "Not Tot. Ordered"; Boolean)
         {
-            Caption = 'Rester à utiliser ';
+            CaptionML = FRA = 'Rester à utiliser', ENU = 'Not Tot. Ordered';
             FieldClass = FlowField;
             Editable = false;
             CalcFormula = exist("Carton Tracking Lines" WHERE("Carton No." = field("No."),
@@ -152,7 +151,7 @@ table 50008 Carton
 
         field(15; "Ship to code"; Code[20])
         {
-            Caption = 'Code destinataire';
+            CaptionML = FRA = 'Code destinataire', ENU = 'Ship to code';
             DataClassification = ToBeClassified;
             TableRelation = "Ship-to Address".Code where("Customer No." = field("Customer No."));
             trigger OnValidate()
@@ -171,26 +170,22 @@ table 50008 Carton
                     ltrackCarton.ModifyAll("Ship to code", rec."Ship to code");
                     ltrackCarton.ModifyAll("Ship to name", rec."Ship to name");
                 end;
-
-
             end;
-
         }
         field(16; "Ship to name"; Text[100])
         {
             DataClassification = ToBeClassified;
-            Caption = 'Nom destinataire';
+            CaptionML = FRA = 'Nom destinataire', ENU = 'Ship to name';
             Editable = false;
         }
         field(17; "Not Tot. Shipped"; Boolean)
         {
-            Caption = 'Reste à expédier';
+            CaptionML = FRA = 'Reste à expédier', ENU = 'Not Tot. Shipped';
             FieldClass = FlowField;
             Editable = false;
             CalcFormula = exist("Carton Tracking Lines" WHERE("Carton No." = field("No."),
             "Order No." = filter('')));
         }
-
     }
     keys
     {
@@ -222,5 +217,5 @@ table 50008 Carton
 
     var
         WhseSetup: Record "Warehouse Setup";
-        NoSeriesManagement: Codeunit 396;
+        NoSeriesManagement: Codeunit "No. Series";
 }

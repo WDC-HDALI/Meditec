@@ -3,6 +3,7 @@ report 50000 "WDC Posted Sales Invoice"
     /**********************************Documentation*********************
     //WDC01     WDC.IM      27.06.2024      Changer le calcul
     //WDC02     WDC.IM      12.07.2024      Changer le calcul de nb carton
+    //WDC03     WDC.IM      14.01.2026      Ajout SKU et EAN dans la facture
     *********************************************************************/
     RDLCLayout = './src/Report/RDLC/StandardSalesInvoice.rdl';
     CaptionML = ENU = 'Sales Invoice', FRA = 'Facture vente';
@@ -117,7 +118,7 @@ report 50000 "WDC Posted Sales Invoice"
             column(CompanyAddress8; CompanyAddr[8])
             {
             }
-            column(CompanyHomePage; CompanyInfo."Home Page")
+            column(CompanyHomePage; CompanyInfo."Home Page 2")
             {
             }
             column(CompanyEMail; CompanyInfo."E-Mail")
@@ -193,16 +194,28 @@ report 50000 "WDC Posted Sales Invoice"
             column(CompanyVATRegistrationNo_Lbl; CompanyInfo.GetVATRegistrationNumberLbl)
             {
             }
-            column(CompanyLegalOffice; CompanyInfo.GetLegalOffice)
+            // column(CompanyLegalOffice; CompanyInfo.GetLegalOffice)
+            // {
+            // }
+            // column(CompanyLegalOffice_Lbl; CompanyInfo.GetLegalOfficeLbl)
+            // {
+            // }
+            // column(CompanyCustomGiro; CompanyInfo.GetCustomGiro)
+            // {
+            // }
+            // column(CompanyCustomGiro_Lbl; CompanyInfo.GetCustomGiroLbl)
+            // {
+            // }
+            column(CompanyLegalOffice; GetLegalOffice)
             {
             }
-            column(CompanyLegalOffice_Lbl; CompanyInfo.GetLegalOfficeLbl)
+            column(CompanyLegalOffice_Lbl; GetLegalOffice)
             {
             }
-            column(CompanyCustomGiro; CompanyInfo.GetCustomGiro)
+            column(CompanyCustomGiro; GetLegalOffice)
             {
             }
-            column(CompanyCustomGiro_Lbl; CompanyInfo.GetCustomGiroLbl)
+            column(CompanyCustomGiro_Lbl; GetLegalOffice)
             {
             }
             column(CompanyLegalStatement; GetLegalStatement)
@@ -590,10 +603,16 @@ report 50000 "WDC Posted Sales Invoice"
             column(VATClause_Lbl; VATClause.TableCaption)
             {
             }
-            column(PackageTrackingNo; "Package Tracking No.")
+            // column(PackageTrackingNo; "Package Tracking No.")
+            // {
+            // }
+            // column(PackageTrackingNo_Lbl; FieldCaption("Package Tracking No."))
+            // {
+            // }
+            column(PackageTrackingNo; PackageTrackingNo_Lbl)
             {
             }
-            column(PackageTrackingNo_Lbl; FieldCaption("Package Tracking No."))
+            column(PackageTrackingNo_Lbl; PackageTrackingNo_Lbl)
             {
             }
             column(ShippingAgentCode; "Shipping Agent Code")
@@ -825,6 +844,12 @@ report 50000 "WDC Posted Sales Invoice"
                 column(Net_Weight; "Net Weight")
                 {
                 }
+                column(SKU; SKU)
+                {
+                }
+                column(EANCode; EANCode)
+                {
+                }
                 dataitem(ShipmentLine; "Sales Shipment Buffer")
                 {
                     DataItemTableView = SORTING("Document No.", "Line No.", "Entry No.");
@@ -888,8 +913,11 @@ report 50000 "WDC Posted Sales Invoice"
                 trigger OnAfterGetRecord()
                 var
                     lItem: record Item;
+                    lItemVariant: record "Item Variant";
                 //lShipmentNo: Code[20];  //CMT by WDC02
                 begin
+                    Clear(SKU);  //WDC03
+                    Clear(EANCode); //WDC03
                     if Type = Type::"G/L Account" then
                         "No." := '';
                     if "Line Discount %" = 0 then
@@ -940,7 +968,18 @@ report 50000 "WDC Posted Sales Invoice"
                             end;
                             if lItem."Packing Item" then
                                 Emballage := True;
-                            transport_cost := litem."Transport cost"
+                            transport_cost := litem."Transport cost";
+                            //<<WDC03
+                            if Line."Variant Code" = '' then begin
+                                SKU := lItem."SKU";
+                                EANCode := lItem."Retail Code";
+                            end else begin
+                                if LItemVariant.Get(Line."No.", Line."Variant Code") then begin
+                                    SKU := LItemVariant."SKU";
+                                    EANCode := LItemVariant."Retail Code";
+                                end;
+                            end;
+                            //>>WDC03
                         END;
 
                     //>>Meditec
@@ -1157,7 +1196,7 @@ report 50000 "WDC Posted Sales Invoice"
 
                 //if not EnvInfoProxy.IsInvoicing then
                 //>>WDC.IM
-                CurrReport.Language := Language.GetLanguageIdOrDefault("Language Code");
+                CurrReport.Language := Language1.GetLanguageIdOrDefault("Language Code");
 
                 if not IsReportInPreviewMode then
                     CODEUNIT.Run(CODEUNIT::"Sales Inv.-Printed", Header);
@@ -1436,7 +1475,7 @@ report 50000 "WDC Posted Sales Invoice"
         TempLineFeeNoteOnReportHist: Record "Line Fee Note on Report Hist." temporary;
         SellToContact: Record Contact;
         BillToContact: Record Contact;
-        Language: Codeunit Language;
+        Language1: Codeunit Language;
         FormatAddr: Codeunit "Format Address";
         FormatDocument: Codeunit "Format Document";
         SegManagement: Codeunit SegManagement;
@@ -1503,6 +1542,10 @@ report 50000 "WDC Posted Sales Invoice"
         QtyLbl: Label 'Qty', Comment = 'Short form of Quantity';
         PriceLbl: Label 'Price';
         PricePerLbl: Label 'Price per';
+        GetLegalOffice: Text[10];
+        PackageTrackingNo_Lbl: Text[10];
+        SKU: Text[20];
+        EANCode: Code[20];
 
     local procedure InitLogInteraction()
     begin
@@ -1564,7 +1607,7 @@ report 50000 "WDC Posted Sales Invoice"
                 TempLineFeeNoteOnReportHist.Insert();
             until LineFeeNoteOnReportHist.Next() = 0;
         end else begin
-            LineFeeNoteOnReportHist.SetRange("Language Code", Language.GetUserLanguageCode);
+            LineFeeNoteOnReportHist.SetRange("Language Code", Language1.GetUserLanguageCode);
             if LineFeeNoteOnReportHist.FindSet then
                 repeat
                     TempLineFeeNoteOnReportHist.Init();
@@ -1600,13 +1643,13 @@ report 50000 "WDC Posted Sales Invoice"
 
     local procedure FormatDocumentFields(SalesInvoiceHeader: Record "Sales Invoice Header")
     begin
-        with SalesInvoiceHeader do begin
-            FormatDocument.SetTotalLabels(GetCurrencySymbol, TotalText, TotalInclVATText, TotalExclVATText);
-            FormatDocument.SetSalesPerson(SalespersonPurchaser, "Salesperson Code", SalesPersonText);
-            FormatDocument.SetPaymentTerms(PaymentTerms, "Payment Terms Code", "Language Code");
-            FormatDocument.SetPaymentMethod(PaymentMethod, "Payment Method Code", "Language Code");
-            FormatDocument.SetShipmentMethod(ShipmentMethod, "Shipment Method Code", "Language Code");
-        end;
+        //with SalesInvoiceHeader do begin
+        FormatDocument.SetTotalLabels(SalesInvoiceHeader.GetCurrencySymbol, TotalText, TotalInclVATText, TotalExclVATText);
+        FormatDocument.SetSalesPerson(SalespersonPurchaser, SalesInvoiceHeader."Salesperson Code", SalesPersonText);
+        FormatDocument.SetPaymentTerms(PaymentTerms, SalesInvoiceHeader."Payment Terms Code", SalesInvoiceHeader."Language Code");
+        FormatDocument.SetPaymentMethod(PaymentMethod, SalesInvoiceHeader."Payment Method Code", SalesInvoiceHeader."Language Code");
+        FormatDocument.SetShipmentMethod(ShipmentMethod, SalesInvoiceHeader."Shipment Method Code", SalesInvoiceHeader."Language Code");
+        // end;
     end;
 
     local procedure GetJobTaskDescription(JobNo: Code[20]; JobTaskNo: Code[20]): Text[100]

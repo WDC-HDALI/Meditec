@@ -185,7 +185,7 @@ pageextension 50030 "WDC Item Tracking Lines" extends "Item Tracking Lines"
         Text008: Label 'The quantity to create must be an integer.';
         TempReservEntry: Record "Reservation Entry" temporary;
         TempTrackingSpecification2: Record "Tracking Specification" temporary;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
+        NoSeriesMgt: Codeunit "No. Series";
         ItemTrackingMgt: Codeunit "Item Tracking Management";
         UnincrementableStringErr: Label 'The value in the %1 field must have a number so that we can assign the next number in the series.', Comment = '%1 = serial number';
 
